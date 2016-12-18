@@ -21,7 +21,8 @@
     "mocha": "^3.2.0"
   },
   "dependencies": {
-    "is-promise": "2.1.0"
+    "is-promise": "2.1.0",
+    "lodash": "^4.17.2"
   },
   "scripts": {
     "prepublish": "npm run build",

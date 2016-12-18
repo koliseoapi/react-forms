@@ -1,9 +1,8 @@
-import Validator from './lib/en-validator'
+import { Validator, Types } from './lib/en-validator'
 //import React from 'react'
 import { equal } from 'assert';
 import { describe } from 'mocha';
 
-const TYPES = Validator.TYPES;
 const props = {
   name: {
     type: Types.STRING,
