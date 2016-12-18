@@ -1,0 +1,32 @@
+{
+  "name": "react-validate-input",
+  "version": "0.0.1",
+  "description": "Validation library for React that is independent from your component",
+  "main": "lib/react-validate-input.js",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:icoloma/react-validate-input.git"
+  },
+  "keywords": [
+    "flux",
+    "form",
+    "validation"
+  ],
+  "author": "Nacho Coloma <icoloma@gmail.com>",
+  "license": "MIT",
+  "homepage": "https://github.com/icoloma/react-validate-input",
+  "devDependencies": {
+    "mocha": "^3.2.0"
+  },
+  "dependencies": {
+    "is-promise": "2.1.0"
+  },
+  "scripts": {
+    "prepublish": "npm run build",
+    "test": "./node_modules/mocha/bin/mocha --harmony test.js"
+  },
+  "engines": {
+    "node": ">=0.10.0",
+    "npm": ">=2.1.18"
+  }
+}
