@@ -18,19 +18,18 @@ const props = {
 }
 
 const fail = msg => () => ok(false, msg)
-const validate = (state) => {
-  return new Validator(
-    { props, state }
-  ).validate()
-}
 
 describe('Validator', function() {
-  describe('#required', function(done) {
-    return validate({})
-      .then((messages) => {
-        equal('kk', messages.name);
-        ok(!messages.height, 'Height did not pass');
-      })
+  describe('#validate', function() {
+    it('should validate required fields', function() {
+      return new Validator(
+          props, state
+        ).then((messages) => {
+          equal('name', messages[0].key);
+          equal('kk', messages[0].error);
+          equal(1, messages.length);
+        })
+    })
   });
 });
 
