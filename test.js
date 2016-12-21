@@ -1,123 +1,39 @@
-import { Validator, Types } from './lib/en-validator'
-//import React from 'react'
+import { Form, Input, TextArea } from './lib/react-data-input'
+import React from 'react'
 import { equal } from 'assert';
 import { describe } from 'mocha';
+import { mount, shallow } from 'enzyme';
+import 'jsdom-global/register';
 
-const props = {
-  name: {
-    type: Types.STRING,
-    attrs: { required: true }
-  },
-  height: {
-    type: Types.NUMBER
-  },
-  weight: {
-    type: Types.NUMBER,
-    attrs: { min: 10, max: 100 }
-  }
-}
+// const fail = msg => () => ok(false, msg)
 
-const fail = msg => () => ok(false, msg)
+describe('Input[type=text]', function() {
 
-describe('Validator', function() {
-  describe('#validate', function() {
-    it('should validate required fields', function() {
-      return new Validator(
-          props, state
-        ).then((messages) => {
-          equal('name', messages[0].key);
-          equal('kk', messages[0].error);
-          equal(1, messages.length);
-        })
-    })
+  it('should render correctly', function() {
+    const state = { name: "foobar" };
+    const wrapper = mount(<Input type="text" className="foo" required state={state} name="name" />);
+    const input = wrapper.find('input');
+    //equal('foobar', wrapper.get(0).value);
+    equal('foo', wrapper.prop('className'));
+    equal(true, wrapper.prop('required'));
   });
+
+  it('should update int on property change', function() {
+    const state = { age: 20 };
+    const wrapper = mount(<Input type="number" name="age" state={state} step="1"/>);
+    wrapper.find('input').simulate('change', {
+      target: { value: "32.2" }
+    });
+    equal(32, state.age);
+  });
+  
+  it('should update float on property change', function() {
+    const state = { age: 20 };
+    const wrapper = mount(<Input type="number" name="age" step="0.01" state={state} />);
+    wrapper.find('input').simulate('change', {
+      target: { value: "32.2" }
+    });
+    equal(32.2, state.age);
+  });
+
 });
-
-/*
-const test = f => x => f(x)
-
-const spec = (name, state, onSuccess, onFailure) => {
-  console.log(`> ${name}...`)
-  return new Validator(
-    { props, state }
-  ).validate()
-  .then(onSuccess, onFailure)
-  .then(() => {
-    console.log(`√ ${name}`)
-  })
-  .catch((err) => {
-    console.error(`ø ${name}`)
-    console.error(err.stack)
-    return Promise.reject(err)
-  })
-}
-
-const runner = (specs) => {
-  return Promise.all(specs).then(() => console.log('OK.'), () => {
-    console.log('Failed.')
-    process.exit(1);
-  })
-}
-
-runner([
-  spec(
-    'Required value missing',
-    {},
-    fail('Form validated properly'),
-    test((state) => {
-      ok(state.name === 'kk', 'state.name passed')
-      ok(!state.height, 'state.height failed')
-    })
-  ),
-  spec(
-    'Name is there',
-    {
-      name: 'Josh',
-      age: 14,
-    },
-    fail('Form validated properly'),
-    test((state) => {
-      ok(state.name === 'Josh', 'state.name is present')
-    })
-  ),
-  spec(
-    'Stats is empty',
-    {
-      name: 'Josh',
-      stats: {},
-      age: 21,
-    },
-    fail('Form validated properly'),
-    test((state) => {
-      ok(state.stats instanceof Error, 'state.stats is an empty obj')
-    })
-  ),
-  spec(
-    'Stats has incorrect props',
-    {
-      name: 'Josh',
-      stats: { height: 151, weight: '83' },
-      age: 28,
-    },
-    fail('Form validated properly'),
-    test((state) => {
-      ok(state.stats instanceof Error, 'state.stats is an empty obj')
-    })
-  ),
-  spec(
-    'All good',
-    {
-      name: 'Josh',
-      stats: { height: 149, weight: 101 },
-      age: 35,
-    },
-    test((state) => {
-      ok(state.name === 'Josh')
-      ok(state.stats.height === 149)
-      ok(state.stats.weight === 101)
-      ok(state.age === 35)
-    }),
-    fail('Form had an error')
-  ),
-])
-*/
