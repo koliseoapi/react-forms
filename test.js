@@ -1,21 +1,21 @@
 import { Form, Input, TextArea } from './lib/react-data-input'
 import React from 'react'
-import { equal } from 'assert';
+import assert from 'assert';
 import { describe } from 'mocha';
 import { mount, shallow } from 'enzyme';
 import 'jsdom-global/register';
 
 // const fail = msg => () => ok(false, msg)
-
+const equal = assert.equal;
 describe('Input[type=text]', function() {
 
   it('should render correctly', function() {
     const state = { name: "foobar" };
-    const wrapper = mount(<Input type="text" className="foo" required state={state} name="name" />);
+    const wrapper = shallow(<Input type="text" className="foo" required state={state} name="name" />);
     const input = wrapper.find('input');
     //equal('foobar', wrapper.get(0).value);
-    equal('foo', wrapper.prop('className'));
-    equal(true, wrapper.prop('required'));
+    assert(input.hasClass('foo'));
+    equal(true, input.props().required);
   });
 
   it('should update int on property change', function() {
