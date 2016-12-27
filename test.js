@@ -37,3 +37,22 @@ describe('Input[type=text]', function() {
   });
 
 });
+
+describe('Form', function() {
+
+  it('should call onSubmit only if validation passes', function() {
+    const state = { };
+    let invoked = false;
+    function callback() { invoked = true };
+    const wrapper = mount(<Form onSubmit={callback}><Input type="text" required state={state} name="name" /></Form>);
+    const input = wrapper.find('form').simulate('submit', {
+      target: { 
+        validate: function() { 
+          return false; 
+        } 
+      }
+    });
+    assert(!invoked, 'Invoked onSubmit() when validation was not passing');
+  });
+
+});
