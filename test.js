@@ -36,6 +36,12 @@ describe('Input[type=text]', function() {
     equal(32.2, state.age);
   });
 
+  it('should not propagate the state property', function() {
+    const wrapper = shallow(<Input type="text" state={{ foo: 'foo' }} name="name" />);
+    const input = wrapper.find('input');
+    assert(!input.props().state, 'state attribute was propagated to nested <input>');
+  });
+
 });
 
 describe('Form', function() {

@@ -16,6 +16,7 @@
   "license": "MIT",
   "homepage": "https://github.com/icoloma/react-data-input",
   "devDependencies": {
+    "babel-plugin-transform-object-rest-spread": "^6.20.2",
     "babel-preset-es2015": "^6.18.0",
     "babel-preset-react": "^6.16.0",
     "babel-register": "^6.18.0",
