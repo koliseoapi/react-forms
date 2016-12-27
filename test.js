@@ -19,12 +19,13 @@ describe('Input[type=text]', function() {
   });
 
   it('should update int on property change', function() {
-    const state = { age: 20 };
-    const wrapper = mount(<Input type="number" name="age" state={state} step="1"/>);
+    const state = { age: 20, color: 'red' };
+    const wrapper = mount(<Input type="number" name="age" state={state}  step="1"/>);
     wrapper.find('input').simulate('change', {
       target: { value: "32.2" }
     });
     equal(32, state.age);
+    equal('red', state.color);
   });
   
   it('should update float on property change', function() {
@@ -36,7 +37,7 @@ describe('Input[type=text]', function() {
     equal(32.2, state.age);
   });
 
-  it('should not propagate the state property', function() {
+  it('should not propagate specific properties to the HTML5 element', function() {
     const wrapper = shallow(<Input type="text" state={{ foo: 'foo' }} name="name" />);
     const input = wrapper.find('input');
     assert(!input.props().state, 'state attribute was propagated to nested <input>');
