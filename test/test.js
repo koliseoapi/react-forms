@@ -12,19 +12,22 @@ const equal = assert.equal;
 function noop() {};
 describe('Input[type=text]', function() {
 
+  function mountInput(input, state) {
+    const wrapper = mount(<Form onSubmit={noop} state={state}>{input}</Form>);
+    return wrapper.find(Input).childAt(0);
+  }
+
   it('should render correctly', function() {
     const state = { name: "foobar" };
-    const wrapper = shallow(<Form onSubmit={noop} state={state}><Input type="text" className="foo" required name="name" /></Form>);
-    const input = wrapper.find('input');
-    //equal('foobar', wrapper.get(0).value);
+    const input = mountInput(<Input type="text" className="foo" required name="name" />, state);
     assert(input.hasClass('foo'));
     equal(true, input.props().required);
   });
 
   it('should update int on property change', function() {
     const state = { age: 20, color: 'red' };
-    const wrapper = mount(<Form onSubmit={noop}><Input type="number" name="age" state={state} step="1"/></Form>);
-    wrapper.find('input').simulate('change', {
+    const input = mountInput(<Input type="number" name="age" state={state} step="1"/>, state);
+    input.simulate('change', {
       target: { value: "32.2" }
     });
     equal(32, state.age);
@@ -33,16 +36,15 @@ describe('Input[type=text]', function() {
   
   it('should update float on property change', function() {
     const state = { age: 20 };
-    const wrapper = mount(<Form onSubmit={noop} state={state}><Input type="number" name="age" step="0.01" /></Form>);
-    wrapper.find('input').simulate('change', {
+    const input = mountInput(<Input type="number" name="age" step="0.01" />, state);
+    input.simulate('change', {
       target: { value: "32.2" }
     });
     equal(32.2, state.age);
   });
 
   it('should not propagate specific properties to the HTML5 element', function() {
-    const wrapper = shallow(<Form onSubmit={noop}><Input type="text" className="foo" state={{ foo: 'foo' }} name="name" /></Form>);
-    const input = wrapper.find('form').childAt(0);
+    const input = mountInput(<Input type="text" className="foo" state={{ foo: 'foo' }} name="name" />, {});
     assert(!input.props().state, 'state attribute was propagated to nested <input>');
   });
 
