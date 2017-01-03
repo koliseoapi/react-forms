@@ -28,11 +28,13 @@
     "react-dom": "^15.4.1"
   },
   "dependencies": {
+    "is-promise": "^2.1.0",
     "react": "^15.4.1"
   },
   "scripts": {
     "prepublish": "npm run test",
-    "test": "./node_modules/mocha/bin/mocha --compilers js:babel-register test.js",
-    "debug": "node --inspect --debug-brk ./node_modules/mocha/bin/_mocha --compilers js:babel-register test.js"
+    "test": "./node_modules/mocha/bin/mocha --compilers js:babel-register test/test.js",
+    "html": "NODE_ENV=development webpack --progress --colors --config webpack.config.js --display-error-details --display-modules --watch -d",
+    "dev": "webpack-dev-server --inline --hot --progress --colors"
   }
 }

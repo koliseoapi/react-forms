@@ -5,11 +5,11 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "type": "node",
+            "type": "node2",
             "request": "launch",
             "name": "Launch Program",
             "program": "${workspaceRoot}/node_modules/mocha/bin/_mocha",
-            "args": [ "--compilers", "js:babel-register", "--no-timeouts", "test.js" ],
+            "args": [ "--compilers", "js:babel-register", "--no-timeouts", "test/test.js" ],
             "cwd": "${workspaceRoot}"
         },
         {
