@@ -2,11 +2,15 @@
   <head>
     <style>
       * { box-sizing: border-box; }
-      body { font-family: Geneva, Tahoma, sans-serif; }
+      body { font-family: Geneva, Tahoma, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px;}
       input { padding: 8px; border: 1px solid #ccc; margin-bottom: 10px; display: block; }
       input[type=submit] { cursor: pointer; background: #008cba; color: white; border: 1px solid #0a6f90; border-radius: 2px; }
       label { font-size: .8rem; text-transform: uppercase; color: #666; display: block; margin-bottom: 5px; }
       .output.error { color: red }
+      .input-error { font-size: 14px; }
+      pre, 
+      iframe { font: 12px Consolas, "Liberation Mono", Menlo, Courier, monospace; background-color: #f7f7f7; border: 1px solid #ccc; padding: 10px; margin-bottom: 10px; white-space: normal; }
+      iframe { width: 100%; height: 200px; }
     </style>
     <link rel="stylesheet" href="../lib/styles.css">
   </head>

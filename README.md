@@ -1,4 +1,4 @@
-A library to automatically bind React form elements to state attributes, automatically doing type conversion and validation. [Give it a try](http://github.io/icoloma/react-data-input).
+A library to automatically bind React form elements to state attributes, automatically doing type conversion and validation. [Give it a try](https://icoloma.github.io/react-data-input/).
 
 ```JavaScript
 import { Form, Input, TextArea } from 'react-data-input';

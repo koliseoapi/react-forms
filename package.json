@@ -34,7 +34,6 @@
   "scripts": {
     "prepublish": "npm run test",
     "test": "./node_modules/mocha/bin/mocha --compilers js:babel-register test/test.js",
-    "html": "NODE_ENV=development webpack --progress --colors --config webpack.config.js --display-error-details --display-modules --watch -d",
     "dev": "webpack-dev-server --inline --hot --progress --colors"
   }
 }
