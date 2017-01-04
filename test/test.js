@@ -6,6 +6,7 @@ import { describe } from 'mocha';
 import { mount, shallow } from 'enzyme';
 import Validators from '../lib/Validators';
 import Converters from '../lib/Converters';
+import sinon from 'sinon';
 
 // const fail = msg => () => ok(false, msg)
 const equal = assert.equal;
@@ -24,14 +25,16 @@ describe('Input[type=text]', function() {
     equal(true, input.props().required);
   });
 
-  it('should update int on property change', function() {
+  it('should update int on change', function() {
     const state = { age: 20, color: 'red' };
-    const input = mountInput(<Input type="number" name="age" state={state} step="1"/>, state);
+    const callback = sinon.spy();
+    const input = mountInput(<Input type="number" name="age" state={state} step="1" onChange={callback}/>, state);
     input.simulate('change', {
       target: { value: "32.2" }
     });
     equal(32, state.age);
     equal('red', state.color);
+    assert(callback.called, "Did not invoke callback specified by user");
   });
   
   it('should update float on property change', function() {
@@ -54,17 +57,10 @@ describe('Form', function() {
 
   it('should call onSubmit only if validation passes', function() {
     const state = { };
-    let invoked = false;
-    function callback() { invoked = true };
+    const callback = sinon.spy();
     const wrapper = mount(<Form onSubmit={callback}><Input type="text" required state={state} name="name" /></Form>);
-    const input = wrapper.find('form').simulate('submit', {
-      target: { 
-        validate: function() { 
-          return false; 
-        } 
-      }
-    });
-    assert(!invoked, 'Invoked onSubmit() when validation was not passing');
+    const input = wrapper.find('form').simulate('submit');
+    assert(!callback.called, 'Invoked onSubmit() when validation was not passing');
   });
 
 });
