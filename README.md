@@ -74,6 +74,21 @@ Validations will use the same error messages from Chrome. The following validati
 
 When the user submits the Form, it will automatically run all validations before triggering `onSubmit`. If any validation does not pass, the callback will not be invoked and an error message will be displayed instead.
 
+## Internacionalization
+
+You can override the default locale by invoking `Messages.set`:
+
+```
+import { Messages } from 'react-data-input';
+
+Messages.set({
+    required: "Por favor, rellena este campo",
+    min: "El valor debe ser mayor o igual que ${min}"
+})
+```
+
+You can see the full list of values in [Messages.js](https://github.com/icoloma/react-data-input/blob/master/lib/Messages.js).
+
 ## To play with the test suite
 
 ```
