@@ -16,5 +16,6 @@ fi
 cp ../build/example.js ../lib/styles.css .
 cp ../test/example.js ./example.src.js
 
+git add .
 git commit -m "${1:-Merge master}"
 git push
