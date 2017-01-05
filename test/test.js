@@ -11,7 +11,7 @@ import sinon from 'sinon';
 // const fail = msg => () => ok(false, msg)
 const equal = assert.equal;
 function noop() {};
-describe('Input[type=text]', function() {
+describe('Input', function() {
 
   function mountInput(input, state) {
     const wrapper = mount(<Form onSubmit={noop} state={state}>{input}</Form>);
@@ -37,7 +37,7 @@ describe('Input[type=text]', function() {
     assert(callback.called, "Did not invoke callback specified by user");
   });
   
-  it('should update float on property change', function() {
+  it('should update float on change', function() {
     const state = { age: 20 };
     const input = mountInput(<Input type="number" name="age" step="0.01" />, state);
     input.simulate('change', {
@@ -46,9 +46,44 @@ describe('Input[type=text]', function() {
     equal(32.2, state.age);
   });
 
+  it('should use checked with type=checkbox', function() {
+    const state = { subscribed: true };
+    const input = mountInput(<Input type="checkbox" name="subscribed" />, state);
+    equal(true, input.props().checked);
+    equal(undefined, input.props().value);
+  });
+
   it('should not propagate specific properties to the HTML5 element', function() {
     const input = mountInput(<Input type="text" className="foo" state={{ foo: 'foo' }} name="name" />, {});
     assert(!input.props().state, 'state attribute was propagated to nested <input>');
+  });
+
+  function initAsyncValidator(state) {
+    const validator = (value) => new Promise((resolve) => {
+      resolve(value === "abc"? undefined : "Validation failed");
+    });
+    const wrapper = mount(
+      <Form onSubmit={noop} state={state}>
+        <Input type="text" name="foo" validator={validator} />
+      </Form>
+    );
+    return wrapper.instance();
+  }
+
+  it('custom validator with Promise expected to fail', function() {
+    const state = { foo: 'xyz' };
+    const form = initAsyncValidator(state);
+    return form.validate().then((result) => {
+      assert.equal(false, result);
+    });
+  });
+
+  it('custom validator with Promise expected to pass', function() {
+    const state = { foo: 'abc' };
+    const form = initAsyncValidator(state);
+    return form.validate().then(result => {
+      assert.equal(true, result);
+    });
   });
 
 });

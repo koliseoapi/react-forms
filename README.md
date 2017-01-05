@@ -34,16 +34,25 @@ The list of exported components includes Form, Input (`text`, `number` and `chec
 Each field will automatically convert values from string to the desired format. Empty strings will be set to `undefined`.
 
 * `text`, `url`, `email`
-`<Input type="text" name="name" />`
-`<TextArea name="description" />`
+```JavaScript
+<Input type="text" name="name" />
+<TextArea name="description" />
+```
 
 * `number` will be converted to int or float depending on the value of `step` (default is `1`): 
-`<Input type="number" name="age" />`
-`<Input type="number" name="percentage" step="0.01" />`
+```JavaScript
+<Input type="number" name="age" />
+<Input type="number" name="percentage" step="0.01" />
+```
+
+* `checkbox` will also work out of the box:
+```JavaScript
+<Input type="checkbox" name="subscribed" />
+```
 
 The default converter can be overriden by a custom implementation:
 
-```
+```JavaScript
 const AllowedValues = { one: instanceOne, two: instanceTwo };
 const state = { defcon: AllowedValues.one }
 const myConverter =
@@ -75,13 +84,32 @@ Validations will use the same error messages from Chrome. The following validati
 * `[type=email]`
 * `[type=url]`
 
-When the user submits the Form, it will automatically run all validations before triggering `onSubmit`. If any validation does not pass, the callback will not be invoked and an error message will be displayed instead.
+When the user submits the Form, it will automatically run all validations before triggering `onSubmit`. 
+If any validation does not pass, the callback will not be invoked and an error message will be displayed instead.
+
+Custom validation is also supported, returning either a Promise or the validation result directly:
+
+```JavaScript
+const validator = (value, props) => {
+  return fetch('checkValueIsAvailable', {
+    body: { username: value }
+  });
+}
+
+const wrapper = mount(
+  <Form onSubmit={save} state={state}>
+    <label htmlFor="name">Choose your username</label>
+    <Input type="text" name="username" validator={validator} />
+  </Form>
+);
+
+```
 
 ## Internacionalization
 
 You can override the default locale by invoking `Messages.set`:
 
-```
+```JavaScript
 import { Messages } from 'react-data-input';
 
 Messages.set({
