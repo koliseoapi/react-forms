@@ -48,13 +48,6 @@
 	
 	'use strict';
 	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /*
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       Example code to use in browser
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     */
-	
-	
 	var _reactDataInput = __webpack_require__(1);
 	
 	var _reactDom = __webpack_require__(41);
@@ -65,56 +58,18 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
+	var _MyState = __webpack_require__(187);
+	
+	var _MyState2 = _interopRequireDefault(_MyState);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	/*
 	
-	var output = document.getElementsByClassName('output')[0];
+	  Example code to use in browser
 	
-	window.addEventListener('error', function (err) {
-	  console.error(err);
-	  output.classList.add('error');
-	  output.innerHTML = err.message;
-	});
-	
-	// just a class that can be spied for changes
-	
-	var MyState = function () {
-	  function MyState(props) {
-	    _classCallCheck(this, MyState);
-	
-	    Object.assign(this, props);
-	  }
-	
-	  _createClass(MyState, [{
-	    key: 'printState',
-	    value: function printState(message) {
-	      output.classList.remove('error');
-	      output.innerHTML = message || JSON.stringify(this);
-	    }
-	  }, {
-	    key: 'name',
-	    set: function set(name) {
-	      this._name = name;
-	      this.printState();
-	    },
-	    get: function get() {
-	      return this._name;
-	    }
-	  }, {
-	    key: 'age',
-	    set: function set(age) {
-	      this._age = age;
-	      this.printState();
-	    },
-	    get: function get() {
-	      return this._age;
-	    }
-	  }]);
-	
-	  return MyState;
-	}();
-	
+	*/
+	var state = new _MyState2.default({ name: 'John Doe', age: 23, subscribed: true });
 	function onSubmit() {
 	  state.printState('onSubmit() invoked successfully');
 	  setTimeout(function () {
@@ -138,11 +93,15 @@
 	      'Age'
 	    ),
 	    _react2.default.createElement(_reactDataInput.Input, { name: 'age', type: 'number', min: '0', max: '120', required: true }),
+	    _react2.default.createElement(
+	      'label',
+	      null,
+	      _react2.default.createElement(_reactDataInput.Input, { name: 'subscribed', type: 'checkbox' }),
+	      ' Subscribe to newsletter'
+	    ),
 	    _react2.default.createElement('input', { type: 'submit' })
 	  );
 	}
-	
-	var state = new MyState({ name: 'John Doe', age: 23 });
 	
 	_reactDom2.default.render(_react2.default.createElement(MyApp, null), document.getElementsByClassName('container')[0]);
 	
@@ -207,6 +166,10 @@
 	  return value.length == 0;
 	};
 	
+	var passTrough = function passTrough(value) {
+	  return value;
+	};
+	
 	var Converters = {
 	  text: {
 	
@@ -231,6 +194,13 @@
 	    toString: function toString(value) {
 	      return isNullOrUndefined(value) ? '' : '' + value;
 	    }
+	
+	  },
+	
+	  checkbox: {
+	
+	    toObject: passTrough,
+	    toString: passTrough
 	
 	  }
 	};
@@ -269,12 +239,18 @@
 	var contents = {
 	  required: "Please fill out this field",
 	  min: "Value must be greater than or equal to ${min}",
-	  max: "Value must be less than or equal to ${max}"
+	  max: "Value must be less than or equal to ${max}",
+	  url: "Please enter a URL",
+	  email: "Please include a valid e-mail address",
+	  pattern: "Please match the requested format"
 	};
 	
 	exports.default = {
 	  get: function get(key, props) {
 	    return template(contents[key], props);
+	  },
+	  set: function set(newContents) {
+	    contents = Object.assign(contents, newContents);
 	  }
 	};
 	
@@ -17407,6 +17383,8 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
+	var re_weburl = void 0;
+	
 	exports.default = {
 	
 	  required: function required(value) {
@@ -17424,6 +17402,69 @@
 	  "number.max": function numberMax(value, props) {
 	    if (!(0, _utils.isNullOrUndefined)(value) && value > +props.max) {
 	      return _Messages2.default.get('max', props);
+	    }
+	  },
+	
+	  url: function url(value) {
+	
+	    // Lazy init a reasonable (< 5k chars) implementation of URL regex 
+	    // https://mathiasbynens.be/demo/url-regex
+	    // https://gist.github.com/dperini/729294
+	    if (!re_weburl) {
+	      re_weburl = new RegExp("^" +
+	      // protocol identifier
+	      "(?:(?:https?|ftp)://)" +
+	      // user:pass authentication
+	      "(?:\\S+(?::\\S*)?@)?" + "(?:" +
+	      // IP address exclusion
+	      // private & local networks
+	      "(?!(?:10|127)(?:\\.\\d{1,3}){3})" + "(?!(?:169\\.254|192\\.168)(?:\\.\\d{1,3}){2})" + "(?!172\\.(?:1[6-9]|2\\d|3[0-1])(?:\\.\\d{1,3}){2})" +
+	      // IP address dotted notation octets
+	      // excludes loopback network 0.0.0.0
+	      // excludes reserved space >= 224.0.0.0
+	      // excludes network & broacast addresses
+	      // (first & last IP address of each class)
+	      "(?:[1-9]\\d?|1\\d\\d|2[01]\\d|22[0-3])" + "(?:\\.(?:1?\\d{1,2}|2[0-4]\\d|25[0-5])){2}" + "(?:\\.(?:[1-9]\\d?|1\\d\\d|2[0-4]\\d|25[0-4]))" + "|" +
+	      // host name
+	      '(?:(?:[a-z\\u00a1-\\uffff0-9]-*)*[a-z\\u00a1-\\uffff0-9]+)' +
+	      // domain name
+	      '(?:\\.(?:[a-z\\u00a1-\\uffff0-9]-*)*[a-z\\u00a1-\\uffff0-9]+)*' +
+	      // TLD identifier
+	      '(?:\\.(?:[a-z\\u00a1-\\uffff]{2,}))' +
+	      // TLD may end with dot
+	      "\\.?" + ")" +
+	      // port number
+	      "(?::\\d{2,5})?" +
+	      // resource path
+	      "(?:[/?#]\\S*)?" + "$", "i");
+	    }
+	
+	    if (!(0, _utils.isNullOrUndefined)(value) && !re_weburl.test(value)) {
+	      return _Messages2.default.get('url');
+	    }
+	  },
+	
+	  email: function email(value) {
+	    // Simple email validation
+	    // http://stackoverflow.com/questions/742451/what-is-the-simplest-regular-expression-to-validate-emails-to-not-accept-them-bl
+	    if (!(0, _utils.isNullOrUndefined)(value) && !/^\S+@\S+$/.test(value)) {
+	      return _Messages2.default.get('email');
+	    }
+	  },
+	
+	  pattern: function pattern(value, _ref) {
+	    var _pattern = _ref.pattern;
+	
+	    if (!(0, _utils.isNullOrUndefined)(value) && _pattern) {
+	      if (_pattern[0] !== '^') {
+	        _pattern = '^' + _pattern;
+	      }
+	      if (_pattern[_pattern.length - 1] !== '$') {
+	        _pattern += '$';
+	      }
+	      if (!new RegExp(_pattern).test(value)) {
+	        return _Messages2.default.get('pattern');
+	      }
 	    }
 	  },
 	
@@ -17543,18 +17584,17 @@
 	    }
 	
 	    // validate all child components
-	    // return array of { name, message }, empty if none
+	    // @return a Promise that resolves to true if validation passes for all fields, false otherwise
 	
 	  }, {
 	    key: 'validate',
 	    value: function validate() {
 	      var promises = this.validationComponents.map(function (c) {
-	        var result = c.validate();
-	        return (0, _isPromise2.default)(result) ? result : Promise.resolve(result);
+	        return c.validate();
 	      });
-	      return Promise.all(promises).then(function (results) {
-	        return results.filter(function (result) {
-	          return result;
+	      return Promise.all(promises).then(function (errorMessages) {
+	        return errorMessages.every(function (errorMessage) {
+	          return !errorMessage;
 	        });
 	      });
 	    }
@@ -17614,6 +17654,7 @@
 	      value: stateObject[props.name]
 	    };
 	    _this3.onChange = _this3.onChange.bind(_this3);
+	    _this3.valueProp = props.type === 'checkbox' ? 'checked' : 'value';
 	    return _this3;
 	  }
 	
@@ -17626,9 +17667,11 @@
 	    key: 'onChange',
 	    value: function onChange(e) {
 	      var props = this.props;
-	      var value = this.converter.toObject(e.target.value, props);
+	      var onChange = props.onChange;
+	      var value = this.converter.toObject(e.target[this.valueProp], props);
 	      this.setState({ value: value, errorMessage: undefined });
 	      this.getStateObject()[props.name] = value;
+	      onChange && onChange(e);
 	    }
 	  }, {
 	    key: 'componentDidMount',
@@ -17640,6 +17683,9 @@
 	    value: function componentWillUnmount() {
 	      this.context.parentForm.removeValidationComponent(this);
 	    }
+	
+	    // @return a Promise with the validation result. The result is the error message to display
+	
 	  }, {
 	    key: 'validate',
 	    value: function validate() {
@@ -17647,22 +17693,33 @@
 	
 	      var allProps = this.props;
 	      var validationProps = _Validators2.default.filterValidationProps(allProps);
-	      var message = undefined;
+	      var value = this.state.value;
+	      var messageOrPromise = undefined;
+	
+	      // validator for each property
 	      Object.keys(validationProps).find(function (prop) {
 	        var validator = _Validators2.default[allProps.type + '.' + prop] || _Validators2.default[prop];
 	        if (validator) {
-	          return message = validator(_this4.state.value, allProps);
+	          return messageOrPromise = validator(value, allProps);
 	        }
 	      });
-	      if (message) {
-	        this.setState({ errorMessage: message });
+	
+	      // custom validator specified by the user
+	      if (allProps.validator) {
+	        messageOrPromise = messageOrPromise || allProps.validator(value, allProps);
 	      }
-	      return message;
+	
+	      // return promise in every case, and change state to reflect the change 
+	      var promise = (0, _isPromise2.default)(messageOrPromise) ? messageOrPromise : Promise.resolve(messageOrPromise);
+	      return promise.then(function (message) {
+	        _this4.setState({ message: message });
+	        return message;
+	      });
+	      return promise;
 	    }
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      var value = this.converter.toString(this.state.value);
 	      var errorMessage = this.state.errorMessage ? _react2.default.createElement(
 	        'div',
 	        { className: 'input-error' },
@@ -17671,14 +17728,15 @@
 	
 	      var _props2 = this.props,
 	          state = _props2.state,
-	          props = _objectWithoutProperties(_props2, ['state']);
+	          validator = _props2.validator,
+	          props = _objectWithoutProperties(_props2, ['state', 'validator']);
 	
-	      props.value = value;
+	      props[this.valueProp] = this.converter.toString(this.state.value);
 	      props.onChange = this.onChange;
 	      var element = _react2.default.createElement(this.getNestedElementClass(), props, props.children);
 	      return _react2.default.createElement(
 	        'div',
-	        { className: 'input-wrapper' },
+	        { className: 'input-wrapper ' + (props.type || '') },
 	        element,
 	        errorMessage
 	      );
@@ -39212,6 +39270,80 @@
 	
 	module.exports = ReactDOMInvalidARIAHook;
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(11)))
+
+/***/ },
+/* 187 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/home/icoloma/code/react-data-input/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/home/icoloma/code/react-data-input/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react-dom/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
+	
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	// just a class that can be spied for changes
+	var output = document.getElementsByClassName('output')[0];
+	
+	window.addEventListener('error', function (err) {
+	  console.error(err);
+	  output.classList.add('error');
+	  output.innerHTML = err.message;
+	});
+	
+	var MyState = function () {
+	  function MyState(props) {
+	    _classCallCheck(this, MyState);
+	
+	    Object.assign(this, props);
+	  }
+	
+	  _createClass(MyState, [{
+	    key: 'printState',
+	    value: function printState(message) {
+	      output.classList.remove('error');
+	      output.innerHTML = message || JSON.stringify(this);
+	    }
+	  }, {
+	    key: 'name',
+	    set: function set(name) {
+	      this._name = name;
+	      this.printState();
+	    },
+	    get: function get() {
+	      return this._name;
+	    }
+	  }, {
+	    key: 'age',
+	    set: function set(age) {
+	      this._age = age;
+	      this.printState();
+	    },
+	    get: function get() {
+	      return this._age;
+	    }
+	  }, {
+	    key: 'subscribed',
+	    set: function set(subscribed) {
+	      this._subscribed = subscribed;
+	      this.printState();
+	    },
+	    get: function get() {
+	      return this._subscribed;
+	    }
+	  }]);
+	
+	  return MyState;
+	}();
+	
+	exports.default = MyState;
+	
+	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/home/icoloma/code/react-data-input/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot apply hot update to " + "MyState.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
 
 /***/ }
 /******/ ]);
