@@ -67,7 +67,7 @@ describe('Form', function() {
 
 describe('Validators', function() {
 
-  it('#required should reject null and undefined', function() {
+  it('Required should reject null and undefined', function() {
     const required = Validators.required; 
     assert(!required("foo"));
     assert(!required(0));
@@ -75,7 +75,7 @@ describe('Validators', function() {
     assert(required(undefined));
   });
 
-  it('#min should accept values >= min', function() {
+  it('Min value', function() {
     const min = Validators['number.min']; 
     const props = { min: 0 };
     assert(min(-1, props), 'Validation passed for value < min');
@@ -84,13 +84,33 @@ describe('Validators', function() {
     assert(!min(0, {}), 'Validation rejected without a min property');
   });
 
-  it('#max should accept values <= max', function() {
+  it('Max value', function() {
     const max = Validators['number.max']; 
     const props = { max: 100 };
     assert(!max(99, props), 'Validation rejected for value < max');
     assert(!max(100, props), 'Validation rejected for value == max');
     assert(max(101, props), 'Validation passed for value > max');
     assert(!max(0, {}), 'Validation rejected without a max property');
+  });
+
+  it('URL format', function() {
+    const url = Validators.url; 
+    assert(!url("http://foo.bar"), 'Validation rejected for valid url');
+    assert(url("foo"), 'Validation passed for invalid url');
+  });
+
+  it('E-mail format', function() {
+    const email = Validators.email; 
+    assert(!email("a@b"), 'Validation rejected for valid email');
+    assert(email("foo"), 'Validation passed for invalid email');
+  });
+
+  it('Pattern format', function() {
+    const pattern = Validators.pattern; 
+    const props = { pattern: '[0-9]+' };
+    assert(!pattern("1234", props), 'Validation rejected for valid input');
+    assert(pattern("ab1234", props), 'Validation passed for invalid input');
+    assert(pattern("1234cd", props), 'Validation passed for invalid input');
   });
 
   it('#filterValidationProps should filter only properties that are not empty' , function() {

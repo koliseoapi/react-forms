@@ -33,11 +33,11 @@ The list of exported components includes Form, Input (`text`, `number` and `chec
 
 Each field will automatically convert values from string to the desired format. Empty strings will be set to `undefined`.
 
-* Text
+* `text`, `url`, `email`
 `<Input type="text" name="name" />`
 `<TextArea name="description" />`
 
-* Integer and Float (use a value other than 1 for `step`): 
+* `number` will be converted to int or float depending on the value of `step` (default is `1`): 
 `<Input type="number" name="age" />`
 `<Input type="number" name="percentage" step="0.01" />`
 
@@ -68,9 +68,12 @@ const myConverter =
 
 Validations will use the same error messages from Chrome. The following validations are supported:
 
-* `required`
-* `number.min`
-* `number.max`
+* `[required]`
+* `[pattern]`
+* `[type=number][min]`
+* `[type=number][max]`
+* `[type=email]`
+* `[type=url]`
 
 When the user submits the Form, it will automatically run all validations before triggering `onSubmit`. If any validation does not pass, the callback will not be invoked and an error message will be displayed instead.
 
