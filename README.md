@@ -31,9 +31,9 @@ The list of exported components includes Form, Input (`text`, `number` and `chec
 
 ## Conversions
 
-Each field will automatically convert values from string to the desired format. Empty strings will be set to `undefined`.
+Each field will automatically convert values from string to the desired format. 
 
-* `text`, `url`, `email`
+* `text`, `url`, `email`. Strings are trimmed by default, empty strings will be converted to `undefined`.
 ```JavaScript
 <Input type="text" name="name" />
 <TextArea name="description" />
