@@ -155,13 +155,3 @@ describe('Validators', function() {
 
 });
 
-describe('Converters', function() {
-
-  it('#text should transform the empty String to undefined', function() {
-    const text = Converters.text; 
-    assert(typeof (text.toObject("")) === 'undefined');
-    assert(typeof (text.toObject("  ")) === 'undefined');
-    assert.equal("  abc  ", text.toObject("  abc  "));
-  });
-
-});
