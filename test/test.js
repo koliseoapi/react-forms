@@ -161,7 +161,7 @@ describe('Converters', function() {
     const text = Converters.text; 
     assert(typeof (text.toObject("")) === 'undefined');
     assert(typeof (text.toObject("  ")) === 'undefined');
-    assert.equal("abc", text.toObject("  abc  "));
+    assert.equal("  abc  ", text.toObject("  abc  "));
   });
 
 });
