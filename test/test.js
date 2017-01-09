@@ -102,9 +102,19 @@ describe('Form', function() {
 
 describe('Validators', function() {
 
-  it('Required should reject null and undefined', function() {
+  it('Required should reject empty, null and undefined', function() {
     const required = Validators.required; 
     assert(!required("foo"));
+    assert(required(null));
+    assert(required(undefined));
+    assert(required(""));
+
+    // to be confirmed: let's reject blank strings as well
+    assert(required(" \t"));
+  });
+
+  it('number.required should reject null and undefined, but acept 0', function() {
+    const required = Validators['number.required']; 
     assert(!required(0));
     assert(required(null));
     assert(required(undefined));
