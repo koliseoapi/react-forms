@@ -13,9 +13,11 @@ const equal = assert.equal;
 function noop() {};
 describe('Input', function() {
 
+  let form;
+
   function mountInput(input, state) {
-    const wrapper = mount(<Form onSubmit={noop} state={state}>{input}</Form>);
-    return wrapper.find(Input).childAt(0);
+    form = mount(<Form onSubmit={noop} state={state}>{input}</Form>);
+    return form.find(Input).childAt(0);
   }
 
   it('should render correctly', function() {
@@ -23,6 +25,15 @@ describe('Input', function() {
     const input = mountInput(<Input type="text" className="foo" required name="name" />, state);
     assert(input.hasClass('foo'));
     equal(true, input.props().required);
+  });
+
+  it('should render a validation error', function() {
+    const state = { };
+    const input = mountInput(<Input type="text" required name="name" />, state);
+    return form.instance().validationComponents[0].validate().then(() => {
+      form.update();
+      assert.equal(1, form.find('.input-error').length);
+    });
   });
 
   it('should update int on change', function() {
