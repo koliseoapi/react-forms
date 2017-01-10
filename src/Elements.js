@@ -138,10 +138,14 @@ class BoundComponent extends React.Component {
     return promise;
   }
 
+  getConvertedValue() {
+    return this.converter.toString(this.state.value);
+  }
+
   render() {
     const errorMessage = this.state.errorMessage? (<div className="input-error">{ this.state.errorMessage }</div>) : undefined;
     const { state, validator, ...props } = this.props;
-    props[this.valueProp] = this.converter.toString(this.state.value);
+    props[this.valueProp] = this.getConvertedValue();
     props.onChange = this.onChange;
     props.ref = 'element';
     const element = React.createElement(this.getNestedElementClass(), props, props.children);
