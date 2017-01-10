@@ -3,7 +3,7 @@
   Example code to use in browser
 
 */
-import { Form, Input } from '../lib/react-data-input';
+import { Form, Input } from '../src/react-data-input';
 import ReactDOM from "react-dom";
 import React from 'react';
 import MyState from './MyState';

@@ -1,11 +1,11 @@
 import 'jsdom-global/register';
 import React from 'react'
-import { Form, Input, TextArea } from '../lib/react-data-input'
+import { Form, Input, TextArea } from '../src/react-data-input'
 import assert from 'assert';
 import { describe } from 'mocha';
 import { mount, shallow } from 'enzyme';
-import Validators from '../lib/Validators';
-import Converters from '../lib/Converters';
+import Validators from '../src/Validators';
+import Converters from '../src/Converters';
 import sinon from 'sinon';
 
 // const fail = msg => () => ok(false, msg)

@@ -118,7 +118,7 @@ Messages.set({
 })
 ```
 
-You can see the full list of values in [Messages.js](https://github.com/icoloma/react-data-input/blob/master/lib/Messages.js).
+You can see the full list of values in [Messages.js](https://github.com/icoloma/react-data-input/blob/master/src/Messages.js).
 
 ## To play with the test suite
 

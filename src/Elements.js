@@ -105,6 +105,12 @@ class BoundComponent extends React.Component {
     this.context.parentForm.removeValidationComponent(this);
   }
 
+  // launch the custom validation from props.validator
+  customValidation(value) {
+    const props = this.props;
+    return !props.validator? undefined : props.validator(value, props);
+  }
+
   // @return a Promise with the validation result. The result is the error message to display
   validate() {
     const allProps = this.props;
@@ -121,9 +127,7 @@ class BoundComponent extends React.Component {
     });
 
     // custom validator specified by the user
-    if (allProps.validator) {
-      messageOrPromise = messageOrPromise || allProps.validator(value, allProps);
-    }
+    messageOrPromise = messageOrPromise || this.customValidation(value);
 
     // return promise in every case, and change state to reflect the change 
     const promise = isPromise(messageOrPromise)? messageOrPromise : Promise.resolve(messageOrPromise);

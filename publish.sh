@@ -13,7 +13,7 @@ else
   git pull
 fi
 
-cp ../build/example.js ../lib/styles.css .
+cp ../build/example.js ../src/styles.css .
 cp ../test/example.js ./example.src.js
 
 git add .
