@@ -25,6 +25,7 @@ describe('Input', function() {
     const input = mountInput(<Input type="text" className="foo" required name="name" />, state);
     assert(input.hasClass('foo'));
     equal(true, input.props().required);
+    form.unmount();
   });
 
   it('should render a validation error', function() {
