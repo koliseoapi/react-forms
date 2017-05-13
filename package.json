@@ -1,6 +1,6 @@
 {
   "name": "react-data-input",
-  "version": "0.0.19",
+  "version": "0.0.20",
   "description": "HTML5 input components that do automatic property type conversion",
   "main": "src/react-data-input.js",
   "repository": {
