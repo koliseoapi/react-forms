@@ -144,7 +144,7 @@ class BoundComponent extends React.Component {
 
   render() {
     const errorMessage = this.state.errorMessage? (<div className="input-error">{ this.state.errorMessage }</div>) : undefined;
-    const { state, validator, ...props } = this.props;
+    const { state, validator, converter, ...props } = this.props;
     props[this.valueProp] = this.getConvertedValue();
     props.onChange = this.onChange;
     props.ref = 'element';
