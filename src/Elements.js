@@ -147,7 +147,6 @@ class BoundComponent extends React.Component {
     const { state, validator, converter, ...props } = this.props;
     props[this.valueProp] = this.getConvertedValue();
     props.onChange = this.onChange;
-    props.ref = 'element';
     const element = React.createElement(this.getNestedElementClass(), props, props.children);
     return <div className={'input-wrapper ' + (props.type || '')}>{ element }{errorMessage}</div>;
   }
