@@ -1,10 +1,9 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import isPromise from 'is-promise';
 import Converters from './Converters';
 import Messages from './Messages';
 import Validators from './Validators';
-
-const propTypes = React.PropTypes;
 
 class Form extends React.Component {
 
@@ -60,14 +59,14 @@ class Form extends React.Component {
 
 Form.propTypes = {
   // the callback that will be invoked on submit, if validation passes
-  onSubmit: propTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
 
   // the state that will be injected into nested elements
-  state: propTypes.object
+  state: PropTypes.object
 }
 
 Form.childContextTypes = {
-  parentForm: propTypes.object
+  parentForm: PropTypes.object
 };
 
 // component that will propagate any changes to state[props.name]
@@ -155,14 +154,14 @@ class BoundComponent extends React.Component {
 
 BoundComponent.propTypes = {
   // name of the input field. Will be used to set the value into the state object
-  name: propTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
 
   // the state from the parent Form can be overriden at the element level
-  state: propTypes.object
+  state: PropTypes.object
 }
 
 BoundComponent.contextTypes = {
-  parentForm: propTypes.object.isRequired
+  parentForm: PropTypes.object.isRequired
 };
 
 function createBoundComponent(NestedElementClass) {
@@ -179,7 +178,7 @@ class Input extends BoundComponent {
   }
 }
 Input.propTypes = {
-  type: propTypes.string.isRequired
+  type: PropTypes.string.isRequired
 }
 
 class TextArea extends BoundComponent {

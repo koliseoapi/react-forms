@@ -24,13 +24,14 @@
     "jsdom": "^9.9.1",
     "jsdom-global": "^2.1.0",
     "mocha": "^3.2.0",
-    "react-addons-test-utils": "^15.4.1",
-    "react-dom": "^15.4.1",
+    "react-dom": "^15.5.4",
+    "react-test-renderer": "^15.5.4",
     "sinon": "^1.17.7"
   },
   "dependencies": {
     "is-promise": "^2.1.0",
-    "react": "^15.4.1"
+    "prop-types": "^15.5.10",
+    "react": "^15.5.4"
   },
   "scripts": {
     "prepublish": "npm run test",
