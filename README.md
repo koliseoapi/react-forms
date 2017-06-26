@@ -1,4 +1,4 @@
-A library to automatically bind React form elements to state attributes, automatically doing type conversion and validation. [Give it a try](https://icoloma.github.io/react-data-input/).
+A library to automatically bind React form elements to state attributes, automatically doing type conversion and validation. [Give it a try](https://koliseoapi.github.io/react-data-input/).
 
 ```JavaScript
 import { Form, Input, TextArea } from 'react-data-input';
@@ -118,7 +118,7 @@ Messages.set({
 })
 ```
 
-You can see the full list of values in [Messages.js](https://github.com/icoloma/react-data-input/blob/master/src/Messages.js).
+You can see the full list of values in [Messages.js](https://github.com/koliseoapi/react-data-input/blob/master/src/Messages.js).
 
 ## To play with the test suite
 
