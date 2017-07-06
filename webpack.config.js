@@ -23,11 +23,11 @@ module.exports = {
     loaders: [{
       test: /\.js$/,
       exclude: [ /node_modules/ ],
-      loaders: [ 'react-hot', 'babel?presets[]=react&presets[]=es2015' ]
+      loaders: [ 'react-hot-loader', 'babel-loader?presets[]=react&presets[]=es2015' ]
     }]
   },
   plugins: [
-    new webpack.NoErrorsPlugin(),
+    new webpack.NoEmitOnErrorsPlugin(),
     new WebpackNotifierPlugin({ excludeWarnings: true, alwaysNotify: true }),
   ]
 };
