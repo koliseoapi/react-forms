@@ -1,5 +1,5 @@
 import Messages from './Messages';
-import { isNullOrUndefined, isBlank } from './utils';
+import { isNullOrUndefined, isBlank, isFalse } from './utils';
 
 let re_weburl;
 
@@ -105,7 +105,7 @@ export default {
     const result = {};
     [ 'type', 'required', 'min', 'max', 'pattern' ].forEach(function(key) {
       const value = props[key];
-      if (!isNullOrUndefined(value)) {
+      if (!isNullOrUndefined(value) && !isFalse(value)) {
         result[key] = value;
       }
     }) 

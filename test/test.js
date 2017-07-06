@@ -6,6 +6,7 @@ import { describe } from 'mocha';
 import { mount, shallow } from 'enzyme';
 import Validators from '../src/Validators';
 import Converters from '../src/Converters';
+import { isFalse } from '../src/utils';
 import sinon from 'sinon';
 
 // const fail = msg => () => ok(false, msg)
@@ -63,6 +64,23 @@ describe('Input', function() {
     const input = mountInput(<Input type="checkbox" name="subscribed" />, state);
     equal(true, input.props().checked);
     equal(undefined, input.props().value);
+  });
+
+  function mountCheckboxInputAndValidate(isRequired) {
+    const state = { subscribed: false };
+    const input = mountInput(<Input type="checkbox" name="subscribed" required={false}/>, state);
+    return form.instance().validationComponents[0].validate().then(() => {
+      form.update();
+      assert.equal(isFalse(isRequired)? 0 : 1, form.find('.input-error').length);
+    });
+  }
+
+  it('should not throw required error with not required checkboxes', function() {
+    mountCheckboxInputAndValidate(false);
+  });
+
+  it('should throw required error with not required checkboxes', function() {
+    mountCheckboxInputAndValidate(true);
   });
 
   it('should not propagate specific properties to the HTML5 element', function() {
@@ -207,8 +225,8 @@ describe('Validators', function() {
     assert(pattern("1234cd", props), 'Validation passed for invalid input');
   });
 
-  it('#filterValidationProps should filter only properties that are not empty' , function() {
-    const filtered = Validators.filterValidationProps({ min: '1', foo: 'bar' });
+  it('#filterValidationProps should filter only properties that are not empty or false' , function() {
+    const filtered = Validators.filterValidationProps({ min: '1', foo: 'bar', required: false });
     assert.equal(1, Object.keys(filtered).length);
   })
 

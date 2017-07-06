@@ -8,4 +8,8 @@ const passThrough = function(value) {
   return value;
 }
 
-export { isNullOrUndefined, isBlank, passThrough }
+function isFalse(value) {
+  return value === false;
+}
+
+export { isNullOrUndefined, isBlank, passThrough, isFalse }
