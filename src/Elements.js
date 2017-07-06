@@ -134,7 +134,6 @@ class BoundComponent extends React.Component {
       this.setState({ errorMessage });
       return errorMessage;
     });
-    return promise;
   }
 
   getConvertedValue() {
