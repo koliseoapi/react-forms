@@ -5,14 +5,14 @@ let re_weburl;
 
 export default {
 
-  required: function(value) {
-    if (isBlank(value)) {
+  required: function(value, props) {
+    if (isBlank(value) && !isFalse(props.required)) {
       return Messages.get('required');
     }
   },
 
-  "number.required": function(value) {
-    if (isNullOrUndefined(value)) {
+  "number.required": function(value, props) {
+    if (isNullOrUndefined(value) && !isFalse(props.required)) {
       return Messages.get('required');
     }
   },
@@ -105,7 +105,7 @@ export default {
     const result = {};
     [ 'type', 'required', 'min', 'max', 'pattern' ].forEach(function(key) {
       const value = props[key];
-      if (!isNullOrUndefined(value) && !isFalse(value)) {
+      if (!isNullOrUndefined(value)) {
         result[key] = value;
       }
     }) 

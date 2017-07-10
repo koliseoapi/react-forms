@@ -66,21 +66,22 @@ describe('Input', function() {
     equal(undefined, input.props().value);
   });
 
-  function mountCheckboxInputAndValidate(isRequired) {
+  it('should not throw required error with not required checkboxes', function() {
     const state = { subscribed: false };
     const input = mountInput(<Input type="checkbox" name="subscribed" required={false}/>, state);
     return form.instance().validationComponents[0].validate().then(() => {
       form.update();
-      assert.equal(isFalse(isRequired)? 0 : 1, form.find('.input-error').length);
+      assert.equal(0, form.find('.input-error').length);
     });
-  }
-
-  it('should not throw required error with not required checkboxes', function() {
-    mountCheckboxInputAndValidate(false);
   });
 
   it('should throw required error with not required checkboxes', function() {
-    mountCheckboxInputAndValidate(true);
+    const state = { subscribed: false };
+    const input = mountInput(<Input type="checkbox" name="subscribed" required={true}/>, state);
+    return form.instance().validationComponents[0].validate().then(() => {
+      form.update();
+      assert.equal(1, form.find('.input-error').length);
+    });
   });
 
   it('should not propagate specific properties to the HTML5 element', function() {
@@ -169,22 +170,25 @@ describe('Form', function() {
 
 describe('Validators', function() {
 
-  it('Required should reject empty, null and undefined', function() {
+  it('Required should reject empty, null, false and undefined', function() {
     const required = Validators.required; 
-    assert(!required("foo"));
-    assert(required(null));
-    assert(required(undefined));
-    assert(required(""));
+    const props = { required: true };
+    assert(!required("foo", props));
+    assert(required(null, props));
+    assert(required(undefined, props));
+    assert(required(false, props));
+    assert(required("", props));
 
     // to be confirmed: let's reject blank strings as well
-    assert(required(" \t"));
+    assert(required(" \t", props));
   });
 
   it('number.required should reject null and undefined, but acept 0', function() {
     const required = Validators['number.required']; 
-    assert(!required(0));
-    assert(required(null));
-    assert(required(undefined));
+    const props = { required: true };
+    assert(!required(0, props));
+    assert(required(null, props));
+    assert(required(undefined, props));
   });
 
   it('Min value', function() {
@@ -227,7 +231,7 @@ describe('Validators', function() {
 
   it('#filterValidationProps should filter only properties that are not empty or false' , function() {
     const filtered = Validators.filterValidationProps({ min: '1', foo: 'bar', required: false });
-    assert.equal(1, Object.keys(filtered).length);
+    assert.equal(2, Object.keys(filtered).length);
   })
 
 });
