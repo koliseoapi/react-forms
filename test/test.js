@@ -75,13 +75,23 @@ describe('Input', function() {
     });
   });
 
-  it('should throw required error with not required checkboxes', function() {
+  it('should throw required error with required checkboxes', function() {
     const state = { subscribed: false };
     const input = mountInput(<Input type="checkbox" name="subscribed" required={true}/>, state);
     return form.instance().validationComponents[0].validate().then(() => {
       form.update();
       assert.equal(1, form.find('.input-error').length);
     });
+  });
+
+  it('should use checked with type=radio', function() {
+    const state = { Language: 'English' };
+    let input = mountInput(<Input type="radio" name="Language" value="English" />, state);
+    equal(true, input.props().checked);
+    equal('English', input.props().value);
+    input = mountInput(<Input type="radio" name="Language" value="Spanish" />, state);
+    equal(false, input.props().checked);
+    equal('Spanish', input.props().value);
   });
 
   it('should not propagate specific properties to the HTML5 element', function() {

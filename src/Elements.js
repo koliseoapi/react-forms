@@ -80,7 +80,7 @@ class BoundComponent extends React.Component {
       value: stateObject[props.name]
     }
     this.onChange = this.onChange.bind(this);
-    this.valueProp = props.type === 'checkbox'? 'checked' : 'value';
+    this.valueProp = props.type === 'checkbox' || props.type === 'radio'? 'checked' : 'value';
   }
 
   getStateObject() {
@@ -137,7 +137,7 @@ class BoundComponent extends React.Component {
   }
 
   getConvertedValue() {
-    return this.converter.toString(this.state.value);
+    return this.converter.toString(this.state.value, this.props);
   }
 
   render() {

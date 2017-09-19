@@ -31,6 +31,18 @@ const Converters = {
 
   },
 
+  radio: {
+
+    toObject: function(value, attrs) {
+      return !value? undefined : attrs.value;
+    },
+
+    toString: function(value, attrs) {
+      return value === attrs.value;
+    }
+
+  },
+
   checkbox: {
 
     toObject: passThrough,
