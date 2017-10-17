@@ -38,7 +38,7 @@
   "scripts": {
     "prepublish": "npm run test",
     "postversion": "git push && git push --tags",
-    "test": "./node_modules/mocha/bin/mocha --compilers js:babel-register test/test.js",
+    "test": "mocha --compilers js:babel-register test/test.js",
     "dev": "webpack-dev-server --inline --hot --progress --colors"
   }
 }
