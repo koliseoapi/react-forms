@@ -139,12 +139,17 @@ class BoundComponent extends React.Component {
   getConvertedValue() {
     return this.converter.toString(this.state.value);
   }
-
-  render() {
-    const errorMessage = this.state.errorMessage? (<div className="input-error">{ this.state.errorMessage }</div>) : undefined;
+  
+  getNestedElementProps() {
     const { state, validator, converter, ...props } = this.props;
     props[this.valueProp] = this.getConvertedValue();
     props.onChange = this.onChange;
+    return props;
+  }
+
+  render() {
+    const errorMessage = this.state.errorMessage? (<div className="input-error">{ this.state.errorMessage }</div>) : undefined;
+    const props = this.getNestedElementProps();
     const element = React.createElement(this.getNestedElementClass(), props, props.children);
     return <div className={'input-wrapper ' + (props.type || '')}>{ element }{errorMessage}</div>;
   }
@@ -176,6 +181,7 @@ class Input extends BoundComponent {
     return 'input';
   }
 }
+
 Input.propTypes = {
   type: PropTypes.string.isRequired
 }
