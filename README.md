@@ -27,7 +27,7 @@ function foo(props) {
 
 When any of these fields is modified, the corresponding change will be injected into `state[props.name]`, transforming into the corresponding type (number, date, etc) if necessary. The enclosing `Form` will run validations before triggering the `onSubmit` callback.
 
-The list of exported components includes Form, Input (`text`, `number` and `checkbox`), TextArea and Select.
+The list of exported components includes Form, Input (`text`, `number`, `checkbox` and `radio`), TextArea and Select.
 
 ## Conversions
 
