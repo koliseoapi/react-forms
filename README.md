@@ -25,9 +25,9 @@ function foo(props) {
 });
 ```
 
-When any of these fields is modified, the corresponding change will be injected into `state[props.name]`, transforming into the corresponding type (number, date, etc) if necessary. The enclosing `Form` will run validations before triggering the `onSubmit` callback.
+When any of these fields is modified the change will be propagated into `state[props.name]`, transforming into the corresponding type (number, date, boolean). The enclosing `Form` will check that all validations have passed before triggering `onSubmit`.
 
-The list of exported components includes Form, Input (`text`, `number`, `checkbox` and `radio`), TextArea and Select.
+The list of exported components includes Form, Input (`text`, `number`, `checkbox` and `radio`), TextArea and Select. Radio buttons require a `RadioGroup` ancestor to handle exclusive `checked` state.
 
 ## Conversions
 
@@ -75,7 +75,7 @@ const myConverter =
 
 ## Validations
 
-Validations will use the same error messages from Chrome. The following validations are supported:
+The following validations are supported:
 
 * `[required]`
 * `[pattern]`
@@ -84,8 +84,8 @@ Validations will use the same error messages from Chrome. The following validati
 * `[type=email]`
 * `[type=url]`
 
-When the user submits the Form, it will automatically run all validations before triggering `onSubmit`. 
-If any validation does not pass, the callback will not be invoked and an error message will be displayed instead.
+When the user submits the Form, it will automatically check that all validations have passed before triggering `onSubmit`. 
+If there are errors the callback will not be invoked and an error message will be displayed instead.
 
 Custom validation is also supported, returning either a Promise or the validation result directly:
 
@@ -105,9 +105,9 @@ const wrapper = mount(
 
 ```
 
-## Internacionalization
+## Internationalization
 
-You can override the default locale by invoking `Messages.set`:
+A different locale can be configured by invoking `Messages.set`:
 
 ```JavaScript
 import { Messages } from 'react-data-input';
@@ -125,9 +125,10 @@ You can see the full list of values in [Messages.js](https://github.com/koliseoa
 ```
 # To run the test suite based on Mocha
 npm run test
+npm run coverage
 
 # To fiddle with the browser and a sample form at
-# http://localhost:8080/test/example.html
+# http://localhost:8080/test-page/example.html
 npm run dev
 ```
 
