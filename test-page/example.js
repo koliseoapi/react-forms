@@ -3,15 +3,15 @@
   Example code to use in browser
 
 */
-import { Form, Input } from '../src/react-data-input';
+import { Form, Input, RadioGroup } from '../src/react-data-input';
 import ReactDOM from "react-dom";
 import React from 'react';
 import MyState from './MyState';
 
 const state = new MyState({ name: 'John Doe', age: 23, subscribed: true });
 function onSubmit() {
-  state.printState('onSubmit() invoked successfully');
-  setTimeout(() => state.printState(), 5000);
+  console.log('onSubmit() invoked successfully');
+  state.printState();
 }
 
 function MyApp(props) {
@@ -22,7 +22,11 @@ function MyApp(props) {
       <label htmlFor="age">Age</label>
       <Input name="age" type="number" min="0" max="120" required />
       <label><Input name="subscribed" type="checkbox" /> Subscribe to newsletter</label>
-      <input type="submit"/>
+      <RadioGroup>
+        <label><Input name="gender" type="radio" value="male" /> Male</label>
+        <label><Input name="gender" type="radio" value="male" /> Female</label>
+      </RadioGroup>
+      <input type="submit" value="Submit form and see resulting state"/>
     </Form>
   );
 }

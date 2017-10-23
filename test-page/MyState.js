@@ -42,7 +42,9 @@ export default class MyState {
 
   printState(message) {
     output.classList.remove('error');
+    output.classList.add('highlight');
     output.innerHTML = message || JSON.stringify(this);
+    setTimeout(() => output.classList.remove('highlight'), 0);
   }
 
 }

@@ -11,7 +11,7 @@ const WebpackNotifierPlugin = require('webpack-notifier');
 
 module.exports = {
   entry: {
-    app: './test/example.js'
+    app: './test-page/example.js'
   },
   devtool: 'source-map',
   output: {
