@@ -20,7 +20,8 @@ let contents = {
   max: "Value must be less than or equal to ${max}",
   url: "Please enter a URL",
   email: "Please include a valid e-mail address",
-  pattern: "Please match the requested format"
+  pattern: "Please match the requested format",
+  maxLength: "Value must have no more than ${maxLength} characters"
 };
 
 export default {

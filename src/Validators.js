@@ -81,7 +81,7 @@ export default {
   email: function(value) {
     // Simple email validation
     // http://stackoverflow.com/questions/742451/what-is-the-simplest-regular-expression-to-validate-emails-to-not-accept-them-bl
-    if (!isNullOrUndefined(value) && !/^\S+@\S+$/.test(value)) {
+    if (!isNullOrUndefined(value) && !/^(\S+@\S+)?$/.test(value)) {
       return Messages.get('email');
     }
   },
@@ -100,10 +100,16 @@ export default {
     }
   },
 
+  maxLength: function(value, { maxLength }) {
+    if (!isNullOrUndefined(value) && value.length > maxLength) {
+      return Messages.get('maxLength', { maxLength });
+    }
+  },
+
   // return the list of properties susceptible of validation
   filterValidationProps: function(props) {
     const result = {};
-    [ 'type', 'required', 'min', 'max', 'pattern' ].forEach(function(key) {
+    [ 'type', 'required', 'min', 'max', 'pattern', 'maxLength' ].forEach(function(key) {
       const value = props[key];
       if (!isNullOrUndefined(value)) {
         result[key] = value;

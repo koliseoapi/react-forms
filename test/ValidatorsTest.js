@@ -47,6 +47,15 @@ describe('Validators', function () {
     assert(!max(0, {}), 'Validation rejected without a max property');
   });
 
+  it('Max length', function () {
+    const maxLength = Validators['maxLength'];
+    const props = { maxLength: 4 };
+    assert(!maxLength("abc", props), 'Validation rejected for value < maxLength');
+    assert(!maxLength("abcd", props), 'Validation rejected for value == maxLength');
+    assert(maxLength("abcde", props), 'Validation passed for value > maxLength');
+    assert(!maxLength("", {}), 'Validation passed without a maxLength property');
+  });
+
   it('URL format', function () {
     const url = Validators.url;
     assert(!url("http://foo.bar"), 'Validation rejected for valid url');

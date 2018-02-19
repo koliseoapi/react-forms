@@ -146,13 +146,28 @@ describe('Input', function() {
     assert(input2.props().checked);
   });
 
-  it('should render type specific validation errors', function() {
-    const state = { email: 'foo'};
-    const input = mountInput(<Input type="email" required name="email" />, state);
+  it('should not throw required error with no required emails', function() {
+    const input = mountInput(<Input type="email" name="email" />, { email: '' });
+    return form.instance().validationComponents[0].validate().then(() => {
+      form.update();
+      assert.equal(0, form.find('.input-error').length);
+    })
+  })
+
+  it('should throw required error with required emails', function() {
+    const input = mountInput(<Input type="email" name="email" required />, { email: '' });
     return form.instance().validationComponents[0].validate().then(() => {
       form.update();
       assert.equal(1, form.find('.input-error').length);
-    });
+    })
+  })
+
+  it('should render type specific validation errors', function() {
+    const input = mountInput(<Input type="email" name="email" />, { email: 'foo' });
+    return form.instance().validationComponents[0].validate().then(() => {
+      form.update();
+      assert.equal(1, form.find('.input-error').length);
+    })
   });
 
 });
