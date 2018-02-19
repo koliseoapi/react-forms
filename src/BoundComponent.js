@@ -65,7 +65,7 @@ export default class BoundComponent extends React.Component {
 
     // validator for each property
     Object.keys(validationProps).find((prop) => {
-      const validator = Validators[allProps.type + '.' + prop] || Validators[prop];
+      const validator = prop === 'type'? Validators[allProps.type] : Validators[allProps.type + '.' + prop] || Validators[prop];
       if (validator) {
         return (messageOrPromise = validator(value, allProps));
       } 

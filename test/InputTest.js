@@ -146,4 +146,13 @@ describe('Input', function() {
     assert(input2.props().checked);
   });
 
+  it('should render type specific validation errors', function() {
+    const state = { email: 'foo'};
+    const input = mountInput(<Input type="email" required name="email" />, state);
+    return form.instance().validationComponents[0].validate().then(() => {
+      form.update();
+      assert.equal(1, form.find('.input-error').length);
+    });
+  });
+
 });
