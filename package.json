@@ -16,9 +16,9 @@
   "license": "MIT",
   "homepage": "https://github.com/koliseoapi/react-data-input",
   "devDependencies": {
-    "@babel/core": "7.0.0-beta.39",
+    "@babel/core": "^7.4.3",
     "@babel/plugin-proposal-object-rest-spread": "7.0.0-beta.39",
-    "@babel/preset-env": "7.0.0-beta.39",
+    "@babel/preset-env": "^7.4.3",
     "@babel/preset-react": "7.0.0-beta.39",
     "@babel/register": "7.0.0-beta.39",
     "babel-loader": "v8.0.0-beta.0",
