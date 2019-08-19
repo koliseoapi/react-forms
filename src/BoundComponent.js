@@ -1,12 +1,11 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import isPromise from 'is-promise';
-import Validators from './Validators';
-import Converters from './Converters';
+import React from "react";
+import PropTypes from "prop-types";
+import isPromise from "is-promise";
+import Validators from "./Validators";
+import Converters from "./Converters";
 
 // component that will propagate any changes to state[props.name]
 export default class BoundComponent extends React.Component {
-
   constructor(props, context) {
     super(props, context);
     this.onChange = this.onChange.bind(this);
@@ -14,7 +13,8 @@ export default class BoundComponent extends React.Component {
   }
 
   componentWillReceiveProps(props) {
-    this.converter = props.converter || Converters[props.type] || Converters.text;
+    this.converter =
+      props.converter || Converters[props.type] || Converters.text;
     this.state = this.state || {};
     this.state.value = this.getStateObject()[props.name];
   }
@@ -27,8 +27,8 @@ export default class BoundComponent extends React.Component {
   // the property will be element.value most of the time except for checkboxes and radio buttons
   getElementValue(element) {
     const props = this.props;
-    const valueProp = props.type === 'checkbox' ? 'checked' : 'value';
-    return this.converter.toObject(element[valueProp], props)
+    const valueProp = props.type === "checkbox" ? "checked" : "value";
+    return this.converter.toObject(element[valueProp], props);
   }
 
   onChange(e) {
@@ -37,7 +37,7 @@ export default class BoundComponent extends React.Component {
     this.setState({ value, errorMessage: undefined });
     this.getStateObject()[name] = value;
     onChange && onChange(e);
-    if (type === 'radio') {
+    if (type === "radio") {
       this.context.radioGroup.onChange();
     }
   }
@@ -53,7 +53,7 @@ export default class BoundComponent extends React.Component {
   // launch the custom validation from props.validator
   customValidation(value) {
     const props = this.props;
-    return !props.validator? undefined : props.validator(value, props);
+    return !props.validator ? undefined : props.validator(value, props);
   }
 
   // @return a Promise with the validation result. The result is the error message to display
@@ -64,19 +64,24 @@ export default class BoundComponent extends React.Component {
     let messageOrPromise = undefined;
 
     // validator for each property
-    Object.keys(validationProps).find((prop) => {
-      const validator = prop === 'type'? Validators[allProps.type] : Validators[allProps.type + '.' + prop] || Validators[prop];
+    Object.keys(validationProps).find(prop => {
+      const validator =
+        prop === "type"
+          ? Validators[allProps.type]
+          : Validators[allProps.type + "." + prop] || Validators[prop];
       if (validator) {
         return (messageOrPromise = validator(value, allProps));
-      } 
+      }
     });
 
     // custom validator specified by the user
     messageOrPromise = messageOrPromise || this.customValidation(value);
 
-    // return promise in every case, and change state to reflect the change 
-    const promise = isPromise(messageOrPromise)? messageOrPromise : Promise.resolve(messageOrPromise);
-    return promise.then((errorMessage) => {
+    // return promise in every case, and change state to reflect the change
+    const promise = isPromise(messageOrPromise)
+      ? messageOrPromise
+      : Promise.resolve(messageOrPromise);
+    return promise.then(errorMessage => {
       this.setState({ errorMessage });
       return errorMessage;
     });
@@ -85,24 +90,50 @@ export default class BoundComponent extends React.Component {
   getNestedElementProps() {
     const value = this.converter.toString(this.state.value);
     const { state, validator, converter, ...props } = this.props;
-    if (props.type === 'checkbox') {
+    const errorMessageId = this.getErrorMessageId();
+    if (props.type === "checkbox") {
       props.checked = value;
-    } else if (props.type === 'radio') {
+    } else if (props.type === "radio") {
       props.checked = props.value == value;
     } else {
       props.value = value;
+    }
+    if (errorMessageId) {
+      props["aria-invalid"] = true;
+      props["aria-describedBy"] = errorMessageId;
     }
     props.onChange = this.onChange;
     return props;
   }
 
-  render() {
-    const errorMessage = this.state.errorMessage? (<div className="input-error">{ this.state.errorMessage }</div>) : undefined;
-    const props = this.getNestedElementProps();
-    const element = React.createElement(this.getNestedElementClass(), props, props.children);
-    return <div className={'input-wrapper ' + (props.type || '')}>{ element }{errorMessage}</div>;
+  getErrorMessageId() {
+    return this.state.errorMessage
+      ? `${this.props.name || this.props.id}_error`
+      : undefined;
   }
 
+  render() {
+    const { errorMessage } = this.state;
+    const errorMessageElement = errorMessage ? (
+      <div className="input-error" id={this.getErrorMessageId()} role="alert">
+        {errorMessage}
+      </div>
+    ) : (
+      undefined
+    );
+    const props = this.getNestedElementProps();
+    const element = React.createElement(
+      this.getNestedElementClass(),
+      props,
+      props.children
+    );
+    return (
+      <div className={"input-wrapper " + (props.type || "")}>
+        {element}
+        {errorMessageElement}
+      </div>
+    );
+  }
 }
 
 BoundComponent.propTypes = {
@@ -111,7 +142,7 @@ BoundComponent.propTypes = {
 
   // the state from the parent Form can be overriden at the element level
   state: PropTypes.object
-}
+};
 
 BoundComponent.contextTypes = {
   form: PropTypes.object.isRequired,

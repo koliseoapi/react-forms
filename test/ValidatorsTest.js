@@ -1,85 +1,85 @@
-import 'jsdom-global/register';
-import React from 'react'
-import assert from 'assert';
-import { describe } from 'mocha';
-import Validators from '../src/Validators';
+import Validators from "../src/Validators";
 
-const equal = assert.equal;
-function noop() { };
-describe('Validators', function () {
+describe("Validators", function() {
+  const requiredErrorMessage = "Please fill out this field";
 
-  it('Required should reject empty, null, false and undefined', function () {
+  it("Required should reject empty, null, false and undefined", function() {
     const required = Validators.required;
     const props = { required: true };
-    assert(!required("foo", props));
-    assert(required(null, props));
-    assert(required(undefined, props));
-    assert(required(false, props));
-    assert(required("", props));
+    expect(required("foo", props)).toBeUndefined();
+    expect(required(null, props)).toMatch(requiredErrorMessage);
+    expect(required(undefined, props)).toMatch(requiredErrorMessage);
+    expect(required(false, props)).toMatch(requiredErrorMessage);
+    expect(required("", props)).toMatch(requiredErrorMessage);
 
     // to be confirmed: let's reject blank strings as well
-    assert(required(" \t", props));
+    expect(required(" \t", props)).toMatch(requiredErrorMessage);
   });
 
-  it('number.required should reject null and undefined, but acept 0', function () {
-    const required = Validators['number.required'];
+  it("number.required should reject null and undefined, but acept 0", function() {
+    const required = Validators["number.required"];
     const props = { required: true };
-    assert(!required(0, props));
-    assert(required(null, props));
-    assert(required(undefined, props));
+    expect(required(0, props)).toBeUndefined();
+    expect(required(null, props)).toMatch(requiredErrorMessage);
+    expect(required(undefined, props)).toMatch(requiredErrorMessage);
   });
 
-  it('Min value', function () {
-    const min = Validators['number.min'];
+  it("Min value", function() {
+    const min = Validators["number.min"];
     const props = { min: 0 };
-    assert(min(-1, props), 'Validation passed for value < min');
-    assert(!min(0, props), 'Validation rejected for value == min');
-    assert(!min(1, props), 'Validation rejected for value > min');
-    assert(!min(0, {}), 'Validation rejected without a min property');
+    expect(min(-1, props)).toMatch("Value must be greater than or equal to 0");
+    expect(min(0, props)).toBeUndefined();
+    expect(min(1, props)).toBeUndefined();
+    expect(min(0, {})).toBeUndefined();
   });
 
-  it('Max value', function () {
-    const max = Validators['number.max'];
+  it("Max value", function() {
+    const max = Validators["number.max"];
     const props = { max: 100 };
-    assert(!max(99, props), 'Validation rejected for value < max');
-    assert(!max(100, props), 'Validation rejected for value == max');
-    assert(max(101, props), 'Validation passed for value > max');
-    assert(!max(0, {}), 'Validation rejected without a max property');
+    expect(max(99, props)).toBeUndefined();
+    expect(max(100, props)).toBeUndefined();
+    expect(max(101, props)).toMatch("Value must be less than or equal to 100");
+    expect(max(0, {})).toBeUndefined();
   });
 
-  it('Max length', function () {
-    const maxLength = Validators['maxLength'];
+  it("Max length", function() {
+    const maxLength = Validators["maxLength"];
     const props = { maxLength: 4 };
-    assert(!maxLength("abc", props), 'Validation rejected for value < maxLength');
-    assert(!maxLength("abcd", props), 'Validation rejected for value == maxLength');
-    assert(maxLength("abcde", props), 'Validation passed for value > maxLength');
-    assert(!maxLength("", {}), 'Validation passed without a maxLength property');
+    expect(maxLength("abc", props)).toBeUndefined();
+    expect(maxLength("abcd", props)).toBeUndefined();
+    expect(maxLength("abcde", props)).toMatch(
+      "Value must have no more than 4 characters"
+    );
+    expect(maxLength("", {})).toBeUndefined();
   });
 
-  it('URL format', function () {
+  it("URL format", function() {
     const url = Validators.url;
-    assert(!url("http://foo.bar"), 'Validation rejected for valid url');
-    assert(url("foo"), 'Validation passed for invalid url');
+    expect(url("http://foo.bar")).toBeUndefined();
+    expect(url("foo")).toMatch("Please enter a URL");
   });
 
-  it('E-mail format', function () {
+  it("E-mail format", function() {
     const email = Validators.email;
-    assert(!email("a@b"), 'Validation rejected for valid email');
-    assert(email("foo"), 'Validation passed for invalid email');
+    expect(email("a@b")).toBeUndefined();
+    expect(email("foo")).toMatch("Please include a valid e-mail address");
   });
 
-  it('Pattern format', function () {
+  it("Pattern format", function() {
     const pattern = Validators.pattern;
-    const props = { pattern: '[0-9]+' };
-    assert(!pattern("1234", props), 'Validation rejected for valid input');
-    assert(pattern("ab1234", props), 'Validation passed for invalid input');
-    assert(pattern("1234cd", props), 'Validation passed for invalid input');
+    const props = { pattern: "[0-9]+" };
+    const patternErrorMessage = "Please match the requested format";
+    expect(pattern("1234", props)).toBeUndefined();
+    expect(pattern("ab1234", props)).toMatch(patternErrorMessage);
+    expect(pattern("1234cd", props)).toMatch(patternErrorMessage);
   });
 
-  it('#filterValidationProps should filter only properties that are not empty or false', function () {
-    const filtered = Validators.filterValidationProps({ min: '1', foo: 'bar', required: false });
-    assert.equal(2, Object.keys(filtered).length);
-  })
-
+  it("#filterValidationProps should filter only properties that are not empty or false", function() {
+    const filtered = Validators.filterValidationProps({
+      min: "1",
+      foo: "bar",
+      required: false
+    });
+    expect(Object.keys(filtered)).toHaveLength(2);
+  });
 });
-

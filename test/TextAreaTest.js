@@ -1,22 +1,20 @@
-import 'jsdom-global/register';
-import React from 'react'
-import { Form, TextArea } from '../src/react-data-input'
-import assert from 'assert';
-import { describe } from 'mocha';
-import { mount } from 'enzyme';
+import React from "react";
+import { Form, TextArea } from "../src/react-data-input";
+import renderer from "react-test-renderer";
 
-const equal = assert.equal;
-function noop() { };
-describe('TextArea', function () {
-
+function noop() {}
+describe("TextArea", function() {
   let form;
 
   function mountTextArea(textarea, state) {
-    form = mount(<Form onSubmit={noop} state={state}>{textarea}</Form>);
-    return form.find(TextArea).childAt(0);
+    return renderer.create(
+      <Form onSubmit={noop} state={state}>
+        {textarea}
+      </Form>
+    );
   }
 
-  it('should not propagate specific properties to the HTML5 element', function () {
+  it("should not propagate specific properties to the HTML5 element", function() {
     const testConverter = {
       toObject(value) {
         return value;
@@ -24,10 +22,19 @@ describe('TextArea', function () {
       toString(value) {
         return value;
       }
-    }
-    const textarea = mountTextArea(<TextArea className="foo" state={{ foo: 'foo' }} name="name" converter={testConverter} />, {});
-    assert(!textarea.props().converter, 'converter attribute was propagated to nested <textarea>');
-  })
-
-})
-
+    };
+    const form = mountTextArea(
+      <TextArea
+        className="foo"
+        state={{ foo: "foo" }}
+        name="name"
+        converter={testConverter}
+      />,
+      {}
+    );
+    // converter attribute should not be propagated to nested <textarea>
+    const textArea = form.getInstance().props.children;
+    expect(textArea.type).toBe(TextArea);
+    expect(textArea.props.converter).toBe(testConverter);
+  });
+});
