@@ -9,18 +9,21 @@ export default class BoundComponent extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.onChange = this.onChange.bind(this);
-    this.componentWillReceiveProps(props);
+    this.state = {};
+    //    this.state.value = this.getStateObject()[props.name];
   }
 
-  componentWillReceiveProps(props) {
-    this.converter =
-      props.converter || Converters[props.type] || Converters.text;
-    this.state = this.state || {};
-    this.state.value = this.getStateObject()[props.name];
+  getConverter() {
+    const props = this.props;
+    return props.converter || Converters[props.type] || Converters.text;
   }
 
   getStateObject() {
     return this.props.state || this.context.form.props.state;
+  }
+
+  getStateValue() {
+    return this.getStateObject()[this.props.name];
   }
 
   // get the property from the element after passing it through the Converter
@@ -28,13 +31,13 @@ export default class BoundComponent extends React.Component {
   getElementValue(element) {
     const props = this.props;
     const valueProp = props.type === "checkbox" ? "checked" : "value";
-    return this.converter.toObject(element[valueProp], props);
+    return this.getConverter().toObject(element[valueProp], props);
   }
 
   onChange(e) {
     const { name, onChange, type } = this.props;
     const value = this.getElementValue(e.target);
-    this.setState({ value, errorMessage: undefined });
+    this.setState({ errorMessage: undefined });
     this.getStateObject()[name] = value;
     onChange && onChange(e);
     if (type === "radio") {
@@ -60,7 +63,7 @@ export default class BoundComponent extends React.Component {
   validate() {
     const allProps = this.props;
     const validationProps = Validators.filterValidationProps(allProps);
-    const value = this.state.value;
+    const value = this.getStateValue();
     let messageOrPromise = undefined;
 
     // validator for each property
@@ -88,7 +91,7 @@ export default class BoundComponent extends React.Component {
   }
 
   getNestedElementProps() {
-    const value = this.converter.toString(this.state.value);
+    const value = this.getConverter().toString(this.getStateValue());
     const { state, validator, converter, ...props } = this.props;
     const errorMessageId = this.getErrorMessageId();
     if (props.type === "checkbox") {

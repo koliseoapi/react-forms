@@ -10,7 +10,6 @@ describe("Input", function() {
         {input}
       </Form>
     );
-    return form;
   }
 
   function getInputElement(form) {
@@ -136,12 +135,11 @@ describe("Input", function() {
       new Promise(resolve => {
         resolve(value === "abc" ? undefined : "Validation failed");
       });
-    const wrapper = mount(
-      <Form onSubmit={noop} state={state}>
-        <Input type="text" name="foo" validator={validator} />
-      </Form>
+    const form = mount(
+      <Input type="text" name="foo" validator={validator} />,
+      state
     );
-    return wrapper.getInstance();
+    return form.getInstance();
   }
 
   it("custom validator with Promise expected to fail", function() {
@@ -180,7 +178,6 @@ describe("Input", function() {
 
     // trigger change in input2
     const input2 = form.root.findAll(el => el.type == "input")[1];
-    debugger;
     input2.props.onChange({
       target: { value: "female", checked: true }
     });
