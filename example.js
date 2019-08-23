@@ -21437,7 +21437,7 @@ class BoundComponent extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Compo
 
     if (errorMessageId) {
       props["aria-invalid"] = true;
-      props["aria-describedBy"] = errorMessageId;
+      props["aria-describedby"] = errorMessageId;
     }
 
     props.onChange = this.onChange;
