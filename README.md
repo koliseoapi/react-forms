@@ -31,21 +31,24 @@ The list of exported components includes Form, Input (`text`, `number`, `checkbo
 
 ## Conversions
 
-Each field will automatically convert values from string to the desired format. 
+Each field will automatically convert values from string to the desired format.
 
-* `text`, `url`, `email`. 
+- `text`, `url`, `email`.
+
 ```JavaScript
 <Input type="text" name="name" />
 <TextArea name="description" />
 ```
 
-* `number` will be converted to int or float depending on the value of `step` (default is `1`): 
+- `number` will be converted to int or float depending on the value of `step` (default is `1`):
+
 ```JavaScript
 <Input type="number" name="age" />
 <Input type="number" name="percentage" step="0.01" />
 ```
 
-* `checkbox` will also work out of the box:
+- `checkbox` will also work out of the box:
+
 ```JavaScript
 <Input type="checkbox" name="subscribed" />
 ```
@@ -60,7 +63,7 @@ const myConverter =
     // transform from String to Object
     toObject: function(value) {
       return AllowedValues[value] || AllowedValues.one;
-    },  
+    },
 
     // transform from object to String
     toString: function(value) {
@@ -77,14 +80,14 @@ const myConverter =
 
 The following validations are supported:
 
-* `[required]`
-* `[pattern]`
-* `[type=number][min]`
-* `[type=number][max]`
-* `[type=email]`
-* `[type=url]`
+- `[required]`
+- `[pattern]`
+- `[type=number][min]`
+- `[type=number][max]`
+- `[type=email]`
+- `[type=url]`
 
-When the user submits the Form, it will automatically check that all validations have passed before triggering `onSubmit`. 
+When the user submits the Form, it will automatically check that all validations have passed before triggering `onSubmit`.
 If there are errors the callback will not be invoked and an error message will be displayed instead.
 
 Custom validation is also supported, returning either a Promise or the validation result directly:
@@ -120,6 +123,10 @@ Messages.set({
 
 You can see the full list of values in [Messages.js](https://github.com/koliseoapi/react-data-input/blob/master/src/Messages.js).
 
+## Accessibility
+
+The generated form components and alert messages will generate ARIA attributes (`aria-invalid`, `aria-describedBy` and `role=alert`) to be used by assistive technologies.
+
 ## To play with the test suite
 
 ```
@@ -131,4 +138,3 @@ npm run coverage
 # http://localhost:8080/test-page/example.html
 npm run dev
 ```
-

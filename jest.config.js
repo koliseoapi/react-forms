@@ -3,6 +3,7 @@
 module.exports = {
   testMatch: ["<rootDir>/test/*Test.js"],
   notify: true,
+  collectCoverage: true,
   //  verbose: false, // fix https://github.com/facebook/jest/issues/2441
   //  setupFiles: ['<rootDir>/test/jest-utils.js'],
   testURL: "https://example.com/foo"

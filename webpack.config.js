@@ -2,7 +2,7 @@
 
 Compile the example file.
 This is needed only to check things manually using the browser. 
-The automated tests use Mocha and Babel without going through Babel.
+The automated tests use Jest and Babel without going through Webpack.
 
 */
 
@@ -24,7 +24,7 @@ module.exports = {
       {
         test: /\.js$/,
         exclude: [/node_modules/],
-        loaders: ["babel-loader?presets[]=react&presets[]=es2015"]
+        loaders: ["babel-loader"]
       }
     ]
   },
