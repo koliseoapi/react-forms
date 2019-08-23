@@ -43,7 +43,7 @@ describe("Input", function() {
       .validationComponents[0].validate()
       .then(() => {
         // error message was rendered
-        // error message is accessible: role=alert, aria-invalid, aria-describedBy
+        // error message is accessible: role=alert, aria-invalid, aria-describedby
         expect(form.toJSON()).toMatchSnapshot();
       });
   });

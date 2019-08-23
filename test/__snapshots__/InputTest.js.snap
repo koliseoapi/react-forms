@@ -46,7 +46,7 @@ exports[`Input should render a validation error 1`] = `
     className="input-wrapper text"
   >
     <input
-      aria-describedBy="name_error"
+      aria-describedby="name_error"
       aria-invalid={true}
       name="name"
       onChange={[Function]}
@@ -174,7 +174,7 @@ exports[`Input should render validation errors when the form value is not an e-m
     className="input-wrapper email"
   >
     <input
-      aria-describedBy="email_error"
+      aria-describedby="email_error"
       aria-invalid={true}
       name="email"
       onChange={[Function]}
@@ -201,7 +201,7 @@ exports[`Input should throw required error with required emails 1`] = `
     className="input-wrapper email"
   >
     <input
-      aria-describedBy="email_error"
+      aria-describedby="email_error"
       aria-invalid={true}
       name="email"
       onChange={[Function]}
@@ -229,7 +229,7 @@ exports[`Input should throw required error with required, unchecked checkboxes 1
     className="input-wrapper checkbox"
   >
     <input
-      aria-describedBy="subscribed_error"
+      aria-describedby="subscribed_error"
       aria-invalid={true}
       checked={false}
       name="subscribed"

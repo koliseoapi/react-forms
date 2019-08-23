@@ -103,7 +103,7 @@ export default class BoundComponent extends React.Component {
     }
     if (errorMessageId) {
       props["aria-invalid"] = true;
-      props["aria-describedBy"] = errorMessageId;
+      props["aria-describedby"] = errorMessageId;
     }
     props.onChange = this.onChange;
     return props;
