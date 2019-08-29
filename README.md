@@ -5,19 +5,9 @@ import { Form, Input, TextArea } from 'react-data-input';
 
 const state = { username: 'Foo', age: 20 };
 
-function save() {
-  fetch('save', {
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-    },
-    body: state
-  });
-}
-
-function foo(props) {
+function MyComponent(props) {
   return (
-    <form onSubmit={save} state={state}>
+    <form onSubmit={mySaveFunction} state={state}>
       <Input type="text" name="username" required maxLength="100" />
       <Input type="number" name="age" min="0" step="1" />
     </form>
@@ -25,35 +15,42 @@ function foo(props) {
 });
 ```
 
-When any of these fields is modified the change will be propagated into `state[props.name]`, transforming into the corresponding type (number, date, boolean). The enclosing `Form` will check that all validations have passed before triggering `onSubmit`.
+Any user input is converted into the right type (number, date, boolean) and propagated to the corresponding attribute inside the `state` object. When submitted, the `Form` container validates all fields before triggering the `onSubmit` callback.
 
-The list of exported components includes Form, Input (`text`, `number`, `checkbox` and `radio`), TextArea and Select. Radio buttons require a `RadioGroup` ancestor to handle exclusive `checked` state.
+The following list of components are supported:
+
+- `Form`
+- `Input` with `type`=[`text` | `number` | `checkbox` | `radio` | `url` | `email`]
+- `TextArea`
+- `Select`
+
+Radio buttons require a `RadioGroup` ancestor to manage a mutually exclusive `checked` state.
 
 ## Conversions
 
-Each field will automatically convert values from string to the desired format.
+Each input field converts values automatically from `string` to the expected type:
 
-- `text`, `url`, `email`.
+- `text`, `url` and `email` are passed as is:
 
 ```JavaScript
-<Input type="text" name="name" />
+<Input type="email" name="email" />
 <TextArea name="description" />
 ```
 
-- `number` will be converted to int or float depending on the value of `step` (default is `1`):
+- `number` is converted to a JavaScript with decimals according to the value of `step` (default is `1`):
 
 ```JavaScript
 <Input type="number" name="age" />
 <Input type="number" name="percentage" step="0.01" />
 ```
 
-- `checkbox` will also work out of the box:
+- `checkbox` is transformed to a boolean:
 
 ```JavaScript
 <Input type="checkbox" name="subscribed" />
 ```
 
-The default converter can be overriden by a custom implementation:
+You can override the converter associated to any form field:
 
 ```JavaScript
 const AllowedValues = { one: instanceOne, two: instanceTwo };
@@ -78,7 +75,7 @@ const myConverter =
 
 ## Validations
 
-The following validations are supported:
+Before submitting the form, all user input is validated. The field validations are configured according to the following input atributes:
 
 - `[required]`
 - `[pattern]`
@@ -87,10 +84,9 @@ The following validations are supported:
 - `[type=email]`
 - `[type=url]`
 
-When the user submits the Form, it will automatically check that all validations have passed before triggering `onSubmit`.
-If there are errors the callback will not be invoked and an error message will be displayed instead.
+When the user submits a `Form`, the `onSubmit` callback will only be called if all validations pass. If there are errors an error message will be displayed instead.
 
-Custom validation is also supported, returning either a Promise or the validation result directly:
+You can override the validation applied to a component, returning either a `Promise` or the validation result.:
 
 ```JavaScript
 const validator = (value, props) => {
@@ -99,18 +95,17 @@ const validator = (value, props) => {
   });
 }
 
-const wrapper = mount(
-  <Form onSubmit={save} state={state}>
-    <label htmlFor="name">Choose your username</label>
-    <Input type="text" name="username" validator={validator} />
-  </Form>
-);
-
+<Form onSubmit={save} state={state}>
+  <label htmlFor="name">Choose your username</label>
+  <Input type="text" name="username" validator={validator} />
+</Form>
 ```
+
+The validation result must be `undefined` if the validation passes, or an error message otherwise.
 
 ## Internationalization
 
-A different locale can be configured by invoking `Messages.set`:
+To override the locale for validation messages, call `Messages.set()` once when initializing your application:
 
 ```JavaScript
 import { Messages } from 'react-data-input';
@@ -121,15 +116,17 @@ Messages.set({
 })
 ```
 
-You can see the full list of values in [Messages.js](https://github.com/koliseoapi/react-data-input/blob/master/src/Messages.js).
+The full list of values validation messages is available in [Messages.js](https://github.com/koliseoapi/react-data-input/blob/master/src/Messages.js).
 
 ## Accessibility
 
-The generated form components and alert messages will generate ARIA attributes (`aria-invalid`, `aria-describedBy` and `role=alert`) to be used by assistive technologies.
+Both input fields and alert messages will use the corresponding ARIA attributes (`aria-invalid`, `aria-describedBy` and `role=alert`) to be used by assistive technologies.
 
-## To play with the test suite
+## Play with the test suite
 
-```
+Feel free to play with our test suite:
+
+```bash
 # To run the test suite based on Mocha
 npm run test
 npm run coverage
