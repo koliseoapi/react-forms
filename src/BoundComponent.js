@@ -10,7 +10,7 @@ export default class BoundComponent extends React.Component {
     super(props, context);
     this.onChange = this.onChange.bind(this);
     this.state = {};
-    //    this.state.value = this.getStateObject()[props.name];
+    this.state.value = this.getStateObject()[props.name];
   }
 
   getConverter() {
