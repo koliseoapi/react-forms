@@ -594,8 +594,8 @@ function isFalse(value) {
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash__ = __webpack_require__(14);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_lodash__);
- // replaces messages. We cannot use ES6 templates (lack of context), 
-// and lodash does not pass CSP 
+ // replaces messages. We cannot use ES6 templates (lack of context),
+// and lodash does not pass CSP
 
 function template(message, data) {
   var templateReplace = function (s, match) {
@@ -640,26 +640,26 @@ let re_weburl;
 /* harmony default export */ __webpack_exports__["a"] = ({
   required: function (value, props) {
     if (Object(__WEBPACK_IMPORTED_MODULE_1__utils__["a" /* isBlank */])(value) && !Object(__WEBPACK_IMPORTED_MODULE_1__utils__["b" /* isFalse */])(props.required)) {
-      return __WEBPACK_IMPORTED_MODULE_0__Messages__["a" /* default */].get('required');
+      return __WEBPACK_IMPORTED_MODULE_0__Messages__["a" /* default */].get("required", props);
     }
   },
   "number.required": function (value, props) {
     if (Object(__WEBPACK_IMPORTED_MODULE_1__utils__["c" /* isNullOrUndefined */])(value) && !Object(__WEBPACK_IMPORTED_MODULE_1__utils__["b" /* isFalse */])(props.required)) {
-      return __WEBPACK_IMPORTED_MODULE_0__Messages__["a" /* default */].get('required');
+      return __WEBPACK_IMPORTED_MODULE_0__Messages__["a" /* default */].get("required", props);
     }
   },
   "number.min": function (value, props) {
     if (!Object(__WEBPACK_IMPORTED_MODULE_1__utils__["c" /* isNullOrUndefined */])(value) && value < +props.min) {
-      return __WEBPACK_IMPORTED_MODULE_0__Messages__["a" /* default */].get('min', props);
+      return __WEBPACK_IMPORTED_MODULE_0__Messages__["a" /* default */].get("min", props);
     }
   },
   "number.max": function (value, props) {
     if (!Object(__WEBPACK_IMPORTED_MODULE_1__utils__["c" /* isNullOrUndefined */])(value) && value > +props.max) {
-      return __WEBPACK_IMPORTED_MODULE_0__Messages__["a" /* default */].get('max', props);
+      return __WEBPACK_IMPORTED_MODULE_0__Messages__["a" /* default */].get("max", props);
     }
   },
-  url: function (value) {
-    // Lazy init a reasonable (< 5k chars) implementation of URL regex 
+  url: function (value, props) {
+    // Lazy init a reasonable (< 5k chars) implementation of URL regex
     // https://mathiasbynens.be/demo/url-regex
     // https://gist.github.com/dperini/729294
     if (!re_weburl) {
@@ -682,46 +682,48 @@ let re_weburl;
     }
 
     if (!Object(__WEBPACK_IMPORTED_MODULE_1__utils__["c" /* isNullOrUndefined */])(value) && !re_weburl.test(value)) {
-      return __WEBPACK_IMPORTED_MODULE_0__Messages__["a" /* default */].get('url');
+      return __WEBPACK_IMPORTED_MODULE_0__Messages__["a" /* default */].get("url", props);
     }
   },
-  email: function (value) {
+  email: function (value, props) {
     // Simple email validation
     // http://stackoverflow.com/questions/742451/what-is-the-simplest-regular-expression-to-validate-emails-to-not-accept-them-bl
     if (!Object(__WEBPACK_IMPORTED_MODULE_1__utils__["c" /* isNullOrUndefined */])(value) && !/^(\S+@\S+)?$/.test(value)) {
-      return __WEBPACK_IMPORTED_MODULE_0__Messages__["a" /* default */].get('email');
+      return __WEBPACK_IMPORTED_MODULE_0__Messages__["a" /* default */].get("email", props);
     }
   },
-  pattern: function (value, {
-    pattern
-  }) {
+  pattern: function (value, props) {
+    let {
+      pattern
+    } = props;
+
     if (!Object(__WEBPACK_IMPORTED_MODULE_1__utils__["c" /* isNullOrUndefined */])(value) && pattern) {
-      if (pattern[0] !== '^') {
-        pattern = '^' + pattern;
+      if (pattern[0] !== "^") {
+        pattern = "^" + pattern;
       }
 
-      if (pattern[pattern.length - 1] !== '$') {
-        pattern += '$';
+      if (pattern[pattern.length - 1] !== "$") {
+        pattern += "$";
       }
 
       if (!new RegExp(pattern).test(value)) {
-        return __WEBPACK_IMPORTED_MODULE_0__Messages__["a" /* default */].get('pattern');
+        return __WEBPACK_IMPORTED_MODULE_0__Messages__["a" /* default */].get("pattern", props);
       }
     }
   },
-  maxLength: function (value, {
-    maxLength
-  }) {
+  maxLength: function (value, props) {
+    const {
+      maxLength
+    } = props;
+
     if (!Object(__WEBPACK_IMPORTED_MODULE_1__utils__["c" /* isNullOrUndefined */])(value) && value.length > maxLength) {
-      return __WEBPACK_IMPORTED_MODULE_0__Messages__["a" /* default */].get('maxLength', {
-        maxLength
-      });
+      return __WEBPACK_IMPORTED_MODULE_0__Messages__["a" /* default */].get("maxLength", props);
     }
   },
   // return the list of properties susceptible of validation
   filterValidationProps: function (props) {
     const result = {};
-    ['type', 'required', 'min', 'max', 'pattern', 'maxLength'].forEach(function (key) {
+    ["type", "required", "min", "max", "pattern", "maxLength"].forEach(function (key) {
       const value = props[key];
 
       if (!Object(__WEBPACK_IMPORTED_MODULE_1__utils__["c" /* isNullOrUndefined */])(value)) {
@@ -784,28 +786,28 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
  // just a class that can be spied for changes
 
-const output = document.getElementsByClassName('output')[0];
-window.addEventListener('error', function (err) {
+const output = document.getElementsByClassName("output")[0];
+window.addEventListener("error", function (err) {
   console.error(err);
-  output.classList.add('error');
+  output.classList.add("error");
   output.innerHTML = err.message;
 });
 const state = new __WEBPACK_IMPORTED_MODULE_3__MyState__["a" /* default */]({
-  name: 'John Doe',
+  name: "John Doe",
   age: 23,
   subscribed: true
 });
 
 function onSubmit() {
-  console.log('onSubmit() invoked successfully');
+  console.log("onSubmit() invoked successfully");
   printState();
 }
 
 function printState() {
-  output.classList.remove('error');
-  output.classList.add('highlight');
+  output.classList.remove("error");
+  output.classList.add("highlight");
   output.innerHTML = JSON.stringify(state);
-  setTimeout(() => output.classList.remove('highlight'), 0);
+  setTimeout(() => output.classList.remove("highlight"), 0);
 }
 
 function MyApp(props) {
@@ -815,6 +817,7 @@ function MyApp(props) {
   }, __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement("label", {
     htmlFor: "name"
   }, "Name"), __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_0__src_react_data_input__["b" /* Input */], {
+    id: "name",
     name: "name",
     type: "text",
     required: true,
@@ -823,6 +826,7 @@ function MyApp(props) {
   }), __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement("label", {
     htmlFor: "age"
   }, "Age"), __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_0__src_react_data_input__["b" /* Input */], {
+    id: "age",
     name: "age",
     type: "number",
     min: "0",
@@ -833,23 +837,23 @@ function MyApp(props) {
     name: "subscribed",
     type: "checkbox",
     onChange: printState
-  }), " Subscribe to newsletter"), __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_0__src_react_data_input__["c" /* RadioGroup */], null, __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement("label", null, __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_0__src_react_data_input__["b" /* Input */], {
+  }), " ", "Subscribe to newsletter"), __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_0__src_react_data_input__["c" /* RadioGroup */], null, __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement("label", null, __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_0__src_react_data_input__["b" /* Input */], {
     name: "gender",
     type: "radio",
     value: "male",
     onChange: printState
-  }), " Male"), __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement("label", null, __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_0__src_react_data_input__["b" /* Input */], {
+  }), " ", "Male"), __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement("label", null, __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_0__src_react_data_input__["b" /* Input */], {
     name: "gender",
     type: "radio",
     value: "female",
     onChange: printState
-  }), " Female")), __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement("input", {
+  }), " ", "Female")), __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement("input", {
     type: "submit",
     value: "Submit form and see resulting state"
   }));
 }
 
-__WEBPACK_IMPORTED_MODULE_1_react_dom___default.a.render(__WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(MyApp, null), document.getElementsByClassName('container')[0]);
+__WEBPACK_IMPORTED_MODULE_1_react_dom___default.a.render(__WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(MyApp, null), document.getElementsByClassName("container")[0]);
 printState();
 
 /***/ }),
