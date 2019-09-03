@@ -96,7 +96,7 @@ const validator = (value, props) => {
 }
 
 <Form onSubmit={save} state={state}>
-  <label htmlFor="name">Choose your username</label>
+  <label htmlFor="username">Choose your username</label>
   <Input type="text" name="username" validator={validator} />
 </Form>
 ```
