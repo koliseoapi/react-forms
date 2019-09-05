@@ -86,23 +86,21 @@ describe("Validators", function() {
 
   it("should pass props to customize validation messages", function() {
     Messages.set({
-      required: "Please fill out ${name} field",
+      required: "Please fill out ${name}",
       min: "${name} value must be greater than or equal to ${min}",
-      max: "${name} value must be less than or equal to ${max}",
+      max: "Value must be less than or equal to ${max}",
       url: "Please enter a URL for ${name}",
       email: "Please include a valid e-mail address for ${name}",
       pattern: "Please match the requested format for ${name}",
-      maxLength: "${name} value must have no more than ${maxLength} characters"
+      maxLength: "Value must have no more than ${maxLength} characters"
     });
     const props = { name: "Foo" };
-    expect(Validators.required(undefined, props)).toBe(
-      "Please fill out Foo field"
-    );
+    expect(Validators.required(undefined, props)).toBe("Please fill out Foo");
     expect(Validators["number.min"](-1, { ...props, min: 0 })).toBe(
       "Foo value must be greater than or equal to 0"
     );
     expect(Validators["number.max"](6, { ...props, max: 5 })).toBe(
-      "Foo value must be less than or equal to 5"
+      "Value must be less than or equal to 5"
     );
     expect(Validators.url("foo", props)).toBe("Please enter a URL for Foo");
     expect(Validators.email("foo", props)).toBe(
@@ -112,7 +110,7 @@ describe("Validators", function() {
       "Please match the requested format for Foo"
     );
     expect(Validators.maxLength("foo", { ...props, maxLength: 2 })).toBe(
-      "Foo value must have no more than 2 characters"
+      "Value must have no more than 2 characters"
     );
   });
 });
