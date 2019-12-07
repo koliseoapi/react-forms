@@ -1,4 +1,4 @@
-A library to automatically bind React form elements to state attributes, automatically doing type conversion and validation. [Give it a try](https://koliseoapi.github.io/react-data-input/).
+A library to automatically bind React form elements to state attributes with automatic type conversion and validation. [Give it a try](https://koliseoapi.github.io/react-data-input/).
 
 ```JavaScript
 import { Form, Input, TextArea } from 'react-data-input';
@@ -7,20 +7,20 @@ const state = { username: 'Foo', age: 20 };
 
 function MyComponent(props) {
   return (
-    <form onSubmit={mySaveFunction} state={state}>
+    <Form onSubmit={mySaveFunction} state={state}>
       <Input type="text" name="username" required maxLength="100" />
       <Input type="number" name="age" min="0" step="1" />
-    </form>
+    </Form>
   );
 });
 ```
 
-Any user input is converted into the right type (number, date, boolean) and propagated to the corresponding attribute inside the `state` object. When submitted, the `Form` container validates all fields before triggering the `onSubmit` callback.
+Any user input is converted into the right type (`number`, `date`, `boolean`) and assigned to the corresponding attribute inside the `state` object. When submitted, the `Form` container validates all fields before triggering the `onSubmit` callback.
 
-The following list of components are supported:
+The following components are supported:
 
 - `Form`
-- `Input` with `type`=[`text` | `number` | `checkbox` | `radio` | `url` | `email`]
+- `Input (text, number, checkbox, radio, url, email)`
 - `TextArea`
 - `Select`
 
@@ -30,12 +30,14 @@ Radio buttons require a `RadioGroup` ancestor to manage a mutually exclusive `ch
 
 Each input field converts values automatically from `string` to the expected type:
 
-- `text`, `url` and `email` are passed as is:
+- `text`, `url` and `email` are validated for format and passed as is:
 
 ```JavaScript
 <Input type="email" name="email" />
 <TextArea name="description" />
 ```
+
+The native HTML element is used for data input, and the data is validated again using JavaScript before submission.
 
 - `number` is converted to a JavaScript with decimals according to the value of `step` (default is `1`):
 
@@ -50,7 +52,7 @@ Each input field converts values automatically from `string` to the expected typ
 <Input type="checkbox" name="subscribed" />
 ```
 
-You can override the converter associated to any form field:
+These conversions are the default, but you can override the converter associated to any form field:
 
 ```JavaScript
 const AllowedValues = { one: instanceOne, two: instanceTwo };
@@ -84,9 +86,9 @@ Before submitting the form, all user input is validated. The field validations a
 - `[type=email]`
 - `[type=url]`
 
-When the user submits a `Form`, the `onSubmit` callback will only be called if all validations pass. If there are errors an error message will be displayed instead.
+When the user submits a `Form`, the `onSubmit` callback will only be called if all validations pass. If there are errors an error message will be displayed instead, and focus will be transferred to the first field that didn't pass.
 
-You can override the validation applied to a component, returning either a `Promise` or the validation result.:
+You can override the validation applied to a component, returning either a `Promise` or the validation result:
 
 ```JavaScript
 const validator = (value, props) => {
@@ -101,7 +103,7 @@ const validator = (value, props) => {
 </Form>
 ```
 
-The validation result must be `undefined` if the validation passes, or an error message otherwise.
+The function should return `undefined` if the validation passes, or an error message otherwise.
 
 ## Internationalization
 
