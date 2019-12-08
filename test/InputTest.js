@@ -18,12 +18,6 @@ describe("Input", function() {
     return inputElement;
   }
 
-  function getInputComponent(form) {
-    const inputComponent = form.getInstance().props.children;
-    expect(inputComponent.type).toBe(Input);
-    return inputComponent;
-  }
-
   it("should render correctly", function() {
     const state = { name: "foobar" };
     const form = mount(
@@ -208,6 +202,22 @@ describe("Input", function() {
       .validationComponents[0].validate()
       .then(() => {
         // should show input error
+        expect(form.toJSON()).toMatchSnapshot();
+      });
+  });
+
+  it("should add aria-describedby if there are validation errors", function() {
+    const form = mount(
+      <Input type="text" name="name" required aria-describedby="foobar" />,
+      {
+        name: ""
+      }
+    );
+    return form
+      .getInstance()
+      .validationComponents[0].validate()
+      .then(() => {
+        // should prepend the error message to the existing aria-describedby field
         expect(form.toJSON()).toMatchSnapshot();
       });
   });

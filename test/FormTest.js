@@ -8,7 +8,14 @@ describe("Form", function() {
     const form = renderer.create(
       <Form onSubmit={callback}>
         <Input type="text" required state={state} name="name" />
-      </Form>
+      </Form>,
+      {
+        createNodeMock() {
+          return {
+            querySelector: noop
+          };
+        }
+      }
     );
     return form.getInstance().onSubmit({ preventDefault: noop });
   }

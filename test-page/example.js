@@ -38,10 +38,13 @@ function MyApp(props) {
         id="name"
         name="name"
         type="text"
+        autocomplete="off"
         required
         maxLength="50"
         onChange={printState}
+        aria-describedby="name-desc"
       />
+      <p id="name-desc">* Please introduce the first and last name</p>
       <label htmlFor="age">Age</label>
       <Input
         id="age"

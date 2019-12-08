@@ -1,5 +1,33 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Input should add aria-describedby if there are validation errors 1`] = `
+<form
+  noValidate={true}
+  onSubmit={[Function]}
+>
+  <div
+    className="input-wrapper text"
+  >
+    <input
+      aria-describedby="name_error foobar"
+      aria-invalid={true}
+      name="name"
+      onChange={[Function]}
+      required={true}
+      type="text"
+      value=""
+    />
+    <div
+      className="input-error"
+      id="name_error"
+      role="alert"
+    >
+      Please fill out this field
+    </div>
+  </div>
+</form>
+`;
+
 exports[`Input should not throw required error with empty, optional emails 1`] = `
 <form
   noValidate={true}

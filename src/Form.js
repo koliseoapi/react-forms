@@ -1,13 +1,13 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 
 // Form is the (optional) container of BoundComponent instances.
 export default class Form extends React.Component {
-
   constructor() {
     super();
     this.onSubmit = this.onSubmit.bind(this);
     this.validationComponents = [];
+    this.ref = React.createRef();
   }
 
   getChildContext() {
@@ -39,18 +39,25 @@ export default class Form extends React.Component {
   // @return a Promise to be invoked after the validation is done
   onSubmit(e) {
     e.preventDefault();
-    return this.validate().then((results) => {
-      results && this.props.onSubmit(e);
+    return this.validate().then(results => {
+      if (results) {
+        this.props.onSubmit(e);
+      } else {
+        const firstInvalidElement = this.ref.current.querySelector(
+          "[aria-invalid=true]"
+        );
+        firstInvalidElement && firstInvalidElement.focus();
+      }
     });
   }
 
   render() {
     const { state, ...props } = this.props;
     return (
-      <form {...props} onSubmit={this.onSubmit} noValidate>
+      <form {...props} onSubmit={this.onSubmit} noValidate ref={this.ref}>
         {this.props.children}
       </form>
-    )  
+    );
   }
 }
 
@@ -60,9 +67,8 @@ Form.propTypes = {
 
   // the state that will be injected into nested elements
   state: PropTypes.object
-}
+};
 
 Form.childContextTypes = {
   form: PropTypes.object
 };
-
