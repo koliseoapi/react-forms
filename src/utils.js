@@ -1,15 +1,12 @@
 function isNullOrUndefined(value) {
-  return typeof(value) === "undefined" || value === null;
+  return typeof value === "undefined" || value === null;
 }
 function isBlank(str) {
-    return (!str || /^\s*$/.test(str));
-}
-const passThrough = function(value) {
-  return value;
+  return !str || /^\s*$/.test(str);
 }
 
 function isFalse(value) {
   return value === false;
 }
 
-export { isNullOrUndefined, isBlank, passThrough, isFalse }
+export { isNullOrUndefined, isBlank, isFalse };

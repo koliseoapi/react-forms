@@ -1,25 +1,28 @@
-import { isNullOrUndefined, isBlank, passThrough } from "./utils";
+import { isNullOrUndefined, isBlank } from "./utils";
+
+const passThrough = function(value) {
+  return value;
+};
+
+function passEmptyAsUndef(value) {
+  return isBlank(value) ? undefined : value;
+}
+
+function passNullOrUndefAsEmpty(value) {
+  return isNullOrUndefined(value) ? "" : value;
+}
 
 const Converters = {
   text: {
     // transform from String representation to object.
     toObject: passThrough,
-
-    // transform from object to String. Null and undefined values are converted to an empty String
-    toString: function(value) {
-      return isNullOrUndefined(value) ? "" : value;
-    }
+    toString: passNullOrUndefAsEmpty
   },
 
   url: {
     // transform from String representation to object.
-    toObject: function(value) {
-      return isBlank(value) ? undefined : value;
-    },
-
-    toString: function(value) {
-      return Converters.text.toString(value);
-    }
+    toObject: passEmptyAsUndef,
+    toString: passNullOrUndefAsEmpty
   },
 
   number: {
@@ -39,6 +42,16 @@ const Converters = {
   checkbox: {
     toObject: passThrough,
     toString: passThrough
+  },
+
+  date: {
+    toObject: passEmptyAsUndef,
+    toString: passNullOrUndefAsEmpty
+  },
+
+  time: {
+    toObject: passEmptyAsUndef,
+    toString: passNullOrUndefAsEmpty
   }
 };
 

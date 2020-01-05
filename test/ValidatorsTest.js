@@ -25,7 +25,7 @@ describe("Validators", function() {
     expect(required(undefined, props)).toMatch(requiredErrorMessage);
   });
 
-  it("Min value", function() {
+  it("Number min value", function() {
     const min = Validators["number.min"];
     const props = { min: 0 };
     expect(min(-1, props)).toMatch("Value must be greater than or equal to 0");
@@ -34,13 +34,33 @@ describe("Validators", function() {
     expect(min(0, {})).toBeUndefined();
   });
 
-  it("Max value", function() {
+  it("Number max value", function() {
     const max = Validators["number.max"];
     const props = { max: 100 };
     expect(max(99, props)).toBeUndefined();
     expect(max(100, props)).toBeUndefined();
     expect(max(101, props)).toMatch("Value must be less than or equal to 100");
     expect(max(0, {})).toBeUndefined();
+  });
+
+  it("Date min value", function() {
+    const min = Validators["date.min"];
+    const props = { min: "2020-10-01" };
+    expect(min("1999-01-01", props)).toMatch(
+      "Value must be greater than or equal to 2020-10-01"
+    );
+    expect(min("2021-01-01", props)).toBeUndefined();
+    expect(min("2021-01-01", {})).toBeUndefined();
+  });
+
+  it("Date max value", function() {
+    const max = Validators["date.max"];
+    const props = { max: "2020-10-01" };
+    expect(max("2021-01-01", props)).toMatch(
+      "Value must be less than or equal to 2020-10-01"
+    );
+    expect(max("1999-01-01", props)).toBeUndefined();
+    expect(max("1999-01-01", {})).toBeUndefined();
   });
 
   it("Max length", function() {

@@ -38,7 +38,7 @@ function MyApp(props) {
         id="name"
         name="name"
         type="text"
-        autocomplete="off"
+        autoComplete="off"
         required
         maxLength="50"
         onChange={printState}
@@ -79,6 +79,24 @@ function MyApp(props) {
           Female
         </label>
       </RadioGroup>
+      <label htmlFor="expires">Expires</label>
+      <Input
+        name="expires"
+        id="expires"
+        type="date"
+        min={new Date().toISOString().substring(0, 10)}
+        required
+        pattern="\d{4}-\d{2}-\d{2}"
+        onChange={printState}
+      />
+      <label htmlFor="time">Time</label>
+      <Input
+        name="time"
+        id="time"
+        type="time"
+        pattern="[0-9]{2}:[0-9]{2}"
+        onChange={printState}
+      />
       <input type="submit" value="Submit form and see resulting state" />
     </Form>
   );

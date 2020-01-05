@@ -3,6 +3,19 @@ import { isNullOrUndefined, isBlank, isFalse } from "./utils";
 
 let re_weburl;
 
+function timestampMinValidator(value, props) {
+  // under ISO8601, dates and times can be compared as strings
+  if (!isNullOrUndefined(value) && value < props.min) {
+    return Messages.get("min", props);
+  }
+}
+
+function timestampMaxValidator(value, props) {
+  if (!isNullOrUndefined(value) && value > props.max) {
+    return Messages.get("max", props);
+  }
+}
+
 export default {
   required: function(value, props) {
     if (isBlank(value) && !isFalse(props.required)) {
@@ -27,6 +40,11 @@ export default {
       return Messages.get("max", props);
     }
   },
+
+  "date.min": timestampMinValidator,
+  "date.max": timestampMaxValidator,
+  "time.min": timestampMinValidator,
+  "time.max": timestampMaxValidator,
 
   url: function(value, props) {
     // Lazy init a reasonable (< 5k chars) implementation of URL regex

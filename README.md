@@ -20,7 +20,7 @@ Any user input is converted into the right type (`number`, `date`, `boolean`) an
 The following components are supported:
 
 - `Form`
-- `Input (text, number, checkbox, radio, url, email)`
+- `Input (text, number, checkbox, radio, url, email, date, time)`
 - `TextArea`
 - `Select`
 
@@ -52,6 +52,15 @@ The native HTML element is used for data input, and the data is validated again 
 <Input type="checkbox" name="subscribed" />
 ```
 
+- `date` and `time` are validated for format and min/max restrictions, then passed as strings with format `yyyy-MM-dd` and `HH:mm` respectively.
+
+```JavaScript
+<Input type="date" name="birthdate" min="1900-01-01" max="2020-01-01" pattern="\d{4}-\d{2}-\d{2}"/>
+<Input type="time" pattern="[0-9]{2}:[0-9]{2}">
+```
+
+Keep in mind that these will render the corresponding native HTML elements, which are supported on all major browsers except Safari on MacOS, where `input[type=text]` will be used instead. For this reason we recommend to set a `pattern` attribute like the example above. Even though the date picker doesn't use it, the text input fallback will.
+
 These conversions are the default, but you can override the converter associated to any form field:
 
 ```JavaScript
@@ -81,8 +90,7 @@ Before submitting the form, all user input is validated. The field validations a
 
 - `[required]`
 - `[pattern]`
-- `[type=number][min]`
-- `[type=number][max]`
+- `[min]` and `[max]` for `[type=number|date|time]`
 - `[type=email]`
 - `[type=url]`
 
