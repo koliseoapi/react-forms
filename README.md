@@ -67,7 +67,7 @@ The native HTML element is used for data input, and the data is validated again 
 
 Keep in mind that these will render the corresponding native HTML elements, which are supported on all major browsers except Safari on MacOS, where `input[type=text]` will be used instead. For this reason we recommend to set a `pattern` attribute like the example above. Even though the date picker doesn't use it, the text input fallback will.
 
-These conversions are the default, but you can override the converter associated to any form field:
+These are the default conversions, but you can override the converter associated to any form field:
 
 ```JavaScript
 const AllowedValues = { one: instanceOne, two: instanceTwo };
@@ -102,7 +102,7 @@ Before submitting the form, all user input is validated. The field validations a
 
 When the user submits a `Form`, the `onSubmit` callback will only be called if all validations pass. If there are errors an error message will be displayed instead, and focus will be transferred to the first field that didn't pass.
 
-You can override the validation applied to a component, returning either a `Promise` or the validation result:
+To override the validation applied to a component, return either a `Promise` or the validation result:
 
 ```JavaScript
 const validator = (value, props) => {
