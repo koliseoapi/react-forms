@@ -35,7 +35,6 @@
     "is-promise": "^2.1.0"
   },
   "scripts": {
-    "prepublish": "npm run test",
     "postversion": "git push && git push --tags",
     "test": "jest",
     "watch": "webpack-dev-server --inline --hot --progress --colors --open",
