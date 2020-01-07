@@ -6,7 +6,7 @@ NODE_ENV=prod npx webpack --progress --colors --config webpack.config.js --displ
 FOLDER=.gh-pages
 
 if [ ! -d ${FOLDER} ]; then
-  git clone -b gh-pages git@github.com:koliseoapi/react-data-input ${FOLDER}
+  git clone -b gh-pages git@github.com:koliseoapi/react-forms ${FOLDER}
   cd ${FOLDER}
 else
   cd ${FOLDER}

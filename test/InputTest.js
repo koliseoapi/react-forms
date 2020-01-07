@@ -1,5 +1,5 @@
 import React from "react";
-import { Form, Input, RadioGroup } from "../src/react-data-input";
+import { Form, Input, RadioGroup } from "../src/react-forms";
 import renderer from "react-test-renderer";
 
 function noop() {}

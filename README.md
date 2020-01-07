@@ -1,7 +1,13 @@
-A library to automatically bind React form elements to state attributes with automatic type conversion and validation. [Give it a try](https://koliseoapi.github.io/react-data-input/).
+# react-forms
+
+[![Build Status](https://secure.travis-ci.org/koliseoapi/react-forms.svg?branch=master)](http://travis-ci.org/koliseoapi/react-forms)
+[![Coverage Status](https://coveralls.io/repos/github/koliseoapi/react-forms/badge.svg?branch=master)](https://coveralls.io/github/koliseoapi/react-forms?branch=master)
+<a href="https://www.npmjs.com/package/@koliseoapi/react-forms"><img alt="NPM Downloads" src="https://img.shields.io/npm/dm/@koliseoapi/react-forms.svg?maxAge=43200"></a>
+
+A library of HTML5 elements that convert user input automatically to state attributes. [Give it a try](https://koliseoapi.github.io/react-forms/).
 
 ```JavaScript
-import { Form, Input, TextArea } from 'react-data-input';
+import { Form, Input, TextArea } from '@koliseoapi/react-forms';
 
 const state = { username: 'Foo', age: 20 };
 
@@ -118,7 +124,7 @@ The function should return `undefined` if the validation passes, or an error mes
 To override the locale for validation messages, call `Messages.set()` once when initializing your application:
 
 ```JavaScript
-import { Messages } from 'react-data-input';
+import { Messages } from '@koliseoapi/react-forms';
 
 Messages.set({
     required: "Por favor, rellena este campo",
@@ -126,7 +132,7 @@ Messages.set({
 })
 ```
 
-The full list of values validation messages is available in [Messages.js](https://github.com/koliseoapi/react-data-input/blob/master/src/Messages.js).
+The full list of values validation messages is available in [Messages.js](https://github.com/koliseoapi/react-forms/blob/master/src/Messages.js).
 
 ## Accessibility
 

@@ -1,5 +1,5 @@
 import React from "react";
-import { Form, TextArea } from "../src/react-data-input";
+import { Form, TextArea } from "../src/react-forms";
 import renderer from "react-test-renderer";
 
 function noop() {}

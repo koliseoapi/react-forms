@@ -1,11 +1,11 @@
 {
-  "name": "react-data-input",
-  "version": "0.6.0",
-  "description": "HTML5 input components that do automatic property type conversion",
-  "main": "src/react-data-input.js",
+  "name": "@koliseoapi/react-forms",
+  "version": "0.7.0",
+  "description": "HTML5 input components with automatic property type conversion",
+  "main": "src/react-forms.js",
   "repository": {
     "type": "git",
-    "url": "git@github.com:koliseoapi/react-data-input.git"
+    "url": "git@github.com:koliseoapi/react-forms.git"
   },
   "keywords": [
     "react",
@@ -14,19 +14,15 @@
   ],
   "author": "Nacho Coloma <icoloma@gmail.com>",
   "license": "MIT",
-  "homepage": "https://github.com/koliseoapi/react-data-input",
+  "homepage": "https://github.com/koliseoapi/react-forms",
   "devDependencies": {
     "@babel/core": "^7.7.7",
-    "@babel/plugin-proposal-object-rest-spread": "^7.7.7",
-    "@babel/plugin-syntax-object-rest-spread": "^7.7.4",
-    "@babel/plugin-transform-spread": "^7.7.4",
     "@babel/preset-env": "^7.7.7",
     "@babel/preset-react": "^7.7.4",
     "@babel/register": "^7.7.7",
     "babel-core": "^7.0.0-bridge.0",
     "babel-loader": "^8.0.6",
     "jest": "^24.9.0",
-    "nyc": "^15.0.0",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "react-test-renderer": "^16.12.0",
@@ -42,8 +38,7 @@
     "prepublish": "npm run test",
     "postversion": "git push && git push --tags",
     "test": "jest",
-    "jest-watch": "jest --watch",
-    "dev": "webpack-dev-server --inline --hot --progress --colors --open",
-    "coverage": "NODE_ENV=test nyc --reporter=lcov --reporter=text jest"
+    "watch": "webpack-dev-server --inline --hot --progress --colors --open",
+    "coverage": "NODE_ENV=test jest --coverage && cat ./coverage/lcov.info | coveralls"
   }
 }
