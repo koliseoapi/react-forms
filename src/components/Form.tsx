@@ -1,0 +1,157 @@
+import React, {
+  FormHTMLAttributes,
+  ReactEventHandler,
+  createContext,
+  useState,
+  useContext,
+  useEffect,
+} from "react";
+import { InputProps, filterActionsForProps } from "../core/ValidationActions";
+import { I18nContext } from "./I18nContext";
+import { Messages } from "../core/Messages";
+import { Validators, Validator } from "../core/Validators";
+
+interface FormProps extends FormHTMLAttributes<HTMLFormElement> {
+  /** the object being edited  */
+  initialValues: any;
+
+  /** the method to invoke when submitting, after passing all validations */
+  onSubmit: (values: any) => Promise<any>;
+}
+
+/**
+ * The list of all validation errors. The key is the propertyName,
+ * the value is the error message
+ */
+interface ValidationErrors {
+  [propertyName: string]: string;
+}
+
+/**
+ * Context to share with child BoundComponents
+ */
+export interface FormContextContent {
+  /**
+   * All error messages, indexed by property name
+   */
+  errors: ValidationErrors;
+
+  /**
+   * True if this form is submitting the value
+   */
+  submitting: boolean;
+
+  /**
+   * Add a Validator to the list of fields validated by this form
+   */
+  addValidator(propertyName: string, props: InputProps): void;
+
+  /**
+   * Triggered by a change in the form field
+   */
+  setValue(propertyName: string, value: any): void;
+
+  /**
+   * Get value associated to a BoundComponent
+   */
+  getValue(propertyName: string): any;
+}
+function undefinedFormContext(): never {
+  throw new Error("A <Form> context is required");
+}
+export const FormContext = createContext<FormContextContent>({
+  addValidator: undefinedFormContext,
+  setValue: undefinedFormContext,
+  getValue: undefinedFormContext,
+  errors: {},
+  submitting: false,
+});
+
+/**
+ * Form is the required container  of BoundComponent instances.
+ */
+export function Form({
+  initialValues,
+  onSubmit,
+  children,
+  ...props
+}: FormProps) {
+  // errors to display, sorted by component key
+  const [errors, setErrors] = useState<ValidationErrors>({});
+
+  // object with the data introduced in this form
+  const [values, setValues] = useState(initialValues);
+
+  // the list of validators to use for this object
+  const [validators, setValidators] = useState<Validators>({});
+
+  // the submission status
+  const [submitting, setSubmitting] = useState(false);
+
+  // validation rules to apply
+  const entries = useContext(I18nContext);
+  const messages = new Messages(entries);
+
+  const formContextValue: FormContextContent = {
+    errors,
+    submitting,
+    addValidator: function (propertyName, props) {
+      validators[propertyName] = new Validator(
+        propertyName,
+        filterActionsForProps(props),
+        props
+      );
+      setValidators(validators);
+    },
+
+    setValue: function (propertyName, value) {
+      values[propertyName] = value;
+      if (errors[propertyName]) {
+        delete errors[propertyName];
+        setErrors({ ...errors });
+      }
+    },
+
+    getValue(propertyName) {
+      return values[propertyName];
+    },
+  };
+
+  function validate(): ValidationErrors {
+    const newErrors: ValidationErrors = {};
+    let firstError: string;
+    Object.entries(validators).forEach(([propertyName, validator]) => {
+      const error = validator.validate(values[propertyName]);
+      if (!!error) {
+        newErrors[propertyName] = messages.get(error, validator.props);
+        firstError = firstError || propertyName;
+      }
+    });
+    setErrors(newErrors);
+    return newErrors;
+  }
+
+  const onSubmitHandler: ReactEventHandler = function (e) {
+    e.preventDefault();
+    const errors = validate();
+    if (!Object.keys(errors).length) {
+      setSubmitting(true);
+      return onSubmit(e).finally(() => setSubmitting(false));
+    }
+  };
+
+  useEffect(() => {
+    const firstInvalidElement = document.body.querySelector<HTMLInputElement>(
+      "[aria-invalid=true]"
+    );
+    firstInvalidElement && firstInvalidElement.focus();
+  }, [errors]);
+
+  return (
+    <form {...props} onSubmit={onSubmitHandler} noValidate>
+      <FormContext.Provider value={formContextValue}>
+        {children}
+      </FormContext.Provider>
+    </form>
+  );
+}

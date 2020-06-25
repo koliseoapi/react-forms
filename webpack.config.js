@@ -7,29 +7,27 @@ The automated tests use Jest and Babel without going through Webpack.
 */
 
 const webpack = require("webpack");
-const WebpackNotifierPlugin = require("webpack-notifier");
 
 module.exports = {
   entry: {
-    app: "./test-page/example.js"
+    app: "./test-page/example.tsx",
   },
   devtool: "source-map",
   output: {
     path: __dirname + "/build",
     publicPath: "/build/",
-    filename: "example.js"
+    filename: "example.js",
+  },
+  resolve: {
+    extensions: [".ts", ".tsx", ".js"],
   },
   module: {
     rules: [
       {
-        test: /\.js$/,
-        exclude: [/node_modules/],
-        loaders: ["babel-loader"]
-      }
-    ]
+        test: /\.tsx?$/,
+        loaders: ["babel-loader"],
+      },
+    ],
   },
-  plugins: [
-    new webpack.NoEmitOnErrorsPlugin(),
-    new WebpackNotifierPlugin({ excludeWarnings: true, alwaysNotify: true })
-  ]
+  plugins: [new webpack.NoEmitOnErrorsPlugin()],
 };

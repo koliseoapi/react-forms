@@ -1,52 +1,68 @@
-import Messages from "./Messages";
 import { isNullOrUndefined, isBlank, isFalse } from "./utils";
+import { InputHTMLAttributes } from "react";
+import { Messages } from "../core/Messages";
 
-let re_weburl;
+let re_weburl: RegExp;
 
-function timestampMinValidator(value, props) {
+export type InputProps = InputHTMLAttributes<HTMLInputElement>;
+
+export type ValidationResult = string | undefined;
+
+export type ValidationAction<T> = (
+  value: T,
+  props: InputProps
+) => ValidationResult;
+
+function timestampMinValidator(
+  value: string,
+  props: InputProps
+): ValidationResult {
   // under ISO8601, dates and times can be compared as strings
   if (!isNullOrUndefined(value) && value < props.min) {
-    return Messages.get("min", props);
+    return "min";
   }
 }
 
-function timestampMaxValidator(value, props) {
+function timestampMaxValidator(
+  value: string,
+  props: InputProps
+): ValidationResult {
   if (!isNullOrUndefined(value) && value > props.max) {
-    return Messages.get("max", props);
+    return "max";
   }
 }
 
-export default {
-  required: function(value, props) {
+export const ValidationActions = {
+  date_min: timestampMinValidator,
+  date_max: timestampMaxValidator,
+  time_min: timestampMinValidator,
+  time_max: timestampMaxValidator,
+
+  required(value: any, props: InputProps): ValidationResult {
     if (isBlank(value) && !isFalse(props.required)) {
-      return Messages.get("required", props);
+      return "required";
     }
   },
 
-  "number.required": function(value, props) {
+  number_required(value: number, props: InputProps): ValidationResult {
     if (isNullOrUndefined(value) && !isFalse(props.required)) {
-      return Messages.get("required", props);
+      return "required";
     }
   },
 
-  "number.min": function(value, props) {
+  number_min(value: number, props: InputProps): ValidationResult {
     if (!isNullOrUndefined(value) && value < +props.min) {
-      return Messages.get("min", props);
+      return "min";
     }
   },
 
-  "number.max": function(value, props) {
+  number_max(value: number, props: InputProps): ValidationResult {
     if (!isNullOrUndefined(value) && value > +props.max) {
-      return Messages.get("max", props);
+      return "max";
     }
   },
 
-  "date.min": timestampMinValidator,
-  "date.max": timestampMaxValidator,
-  "time.min": timestampMinValidator,
-  "time.max": timestampMaxValidator,
-
-  url: function(value, props) {
+  url(value: string, props: InputProps): ValidationResult {
     // Lazy init a reasonable (< 5k chars) implementation of URL regex
     // https://mathiasbynens.be/demo/url-regex
     // https://gist.github.com/dperini/729294
@@ -91,19 +107,19 @@ export default {
     }
 
     if (!isNullOrUndefined(value) && !re_weburl.test(value)) {
-      return Messages.get("url", props);
+      return "url";
     }
   },
 
-  email: function(value, props) {
+  email(value: string, props: InputProps): ValidationResult {
     // Simple email validation
     // http://stackoverflow.com/questions/742451/what-is-the-simplest-regular-expression-to-validate-emails-to-not-accept-them-bl
     if (!isNullOrUndefined(value) && !/^(\S+@\S+)?$/.test(value)) {
-      return Messages.get("email", props);
+      return "email";
     }
   },
 
-  pattern: function(value, props) {
+  pattern(value: string, props: InputProps): ValidationResult {
     let { pattern } = props;
     if (!isNullOrUndefined(value) && pattern) {
       if (pattern[0] !== "^") {
@@ -113,29 +129,32 @@ export default {
         pattern += "$";
       }
       if (!new RegExp(pattern).test(value)) {
-        return Messages.get("pattern", props);
+        return "pattern";
       }
     }
   },
 
-  maxLength: function(value, props) {
+  maxLength(value: string, props: InputProps): ValidationResult {
     const { maxLength } = props;
     if (!isNullOrUndefined(value) && value.length > maxLength) {
-      return Messages.get("maxLength", props);
+      return "maxLength";
     }
   },
-
-  // return the list of properties susceptible of validation
-  filterValidationProps: function(props) {
-    const result = {};
-    ["type", "required", "min", "max", "pattern", "maxLength"].forEach(function(
-      key
-    ) {
-      const value = props[key];
-      if (!isNullOrUndefined(value)) {
-        result[key] = value;
-      }
-    });
-    return result;
-  }
 };
+/**
+ * Return a subset of actions that are applicable to a BoundComponent, given its properties
+ * For example, for an element with [required, type=number, min=5] this method would return
+ * [required, number_min]
+ */
+export function filterActionsForProps({
+  type,
+  ...props
+}: InputProps): ValidationAction<any>[] {
+  const result: ValidationAction<any>[] = [];
+  result.push(ValidationActions[type]);
+  for (const prop of ["required", "min", "max", "pattern", "maxLength"]) {
+    result.push(ValidationActions[`${type}_${prop}`]);
+    result.push(ValidationActions[prop]);
+  }
+  return result.filter((action) => !!action);
+}

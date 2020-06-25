@@ -1,10 +1,10 @@
 // Jest config
 // See https://facebook.github.io/jest/docs/en/configuration.html
 module.exports = {
-  testMatch: ["<rootDir>/test/*Test.js"],
+  testMatch: ["<rootDir>/test/*Test.{js,ts,tsx}"],
   notify: true,
   collectCoverage: true,
-  //  verbose: false, // fix https://github.com/facebook/jest/issues/2441
-  //  setupFiles: ['<rootDir>/test/jest-utils.js'],
-  testURL: "https://example.com/foo"
+  transform: {
+    "^.+\\.(js|jsx|ts|tsx)$": "babel-jest",
+  },
 };

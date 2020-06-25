@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TextArea should render 1`] = `
+<form
+  noValidate={true}
+  onSubmit={[Function]}
+>
+  <div
+    className="input-wrapper "
+  >
+    <textarea
+      className="foo"
+      id="text"
+      name="text"
+      onChange={[Function]}
+      value="foobaz"
+    />
+  </div>
+</form>
+`;

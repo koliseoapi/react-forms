@@ -3,24 +3,38 @@
   Example code to use in browser
 
 */
-import { Form, Input, RadioGroup } from "../src/react-forms";
+import { Form, Input, Button } from "../src/index";
 import ReactDOM from "react-dom";
 import React from "react";
-import MyState from "./MyState";
+
+interface MyState {
+  name: string;
+  age: number;
+  subscribed: boolean;
+  gender?: "male" | "female" | "other";
+  expires?: string;
+  time?: string;
+}
 
 // just a class that can be spied for changes
 const output = document.getElementsByClassName("output")[0];
 
-window.addEventListener("error", function(err) {
+window.addEventListener("error", function (err) {
   console.error(err);
   output.classList.add("error");
   output.innerHTML = err.message;
 });
 
-const state = new MyState({ name: "John Doe", age: 23, subscribed: true });
+const state: MyState = {
+  name: "John Doe",
+  age: 23,
+  subscribed: true,
+};
+
 function onSubmit() {
   console.log("onSubmit() invoked successfully");
   printState();
+  return Promise.resolve();
 }
 
 function printState() {
@@ -30,24 +44,22 @@ function printState() {
   setTimeout(() => output.classList.remove("highlight"), 0);
 }
 
-function MyApp(props) {
+function MyApp() {
   return (
-    <Form onSubmit={onSubmit} state={state}>
+    <Form onSubmit={onSubmit} initialValues={state}>
       <label htmlFor="name">Name</label>
       <Input
-        id="name"
         name="name"
         type="text"
         autoComplete="off"
         required
-        maxLength="50"
+        maxLength={50}
         onChange={printState}
         aria-describedby="name-desc"
       />
       <p id="name-desc">* Please introduce the first and last name</p>
       <label htmlFor="age">Age</label>
       <Input
-        id="age"
         name="age"
         type="number"
         min="0"
@@ -59,30 +71,36 @@ function MyApp(props) {
         <Input name="subscribed" type="checkbox" onChange={printState} />{" "}
         Subscribe to newsletter
       </label>
-      <RadioGroup>
-        <label>
-          <Input
-            name="gender"
-            type="radio"
-            value="male"
-            onChange={printState}
-          />{" "}
-          Male
-        </label>
-        <label>
-          <Input
-            name="gender"
-            type="radio"
-            value="female"
-            onChange={printState}
-          />{" "}
-          Female
-        </label>
-      </RadioGroup>
+      <label>
+        <Input
+          name="gender"
+          type="radio"
+          defaultValue="male"
+          onChange={printState}
+        />{" "}
+        Male
+      </label>
+      <label>
+        <Input
+          name="gender"
+          type="radio"
+          defaultValue="female"
+          onChange={printState}
+        />{" "}
+        Female
+      </label>
+      <label>
+        <Input
+          name="gender"
+          type="radio"
+          defaultValue="other"
+          onChange={printState}
+        />{" "}
+        Other
+      </label>
       <label htmlFor="expires">Expires</label>
       <Input
         name="expires"
-        id="expires"
         type="date"
         min={new Date().toISOString().substring(0, 10)}
         required
@@ -97,7 +115,7 @@ function MyApp(props) {
         pattern="[0-9]{2}:[0-9]{2}"
         onChange={printState}
       />
-      <input type="submit" value="Submit form and see resulting state" />
+      <Button>Submit form and see resulting state</Button>
     </Form>
   );
 }
