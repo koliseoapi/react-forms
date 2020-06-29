@@ -7,13 +7,13 @@ import React, {
   useEffect,
 } from "react";
 import {
-  InputProps,
   filterActionsForProps,
   ValidationResult,
 } from "../core/ValidationActions";
 import { I18nContext } from "./I18nContext";
 import { Messages } from "../core/Messages";
 import { Validators, Validator } from "../core/Validators";
+import { BoundComponentProps } from "./InputElements";
 
 interface FormProps extends FormHTMLAttributes<HTMLFormElement> {
   /** the object being edited  */
@@ -48,7 +48,7 @@ export interface FormContextContent {
   /**
    * Add a Validator to the list of fields validated by this form
    */
-  addValidator(propertyName: string, props: InputProps): void;
+  addValidator(props: BoundComponentProps): void;
 
   /**
    * Triggered by a change in the form field
@@ -102,12 +102,8 @@ export function Form({
   const formContextValue: FormContextContent = {
     errors,
     submitting,
-    addValidator: function (propertyName, props) {
-      validators[propertyName] = new Validator(
-        propertyName,
-        filterActionsForProps(props),
-        props
-      );
+    addValidator: function (props) {
+      validators[props.name] = new Validator(props);
       setValidators(validators);
     },
 

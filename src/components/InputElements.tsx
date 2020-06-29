@@ -1,17 +1,32 @@
-import React, { useContext, ChangeEvent, useEffect, useState } from "react";
+import React, {
+  useContext,
+  ChangeEvent,
+  useEffect,
+  InputHTMLAttributes,
+} from "react";
 import { Converters, Converter } from "../core/Converters";
-import { InputProps } from "../core/ValidationActions";
 import { FormContext, FormContextContent } from "./Form";
+import { ValidationResult } from "../core/ValidationActions";
 
-export interface BoundComponentProps extends InputProps {
-  /** type of input component to use */
-  elementName: "input" | "select" | "textarea";
-
+export interface BoundComponentProps
+  extends InputHTMLAttributes<HTMLInputElement> {
   /** propertyName. Will also be used as id if none is specified */
   name: string;
 
   /** Optional: the converter to use. If not set, the default for the input type will be used */
   converter?: Converter<any>;
+
+  /** Optional: the validator to use. If set, all default validators (required, number, etc) will be replaced by this. Received the value after being converted */
+  validate(value: any): Promise<ValidationResult>;
+}
+
+interface InputProps extends BoundComponentProps {
+  type: "text" | "url" | "number" | "checkbox" | "date" | "time" | "radio";
+}
+
+export interface BoundComponentPropsWithElement extends BoundComponentProps {
+  /** type of input component to use */
+  elementName: "input" | "select" | "textarea";
 }
 
 /**
@@ -21,12 +36,13 @@ export interface BoundComponentProps extends InputProps {
 export function BoundComponent({
   elementName,
   converter,
+  validate,
   name,
   id,
   onChange: originalOnChange,
   children,
   ...props
-}: BoundComponentProps) {
+}: BoundComponentPropsWithElement) {
   const type = props.type;
   if (process.env.NODE_ENV != "production") {
     if (type === "radio" && !props.defaultValue) {
@@ -64,7 +80,7 @@ export function BoundComponent({
   }
 
   useEffect(() => {
-    formContext.addValidator(name, props);
+    formContext.addValidator({ name, validate, ...props });
     // TODO: should we do something to unmount?
   }, []);
 
@@ -104,20 +120,14 @@ export function BoundComponent({
   );
 }
 
-type WrappedBoundComponentProps = Omit<BoundComponentProps, "elementName">;
-
-interface ExtendedInputProps extends WrappedBoundComponentProps {
-  type: "text" | "url" | "number" | "checkbox" | "date" | "time" | "radio";
-}
-
-export function Input(props: ExtendedInputProps) {
+export function Input(props: InputProps) {
   return <BoundComponent elementName="input" {...props} />;
 }
 
-export function Select(props: WrappedBoundComponentProps) {
+export function Select(props: BoundComponentProps) {
   return <BoundComponent elementName="select" {...props} />;
 }
 
-export function TextArea(props: WrappedBoundComponentProps) {
+export function TextArea(props: BoundComponentProps) {
   return <BoundComponent elementName="textarea" {...props} />;
 }

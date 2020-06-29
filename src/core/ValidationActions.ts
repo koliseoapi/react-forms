@@ -1,21 +1,18 @@
 import { isNullOrUndefined, isBlank, isFalse } from "./utils";
-import { InputHTMLAttributes } from "react";
-import { Messages } from "../core/Messages";
+import { BoundComponentProps } from "../components/InputElements";
 
 let re_weburl: RegExp;
-
-export type InputProps = InputHTMLAttributes<HTMLInputElement>;
 
 export type ValidationResult = string | undefined;
 
 export type ValidationAction<T> = (
   value: T,
-  props: InputProps
+  props: BoundComponentProps
 ) => Promise<ValidationResult>;
 
 async function timestampMinValidator(
   value: string,
-  props: InputProps
+  props: BoundComponentProps
 ): Promise<ValidationResult> {
   // under ISO8601, dates and times can be compared as strings
   if (!isNullOrUndefined(value) && value < props.min) {
@@ -25,7 +22,7 @@ async function timestampMinValidator(
 
 async function timestampMaxValidator(
   value: string,
-  props: InputProps
+  props: BoundComponentProps
 ): Promise<ValidationResult> {
   if (!isNullOrUndefined(value) && value > props.max) {
     return "max";
@@ -38,7 +35,10 @@ export const ValidationActions = {
   time_min: timestampMinValidator,
   time_max: timestampMaxValidator,
 
-  async required(value: any, props: InputProps): Promise<ValidationResult> {
+  async required(
+    value: any,
+    props: BoundComponentProps
+  ): Promise<ValidationResult> {
     if (isBlank(value) && !isFalse(props.required)) {
       return "required";
     }
@@ -46,7 +46,7 @@ export const ValidationActions = {
 
   async number_required(
     value: number,
-    props: InputProps
+    props: BoundComponentProps
   ): Promise<ValidationResult> {
     if (isNullOrUndefined(value) && !isFalse(props.required)) {
       return "required";
@@ -55,7 +55,7 @@ export const ValidationActions = {
 
   async number_min(
     value: number,
-    props: InputProps
+    props: BoundComponentProps
   ): Promise<ValidationResult> {
     if (!isNullOrUndefined(value) && value < +props.min) {
       return "min";
@@ -64,14 +64,17 @@ export const ValidationActions = {
 
   async number_max(
     value: number,
-    props: InputProps
+    props: BoundComponentProps
   ): Promise<ValidationResult> {
     if (!isNullOrUndefined(value) && value > +props.max) {
       return "max";
     }
   },
 
-  async url(value: string, props: InputProps): Promise<ValidationResult> {
+  async url(
+    value: string,
+    props: BoundComponentProps
+  ): Promise<ValidationResult> {
     // Lazy init a reasonable (< 5k chars) implementation of URL regex
     // https://mathiasbynens.be/demo/url-regex
     // https://gist.github.com/dperini/729294
@@ -120,7 +123,10 @@ export const ValidationActions = {
     }
   },
 
-  async email(value: string, props: InputProps): Promise<ValidationResult> {
+  async email(
+    value: string,
+    props: BoundComponentProps
+  ): Promise<ValidationResult> {
     // Simple email validation
     // http://stackoverflow.com/questions/742451/what-is-the-simplest-regular-expression-to-validate-emails-to-not-accept-them-bl
     if (!isNullOrUndefined(value) && !/^(\S+@\S+)?$/.test(value)) {
@@ -128,7 +134,10 @@ export const ValidationActions = {
     }
   },
 
-  async pattern(value: string, props: InputProps): Promise<ValidationResult> {
+  async pattern(
+    value: string,
+    props: BoundComponentProps
+  ): Promise<ValidationResult> {
     let { pattern } = props;
     if (!isNullOrUndefined(value) && pattern) {
       if (pattern[0] !== "^") {
@@ -143,7 +152,10 @@ export const ValidationActions = {
     }
   },
 
-  async maxLength(value: string, props: InputProps): Promise<ValidationResult> {
+  async maxLength(
+    value: string,
+    props: BoundComponentProps
+  ): Promise<ValidationResult> {
     const { maxLength } = props;
     if (!isNullOrUndefined(value) && value.length > maxLength) {
       return "maxLength";
@@ -158,7 +170,7 @@ export const ValidationActions = {
 export function filterActionsForProps({
   type,
   ...props
-}: InputProps): ValidationAction<any>[] {
+}: BoundComponentProps): ValidationAction<any>[] {
   const result: ValidationAction<any>[] = [];
   result.push(ValidationActions[type]);
   for (const prop of ["required", "min", "max", "pattern", "maxLength"]) {

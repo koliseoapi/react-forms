@@ -1,25 +1,28 @@
 import {
   ValidationAction,
-  InputProps,
   ValidationResult,
+  filterActionsForProps,
 } from "./ValidationActions";
+import { BoundComponentProps } from "../components/InputElements";
 
 export class Validator {
   propertyName: string;
 
   /** props assigned to the BoundComponent */
-  props: InputProps;
+  props: BoundComponentProps;
 
   /** Validation actions to execute on this property */
   actions: ValidationAction<any>[];
 
-  constructor(
-    propertyName: string,
-    actions: ValidationAction<any>[],
-    props: InputProps
-  ) {
-    this.propertyName = propertyName;
-    this.actions = actions;
+  /**
+   * If props.validate is not undefined, it will replace the automatic validations.
+   * Otherwise a list of validations based on type, min, max, pattern will be set.
+   */
+  constructor(props: BoundComponentProps) {
+    this.propertyName = props.name;
+    this.actions = props.validate
+      ? [props.validate]
+      : filterActionsForProps(props);
     this.props = props;
   }
 
