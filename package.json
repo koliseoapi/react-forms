@@ -1,8 +1,8 @@
 {
   "name": "@koliseoapi/react-forms",
-  "version": "0.7.0",
+  "version": "1.0.0",
   "description": "HTML5 input components with automatic property type conversion",
-  "main": "src/react-forms.js",
+  "main": "src/index.ts",
   "repository": {
     "type": "git",
     "url": "git@github.com:koliseoapi/react-forms.git"

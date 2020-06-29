@@ -33,3 +33,42 @@
   });
 
  */
+
+import React from "react";
+import renderer, { act, ReactTestRenderer } from "react-test-renderer";
+import { Form } from "../src/components/Form";
+import { I18nContext } from "../src/components/I18nContext";
+import { Input } from "../src/components/InputElements";
+
+describe("Input", function () {
+  let onSubmit: () => Promise<string>;
+
+  let form: ReactTestRenderer;
+
+  it("should render a validation error", async function () {
+    onSubmit = jest.fn(async () => "foo");
+    // act() to wait for the useEffect() calls on initial render
+    act(() => {
+      form = renderer.create(
+        <I18nContext.Provider
+          value={{ required: "Por favor, introduzca un valor" }}
+        >
+          <Form onSubmit={onSubmit} initialValues={{}}>
+            <Input type="text" required name="name" />
+          </Form>
+        </I18nContext.Provider>
+      );
+    });
+    await act(async () => {
+      const formElement = form.root.find((el) => el.type == "form");
+      try {
+        await formElement.props.onSubmit({ preventDefault() {} });
+      } catch (errors) {
+        expect(errors).toMatchObject({
+          name: "Por favor, introduzca un valor",
+        });
+      }
+    });
+    expect(form.toJSON()).toMatchSnapshot();
+  });
+});

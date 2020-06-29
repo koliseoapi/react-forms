@@ -33,6 +33,12 @@ export class Messages {
    * Returns this i18n key, interpolating the values from props
    */
   get(key: string, props: any): string {
-    return template(this.entries[key], props);
+    const str = this.entries[key];
+    if (process.env.NODE_ENV !== "production") {
+      if (!str) {
+        throw new Error(`Message entry not found for key "${key}"`);
+      }
+    }
+    return template(str, props);
   }
 }

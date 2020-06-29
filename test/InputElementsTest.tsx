@@ -1,17 +1,9 @@
-import React, {
-  ReactElement,
-  ChangeEvent,
-  HTMLAttributes,
-  InputHTMLAttributes,
-} from "react";
-import renderer, {
-  ReactTestRenderer,
-  act,
-  ReactTestInstance,
-} from "react-test-renderer";
+import React, { ReactElement } from "react";
+import renderer, { ReactTestRenderer, act } from "react-test-renderer";
 import { Input } from "../src/components/InputElements";
-import { Form, ValidationErrors } from "../src/components/Form";
+import { Form, ValidationErrors, FieldSet } from "../src/components/Form";
 import { Converters } from "../src/core/Converters";
+import { ValidationResult } from "../src/core/ValidationActions";
 
 describe("Input", function () {
   let onSubmit: () => Promise<string>;
@@ -29,43 +21,15 @@ describe("Input", function () {
       );
     });
   }
-  /*
-  function waitForElement(props: any): Promise<ReactTestInstance[]> {
-    return new Promise<ReactTestInstance[]>((resolve, reject) => {
-      let tries = 0;
-      function check() {
-        const elements = form.root.findAll((el) =>
-          Object.entries(props).every(
-            ([propertyName, value]) => el[propertyName] == value
-          )
-        );
-        if (elements.length) {
-          resolve(elements);
-        }
-        if (tries++ < 5) {
-          setTimeout(check, 10);
-        } else {
-          reject(
-            new Error(
-              `Timeout waiting for element with props: ${JSON.stringify(
-                props
-              )}.\nCurrent tree: ${JSON.stringify(form.toJSON(), null, "  ")}`
-            )
-          );
-        }
-      }
-      setTimeout(check, 10);
-    });
-  }
-*/
-  async function triggerChange({
+
+  function triggerChange({
     value,
     checked,
   }: {
     value: string;
     checked?: boolean;
   }) {
-    return act(() => {
+    act(() => {
       const inputElement = form.root.find((el) => el.type == "input");
       expect(inputElement.type).toBe("input");
       inputElement.props.onChange({
@@ -77,14 +41,14 @@ describe("Input", function () {
     });
   }
 
-  async function triggerSubmit(expectErrors?: ValidationErrors) {
+  async function triggerSubmit(expectedErrors?: ValidationErrors) {
     return act(async () => {
       const formElement = form.root.find((el) => el.type == "form");
       try {
         await formElement.props.onSubmit({ preventDefault() {} });
-        expect(expectErrors).toBeUndefined();
+        expect(expectedErrors).toBeUndefined();
       } catch (errors) {
-        expect(errors).toMatchObject(expectErrors);
+        expect(errors).toMatchObject(expectedErrors);
       }
     });
   }
@@ -207,34 +171,21 @@ describe("Input", function () {
     expect(form.toJSON()).toMatchSnapshot();
   });
 
-  /*
-  function initAsyncValidator(state) {
-    const validator = (value) =>
-      new Promise((resolve) => {
-        resolve(value === "abc" ? undefined : "Validation failed");
-      });
-    mount(
-      <Input type="text" name="foo" validator={validator} />,
-      state
-    );
-    return form.getInstance();
+  function validate(value: string): Promise<ValidationResult> {
+    return Promise.resolve(value === "abc" ? undefined : "pattern");
   }
 
-  it("custom validator with Promise expected to fail", function () {
-    const state = { foo: "xyz" };
-    initAsyncValidator(state);
-    return form.validate().then((result) => {
-      expect(result).toBe(false);
-    });
+  it("custom async validation fails (also: onSubmit not called)", async function () {
+    mount(<Input type="text" name="foo" validate={validate} />, { foo: "xyz" });
+    await triggerSubmit({ foo: "Please match the requested format" });
+    expect(form.toJSON()).toMatchSnapshot();
+    expect(onSubmit).not.toHaveBeenCalled();
   });
 
-  it("custom validator with Promise expected to pass", function () {
-    const state = { foo: "abc" };
-    initAsyncValidator(state);
-    return form.validate().then((result) => {
-      expect(result).toBe(true);
-    });
+  it("custom async validation passes (also: onSubmit called)", async function () {
+    mount(<Input type="text" name="foo" validate={validate} />, { foo: "abc" });
+    await triggerSubmit();
+    expect(form.toJSON()).toMatchSnapshot();
+    expect(onSubmit).toHaveBeenCalledTimes(1);
   });
-
-  */
 });

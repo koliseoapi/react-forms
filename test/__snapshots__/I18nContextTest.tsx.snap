@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Input should render a validation error 1`] = `
+<form
+  noValidate={true}
+  onSubmit={[Function]}
+>
+  <input
+    aria-describedby="name_error"
+    aria-invalid={true}
+    defaultValue=""
+    id="name"
+    name="name"
+    onChange={[Function]}
+    required={true}
+    type="text"
+  />
+  <div
+    className="input-error"
+    id="name_error"
+    role="alert"
+  >
+    Por favor, introduzca un valor
+  </div>
+</form>
+`;

@@ -1,5 +1,44 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Input custom async validation fails (also: onSubmit not called) 1`] = `
+<form
+  noValidate={true}
+  onSubmit={[Function]}
+>
+  <input
+    aria-describedby="foo_error"
+    aria-invalid={true}
+    defaultValue="xyz"
+    id="foo"
+    name="foo"
+    onChange={[Function]}
+    type="text"
+  />
+  <div
+    className="input-error"
+    id="foo_error"
+    role="alert"
+  >
+    Please match the requested format
+  </div>
+</form>
+`;
+
+exports[`Input custom async validation passes (also: onSubmit called) 1`] = `
+<form
+  noValidate={true}
+  onSubmit={[Function]}
+>
+  <input
+    defaultValue="abc"
+    id="foo"
+    name="foo"
+    onChange={[Function]}
+    type="text"
+  />
+</form>
+`;
+
 exports[`Input required and optional checkboxes (also: set id attribute) 1`] = `
 <form
   noValidate={true}

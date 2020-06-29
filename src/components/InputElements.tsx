@@ -17,7 +17,7 @@ export interface BoundComponentProps
   converter?: Converter<any>;
 
   /** Optional: the validator to use. If set, all default validators (required, number, etc) will be replaced by this. Received the value after being converted */
-  validate(value: any): Promise<ValidationResult>;
+  validate?(value: any): Promise<ValidationResult>;
 }
 
 interface InputProps extends BoundComponentProps {
@@ -44,7 +44,7 @@ export function BoundComponent({
   ...props
 }: BoundComponentPropsWithElement) {
   const type = props.type;
-  if (process.env.NODE_ENV != "production") {
+  if (process.env.NODE_ENV !== "production") {
     if (type === "radio" && !props.defaultValue) {
       throw new Error(`Radio button ${name} requires a defaultValue`);
     }
