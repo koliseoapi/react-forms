@@ -13,8 +13,8 @@ else
   git pull
 fi
 
-cp ../build/example.js ../src/styles.css .
-cp ../test-page/example.js ./example.src.js
+cp ../build/example.js .
+cp ../test-page/example.tsx ./example.src.tsx
 
 git add .
 git commit -m "${1:-Merge master}"

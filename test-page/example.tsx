@@ -58,7 +58,7 @@ function MyApp() {
         onChange={printState}
         aria-describedby="name-desc"
       />
-      <p id="name-desc">* Please introduce the first and last name</p>
+      <p id="name-desc">Introduce the first and last name of the user</p>
       <label htmlFor="age">Age</label>
       <Input
         name="age"
