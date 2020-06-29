@@ -1,32 +1,106 @@
 <html>
   <head>
     <style>
-      * { box-sizing: border-box; }
-      body { font-family: Geneva, Tahoma, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px;}
-      input { padding: 8px; border: 1px solid #ccc; margin-bottom: 10px; display: block; }
-      input[type=submit] { cursor: pointer; background: #008cba; color: white; border: 1px solid #0a6f90; border-radius: 2px; }
-      label { font-size: .8rem; text-transform: uppercase; color: #666; display: block; margin-bottom: 5px; }
-      .output.error { color: red }
-      .input-error { font-size: 14px; }
-      pre, 
-      iframe { font: 12px Consolas, "Liberation Mono", Menlo, Courier, monospace; background-color: #f7f7f7; border: 1px solid #ccc; padding: 10px; margin-bottom: 10px; white-space: normal; transition: all .3s 1s ease-out; }
-      iframe { width: 100%; height: 200px; }
-      pre.highlight { background: #ffa; transition: 0s; }
-      .input-wrapper.checkbox, 
-      input[type=checkbox],
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        font-family: Geneva, Tahoma, sans-serif;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      input {
+        padding: 8px;
+        border: 1px solid #ccc;
+        margin-bottom: 10px;
+        display: block;
+      }
+      input[type="submit"] {
+        cursor: pointer;
+        background: #008cba;
+        color: white;
+        border: 1px solid #0a6f90;
+        border-radius: 2px;
+      }
+      label {
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        color: #666;
+        display: block;
+        margin-bottom: 5px;
+      }
+      .output.error {
+        color: red;
+      }
+      .input-error {
+        font-size: 14px;
+        text-transform: none !important;
+      }
+      pre {
+        font: 12px Consolas, "Liberation Mono", Menlo, Courier, monospace;
+        background-color: #f7f7f7;
+        border: 1px solid #ccc;
+        padding: 10px;
+        margin-bottom: 10px;
+        white-space: normal;
+        transition: all 0.3s 1s ease-out;
+      }
+      pre.highlight {
+        background: #ffa;
+        transition: 0s;
+      }
+      .input-wrapper.checkbox,
+      input[type="checkbox"],
       .input-wrapper.radio,
-      input[type=radio] { display: inline; }
+      input[type="radio"] {
+        display: inline;
+      }
+      .input-wrapper {
+        position: relative;
+      }
+
+      .input-error {
+        background: #ff2f00;
+        color: white;
+        border: 1px solid red;
+        padding: 8px 15px;
+        position: absolute;
+        z-index: 1;
+      }
+
+      .input-error::after {
+        border: inset 6px;
+        content: "";
+        display: block;
+        border-color: transparent transparent red transparent;
+        border-bottom-style: solid;
+        width: 0;
+        position: absolute;
+        top: 0;
+        transform: translateY(-12px);
+      }
+      #name-desc {
+        color: gray;
+        font-size: 14px;
+        margin-top: -5px;
+      }
     </style>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <h1>Example validation page</h1>
-    <p>Introduce invalid data to trigger a validation error. See the <a href="https://github.com/koliseoapi/react-data-input">documentation on Github.</a></p> 
+    <h1>Example page</h1>
+    <p>
+      Introduce invalid data to trigger a validation error. See the
+      <a href="https://github.com/koliseoapi/react-data-input"
+        >documentation on Github.</a
+      >
+    </p>
     <div class="container"></div>
     <label>State</label>
     <pre class="output">Loading...</pre>
     <script src="example.js"></script>
     <label>Source code</label>
-    <iframe src="example.src.js" frameborder="0"></iframe>
+    <iframe src="example.src.tsx" frameborder="0"></iframe>
   </body>
 </html>
