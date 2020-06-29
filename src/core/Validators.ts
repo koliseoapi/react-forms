@@ -26,9 +26,9 @@ export class Validator {
   /**
    * Launches all validation actions against the current value
    */
-  validate(currentValue: any): ValidationResult {
+  async validate(currentValue: any): Promise<ValidationResult> {
     for (const action of this.actions) {
-      const error = action(currentValue, this.props);
+      const error = await action(currentValue, this.props);
       if (typeof error !== "undefined") {
         return error;
       }

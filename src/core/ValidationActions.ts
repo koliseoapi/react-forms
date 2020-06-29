@@ -11,22 +11,22 @@ export type ValidationResult = string | undefined;
 export type ValidationAction<T> = (
   value: T,
   props: InputProps
-) => ValidationResult;
+) => Promise<ValidationResult>;
 
-function timestampMinValidator(
+async function timestampMinValidator(
   value: string,
   props: InputProps
-): ValidationResult {
+): Promise<ValidationResult> {
   // under ISO8601, dates and times can be compared as strings
   if (!isNullOrUndefined(value) && value < props.min) {
     return "min";
   }
 }
 
-function timestampMaxValidator(
+async function timestampMaxValidator(
   value: string,
   props: InputProps
-): ValidationResult {
+): Promise<ValidationResult> {
   if (!isNullOrUndefined(value) && value > props.max) {
     return "max";
   }
@@ -38,31 +38,40 @@ export const ValidationActions = {
   time_min: timestampMinValidator,
   time_max: timestampMaxValidator,
 
-  required(value: any, props: InputProps): ValidationResult {
+  async required(value: any, props: InputProps): Promise<ValidationResult> {
     if (isBlank(value) && !isFalse(props.required)) {
       return "required";
     }
   },
 
-  number_required(value: number, props: InputProps): ValidationResult {
+  async number_required(
+    value: number,
+    props: InputProps
+  ): Promise<ValidationResult> {
     if (isNullOrUndefined(value) && !isFalse(props.required)) {
       return "required";
     }
   },
 
-  number_min(value: number, props: InputProps): ValidationResult {
+  async number_min(
+    value: number,
+    props: InputProps
+  ): Promise<ValidationResult> {
     if (!isNullOrUndefined(value) && value < +props.min) {
       return "min";
     }
   },
 
-  number_max(value: number, props: InputProps): ValidationResult {
+  async number_max(
+    value: number,
+    props: InputProps
+  ): Promise<ValidationResult> {
     if (!isNullOrUndefined(value) && value > +props.max) {
       return "max";
     }
   },
 
-  url(value: string, props: InputProps): ValidationResult {
+  async url(value: string, props: InputProps): Promise<ValidationResult> {
     // Lazy init a reasonable (< 5k chars) implementation of URL regex
     // https://mathiasbynens.be/demo/url-regex
     // https://gist.github.com/dperini/729294
@@ -111,7 +120,7 @@ export const ValidationActions = {
     }
   },
 
-  email(value: string, props: InputProps): ValidationResult {
+  async email(value: string, props: InputProps): Promise<ValidationResult> {
     // Simple email validation
     // http://stackoverflow.com/questions/742451/what-is-the-simplest-regular-expression-to-validate-emails-to-not-accept-them-bl
     if (!isNullOrUndefined(value) && !/^(\S+@\S+)?$/.test(value)) {
@@ -119,7 +128,7 @@ export const ValidationActions = {
     }
   },
 
-  pattern(value: string, props: InputProps): ValidationResult {
+  async pattern(value: string, props: InputProps): Promise<ValidationResult> {
     let { pattern } = props;
     if (!isNullOrUndefined(value) && pattern) {
       if (pattern[0] !== "^") {
@@ -134,7 +143,7 @@ export const ValidationActions = {
     }
   },
 
-  maxLength(value: string, props: InputProps): ValidationResult {
+  async maxLength(value: string, props: InputProps): Promise<ValidationResult> {
     const { maxLength } = props;
     if (!isNullOrUndefined(value) && value.length > maxLength) {
       return "maxLength";

@@ -6,7 +6,11 @@ import React, {
   useContext,
   useEffect,
 } from "react";
-import { InputProps, filterActionsForProps } from "../core/ValidationActions";
+import {
+  InputProps,
+  filterActionsForProps,
+  ValidationResult,
+} from "../core/ValidationActions";
 import { I18nContext } from "./I18nContext";
 import { Messages } from "../core/Messages";
 import { Validators, Validator } from "../core/Validators";
@@ -120,16 +124,18 @@ export function Form({
     },
   };
 
-  function validate(): ValidationErrors {
+  async function validate(): Promise<ValidationErrors> {
     const newErrors: ValidationErrors = {};
-    let firstError: string;
-    Object.entries(validators).forEach(([propertyName, validator]) => {
-      const error = validator.validate(values[propertyName]);
-      if (!!error) {
-        newErrors[propertyName] = messages.get(error, validator.props);
-        firstError = firstError || propertyName;
-      }
-    });
+    await Promise.all(
+      Object.entries(validators).map(async ([propertyName, validator]) => {
+        const error: ValidationResult = await validator.validate(
+          values[propertyName]
+        );
+        if (!!error) {
+          newErrors[propertyName] = messages.get(error, validator.props);
+        }
+      })
+    );
     setErrors(newErrors);
     if (Object.keys(newErrors).length > 0) {
       setFocusFirstError(true);
@@ -137,9 +143,9 @@ export function Form({
     return newErrors;
   }
 
-  const onSubmitHandler: ReactEventHandler = function (e): Promise<any> {
+  const onSubmitHandler: ReactEventHandler = async function (e): Promise<any> {
     e.preventDefault();
-    const errors = validate();
+    const errors = await validate();
     if (!Object.keys(errors).length) {
       setSubmitting(true);
       return onSubmit(values).finally(() => setSubmitting(false));

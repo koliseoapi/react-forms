@@ -1,96 +1,97 @@
 import { ValidationActions } from "../src/core/ValidationActions";
-import { Messages, defaultEntries } from "../src/core/Messages";
 
 describe("ValidationActions", function () {
-  it("Required should reject empty, null, false and undefined", function () {
-    function failRequired(value: any) {
-      expect(ValidationActions.required(value, { required: true })).toMatch(
-        "required"
-      );
+  it("Required should reject empty, null, false and undefined", async function () {
+    async function failRequired(value: any) {
+      expect(
+        await ValidationActions.required(value, { required: true })
+      ).toMatch("required");
     }
 
     expect(
-      ValidationActions.required("foo", { required: true })
+      await ValidationActions.required("foo", { required: true })
     ).toBeUndefined();
-    failRequired(null);
-    failRequired(undefined);
-    failRequired(false);
-    failRequired("");
-    failRequired(" \t");
+    await failRequired(null);
+    await failRequired(undefined);
+    await failRequired(false);
+    await failRequired("");
+    await failRequired(" \t");
   });
 
-  it("number.required should reject null and undefined, but acept 0", function () {
-    function failRequired(value: any) {
-      expect(ValidationActions.number_required(value, props)).toMatch(
+  it("number.required should reject null and undefined, but acept 0", async function () {
+    async function failRequired(value: any) {
+      expect(await ValidationActions.number_required(value, props)).toMatch(
         "required"
       );
     }
 
     const props = { required: true };
     expect(
-      ValidationActions.number_required(0, { required: true })
+      await ValidationActions.number_required(0, { required: true })
     ).toBeUndefined();
-    failRequired(null);
-    failRequired(undefined);
+    await failRequired(null);
+    await failRequired(undefined);
   });
 
-  it("Number min value", function () {
+  it("Number min value", async function () {
     const min = ValidationActions.number_min;
     const props = { min: 0 };
-    expect(min(-1, props)).toMatch("min");
-    expect(min(0, { min: 0 })).toBeUndefined();
-    expect(min(1, { min: 0 })).toBeUndefined();
+    expect(await min(-1, props)).toMatch("min");
+    expect(await min(0, { min: 0 })).toBeUndefined();
+    expect(await min(1, { min: 0 })).toBeUndefined();
   });
 
-  it("Number max value", function () {
+  it("Number max value", async function () {
     const max = ValidationActions.number_max;
     const props = { max: 100 };
-    expect(max(99, props)).toBeUndefined();
-    expect(max(100, props)).toBeUndefined();
-    expect(max(101, props)).toMatch("max");
+    expect(await max(99, props)).toBeUndefined();
+    expect(await max(100, props)).toBeUndefined();
+    expect(await max(101, props)).toMatch("max");
   });
 
-  it("Date min value", function () {
+  it("Date min value", async function () {
     const min = ValidationActions.date_min;
     const props = { min: "2020-10-01" };
-    expect(min("1999-01-01", props)).toMatch("min");
-    expect(min("2021-01-01", props)).toBeUndefined();
-    expect(min("2021-01-01", {})).toBeUndefined();
+    expect(await min("1999-01-01", props)).toMatch("min");
+    expect(await min("2021-01-01", props)).toBeUndefined();
+    expect(await min("2021-01-01", {})).toBeUndefined();
   });
 
-  it("Date max value", function () {
+  it("Date max value", async function () {
     const max = ValidationActions.date_max;
     const props = { max: "2020-10-01" };
-    expect(max("2021-01-01", props)).toMatch("max");
-    expect(max("1999-01-01", props)).toBeUndefined();
-    expect(max("1999-01-01", {})).toBeUndefined();
+    expect(await max("2021-01-01", props)).toMatch("max");
+    expect(await max("1999-01-01", props)).toBeUndefined();
+    expect(await max("1999-01-01", {})).toBeUndefined();
   });
 
-  it("Max length", function () {
+  it("Max length", async function () {
     const maxLength = ValidationActions.maxLength;
     const props = { maxLength: 4 };
-    expect(maxLength("abc", props)).toBeUndefined();
-    expect(maxLength("abcd", props)).toBeUndefined();
-    expect(maxLength("abcde", props)).toMatch("maxLength");
-    expect(maxLength("", {})).toBeUndefined();
+    expect(await maxLength("abc", props)).toBeUndefined();
+    expect(await maxLength("abcd", props)).toBeUndefined();
+    expect(await maxLength("abcde", props)).toMatch("maxLength");
+    expect(await maxLength("", {})).toBeUndefined();
   });
 
-  it("URL format", function () {
-    expect(ValidationActions.url("http://foo.bar", undefined)).toBeUndefined();
-    expect(ValidationActions.url("foo", undefined)).toMatch("url");
+  it("URL format", async function () {
+    expect(
+      await ValidationActions.url("http://foo.bar", undefined)
+    ).toBeUndefined();
+    expect(await ValidationActions.url("foo", undefined)).toMatch("url");
   });
 
-  it("E-mail format", function () {
-    expect(ValidationActions.email("a@b", undefined)).toBeUndefined();
-    expect(ValidationActions.email("foo", undefined)).toMatch("email");
+  it("E-mail format", async function () {
+    expect(await ValidationActions.email("a@b", undefined)).toBeUndefined();
+    expect(await ValidationActions.email("foo", undefined)).toMatch("email");
   });
 
-  it("Pattern format", function () {
+  it("Pattern format", async function () {
     const pattern = ValidationActions.pattern;
     const props = { pattern: "[0-9]+" };
     const patternErrorMessage = "pattern";
-    expect(pattern("1234", props)).toBeUndefined();
-    expect(pattern("ab1234", props)).toMatch(patternErrorMessage);
-    expect(pattern("1234cd", props)).toMatch(patternErrorMessage);
+    expect(await pattern("1234", props)).toBeUndefined();
+    expect(await pattern("ab1234", props)).toMatch(patternErrorMessage);
+    expect(await pattern("1234cd", props)).toMatch(patternErrorMessage);
   });
 });
