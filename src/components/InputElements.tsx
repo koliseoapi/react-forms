@@ -61,7 +61,7 @@ export function BoundComponent({
       ? undefined
       : type === "radio"
       ? (props.defaultValue as string)
-      : converter.objectToHtml(formContext.getValue(name));
+      : converter.toValue(formContext.getValue(name));
   const defaultChecked =
     type === "checkbox"
       ? formContext.getValue(name)
@@ -74,7 +74,7 @@ export function BoundComponent({
     const objectValue =
       type === "checkbox"
         ? element.checked
-        : converter.htmlToObject({ value: element.value, ...props });
+        : converter.fromValue({ value: element.value, ...props });
     formContext.setValue(name, objectValue);
     originalOnChange && originalOnChange(e);
   }

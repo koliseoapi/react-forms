@@ -11,10 +11,10 @@ function nullOrUndefToEmpty(value: string | null | undefined): string {
 
 export interface Converter<V> {
   /** Convert from the HTML attributes into a JavaScript value */
-  htmlToObject(props: InputHTMLAttributes<HTMLInputElement>): V;
+  fromValue(props: InputHTMLAttributes<HTMLInputElement>): V;
 
   /** Convert from JavaScript value into the `value` HTML attribute */
-  objectToHtml(input: V): string;
+  toValue(input: V): string;
 }
 
 interface ConvertersType {
@@ -27,19 +27,19 @@ interface ConvertersType {
 
 export const Converters: ConvertersType = {
   text: {
-    htmlToObject({ value }) {
+    fromValue({ value }) {
       return value as string;
     },
-    objectToHtml: nullOrUndefToEmpty,
+    toValue: nullOrUndefToEmpty,
   },
 
   url: {
-    htmlToObject: emptyToUndef,
-    objectToHtml: nullOrUndefToEmpty,
+    fromValue: emptyToUndef,
+    toValue: nullOrUndefToEmpty,
   },
 
   number: {
-    htmlToObject({ value, step }) {
+    fromValue({ value, step }) {
       const input = value as string;
       return isBlank(input)
         ? undefined
@@ -48,18 +48,18 @@ export const Converters: ConvertersType = {
         : parseFloat(input);
     },
 
-    objectToHtml(input) {
+    toValue(input) {
       return isNullOrUndefined(input) ? "" : "" + input;
     },
   },
 
   date: {
-    htmlToObject: emptyToUndef,
-    objectToHtml: nullOrUndefToEmpty,
+    fromValue: emptyToUndef,
+    toValue: nullOrUndefToEmpty,
   },
 
   time: {
-    htmlToObject: emptyToUndef,
-    objectToHtml: nullOrUndefToEmpty,
+    fromValue: emptyToUndef,
+    toValue: nullOrUndefToEmpty,
   },
 };
