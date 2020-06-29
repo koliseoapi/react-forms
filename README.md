@@ -7,7 +7,7 @@
 A library of HTML5 elements that convert user input automatically to state attributes. [Give it a try](https://koliseoapi.github.io/react-forms/).
 
 ```JavaScript
-import { Form, Input, TextArea } from '@koliseoapi/react-forms';
+import { Form, Input, Button } from '@koliseoapi/react-forms';
 
 const state = { username: 'Foo', age: 20 };
 
@@ -16,6 +16,7 @@ function MyComponent(props) {
     <Form onSubmit={mySaveFunction} initialValues={state}>
       <Input type="text" name="username" required maxLength="100" />
       <Input type="number" name="age" min="0" step="1" />
+      <Button>Save</Button>
     </Form>
   );
 });
@@ -141,4 +142,4 @@ import { I18nContext } from '@koliseoapi/react-forms';
 }}>
 ```
 
-The default list of validation messages [are here](https://github.com/koliseoapi/react-forms/blob/master/src/core/Messages.ts).
+The full list of validation messages [is here](https://github.com/koliseoapi/react-forms/blob/master/src/core/Messages.ts).

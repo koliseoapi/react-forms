@@ -14,7 +14,7 @@ else
 fi
 
 cp ../build/example.js .
-cp ../test-page/example.tsx ./example.src.tsx
+cp ../test-page/example.tsx ./example.src.js
 
 git add .
 git commit -m "${1:-Merge master}"
