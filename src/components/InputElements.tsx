@@ -37,6 +37,7 @@ export function BoundComponent({
     }
   }
 
+  id = id || type === "radio" ? `${name}_${props.defaultValue}` : name;
   converter = converter || Converters[type] || Converters.text;
   const formContext = useContext<FormContextContent>(FormContext);
   const defaultValue =
@@ -68,11 +69,11 @@ export function BoundComponent({
   }, []);
 
   const error = formContext.errors[name];
-  const errorMessageId = error ? `${id}_error` : undefined;
 
   // ARIA attributes to point to the error message
+  const errorMessageId = error ? `${id}_error` : undefined;
   const adb = props["aria-describedby"];
-  const ariaProps = !errorMessageId
+  const ariaProps = !error
     ? {}
     : {
         "aria-invalid": true,
@@ -101,4 +102,22 @@ export function BoundComponent({
       ) : undefined}
     </>
   );
+}
+
+type WrappedBoundComponentProps = Omit<BoundComponentProps, "elementName">;
+
+interface ExtendedInputProps extends WrappedBoundComponentProps {
+  type: "text" | "url" | "number" | "checkbox" | "date" | "time" | "radio";
+}
+
+export function Input(props: ExtendedInputProps) {
+  return <BoundComponent elementName="input" {...props} />;
+}
+
+export function Select(props: WrappedBoundComponentProps) {
+  return <BoundComponent elementName="select" {...props} />;
+}
+
+export function TextArea(props: WrappedBoundComponentProps) {
+  return <BoundComponent elementName="textarea" {...props} />;
 }

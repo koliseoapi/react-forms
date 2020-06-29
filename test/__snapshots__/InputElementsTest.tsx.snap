@@ -1,0 +1,173 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Input required and optional checkboxes (also: set id attribute) 1`] = `
+<form
+  noValidate={true}
+  onSubmit={[Function]}
+>
+  <input
+    aria-describedby="subscribed_undefined_error"
+    aria-invalid={true}
+    defaultChecked={false}
+    id="subscribed_undefined"
+    name="subscribed"
+    onChange={[Function]}
+    required={true}
+    type="checkbox"
+  />
+  <div
+    className="input-error"
+    id="subscribed_undefined_error"
+    role="alert"
+  >
+    Please fill out this field
+  </div>
+</form>
+`;
+
+exports[`Input should not propagate specific properties, like converter, to the HTML5 element 1`] = `
+<form
+  noValidate={true}
+  onSubmit={[Function]}
+>
+  <input
+    className="foo"
+    defaultValue=""
+    id="name"
+    name="name"
+    onChange={[Function]}
+    type="text"
+  />
+</form>
+`;
+
+exports[`Input should render a validation error 1`] = `
+<form
+  noValidate={true}
+  onSubmit={[Function]}
+>
+  <input
+    aria-describedby="name_error"
+    aria-invalid={true}
+    defaultValue=""
+    id="name"
+    name="name"
+    onChange={[Function]}
+    required={true}
+    type="text"
+  />
+  <div
+    className="input-error"
+    id="name_error"
+    role="alert"
+  >
+    Please fill out this field
+  </div>
+</form>
+`;
+
+exports[`Input should render correctly with type=text 1`] = `
+<form
+  noValidate={true}
+  onSubmit={[Function]}
+>
+  <input
+    className="foo"
+    defaultValue="foobar"
+    id="name"
+    name="name"
+    onChange={[Function]}
+    required={true}
+    type="text"
+  />
+</form>
+`;
+
+exports[`Input should render type=radio 1`] = `
+<form
+  noValidate={true}
+  onSubmit={[Function]}
+>
+  <input
+    defaultChecked={true}
+    defaultValue="a"
+    id="abtesting_a"
+    name="abtesting"
+    onChange={[Function]}
+    type="radio"
+  />
+  <input
+    defaultChecked={false}
+    defaultValue="b"
+    id="abtesting_b"
+    name="abtesting"
+    onChange={[Function]}
+    type="radio"
+  />
+</form>
+`;
+
+exports[`Input should render type=radio: radio: female selected, male unselected 1`] = `
+<form
+  noValidate={true}
+  onSubmit={[Function]}
+>
+  <input
+    defaultChecked={true}
+    defaultValue="male"
+    id="gender_male"
+    name="gender"
+    onChange={[Function]}
+    type="radio"
+  />
+  ,
+  <input
+    defaultChecked={false}
+    defaultValue="female"
+    id="gender_female"
+    name="gender"
+    onChange={[Function]}
+    type="radio"
+  />
+</form>
+`;
+
+exports[`Input should render type=radio: radio: male selected, female unselected 1`] = `
+<form
+  noValidate={true}
+  onSubmit={[Function]}
+>
+  <input
+    defaultChecked={true}
+    defaultValue="male"
+    id="gender_male"
+    name="gender"
+    onChange={[Function]}
+    type="radio"
+  />
+  ,
+  <input
+    defaultChecked={false}
+    defaultValue="female"
+    id="gender_female"
+    name="gender"
+    onChange={[Function]}
+    type="radio"
+  />
+</form>
+`;
+
+exports[`Input should use checked instead of value with type=checkbox 1`] = `
+<form
+  noValidate={true}
+  onSubmit={[Function]}
+>
+  <input
+    defaultChecked={true}
+    id="subscribed"
+    name="subscribed"
+    onChange={[Function]}
+    type="checkbox"
+  />
+</form>
+`;

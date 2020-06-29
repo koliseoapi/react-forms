@@ -7,16 +7,12 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "Launch Program",
+      "name": "Launch Jest tests",
       "program": "${workspaceRoot}/node_modules/jest/bin/jest",
-      "args": ["--watch"],
+      "args": ["--runInBand", "--testMatch", "**/Input*"],
+      "internalConsoleOptions": "neverOpen",
+      "disableOptimisticBPs": true,
       "cwd": "${workspaceRoot}"
-    },
-    {
-      "type": "node",
-      "request": "attach",
-      "name": "Attach to Process",
-      "port": 5858
     }
   ]
 }

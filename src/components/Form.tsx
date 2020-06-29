@@ -23,7 +23,7 @@ interface FormProps extends FormHTMLAttributes<HTMLFormElement> {
  * The list of all validation errors. The key is the propertyName,
  * the value is the error message
  */
-interface ValidationErrors {
+export interface ValidationErrors {
   [propertyName: string]: string;
 }
 
@@ -137,12 +137,14 @@ export function Form({
     return newErrors;
   }
 
-  const onSubmitHandler: ReactEventHandler = function (e) {
+  const onSubmitHandler: ReactEventHandler = function (e): Promise<any> {
     e.preventDefault();
     const errors = validate();
     if (!Object.keys(errors).length) {
       setSubmitting(true);
-      return onSubmit(e).finally(() => setSubmitting(false));
+      return onSubmit(values).finally(() => setSubmitting(false));
+    } else {
+      return Promise.reject(errors);
     }
   };
 
@@ -164,5 +166,17 @@ export function Form({
         {children}
       </FormContext.Provider>
     </form>
+  );
+}
+
+/**
+ * A fieldset that will disable all input controls while submitting
+ */
+export function FieldSet({ children, ...props }) {
+  const formContext = useContext(FormContext);
+  return (
+    <fieldset disabled={formContext.submitting} {...props}>
+      {children}
+    </fieldset>
   );
 }

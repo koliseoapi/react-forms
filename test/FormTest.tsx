@@ -1,5 +1,5 @@
 import React from "react";
-import { Input } from "../src/components/Elements";
+import { Input } from "../src/components/InputElements";
 import { render, screen, fireEvent } from "@testing-library/react";
 import { Form } from "../src/components/Form";
 import { Button } from "../src/components/Button";

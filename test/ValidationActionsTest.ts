@@ -38,7 +38,7 @@ describe("ValidationActions", function () {
     const min = ValidationActions.number_min;
     const props = { min: 0 };
     expect(min(-1, props)).toMatch("min");
-    expect(min(0, { min: 0 })).toMatch("min");
+    expect(min(0, { min: 0 })).toBeUndefined();
     expect(min(1, { min: 0 })).toBeUndefined();
   });
 
@@ -82,9 +82,7 @@ describe("ValidationActions", function () {
 
   it("E-mail format", function () {
     expect(ValidationActions.email("a@b", undefined)).toBeUndefined();
-    expect(ValidationActions.email("foo", undefined)).toMatch(
-      "Please include a valid e-mail address"
-    );
+    expect(ValidationActions.email("foo", undefined)).toMatch("email");
   });
 
   it("Pattern format", function () {

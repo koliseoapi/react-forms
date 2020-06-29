@@ -5,16 +5,12 @@ exports[`TextArea should render 1`] = `
   noValidate={true}
   onSubmit={[Function]}
 >
-  <div
-    className="input-wrapper "
-  >
-    <textarea
-      className="foo"
-      id="text"
-      name="text"
-      onChange={[Function]}
-      value="foobaz"
-    />
-  </div>
+  <textarea
+    className="foo"
+    defaultValue="foobaz"
+    id="text"
+    name="text"
+    onChange={[Function]}
+  />
 </form>
 `;

@@ -17,7 +17,7 @@ export const defaultEntries: EntriesType = {
   min: "Value must be greater than or equal to ${min}",
   max: "Value must be less than or equal to ${max}",
   url: "Please enter a URL",
-  email: "Please include a valid e-mail address",
+  email: "Please include a valid email address",
   pattern: "Please match the requested format",
   maxLength: "Value must have no more than ${maxLength} characters",
 };
