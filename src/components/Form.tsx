@@ -88,6 +88,9 @@ export function Form({
   // the submission status
   const [submitting, setSubmitting] = useState(false);
 
+  // should focus on the first component with error
+  const [focusFirstError, setFocusFirstError] = useState(false);
+
   // validation rules to apply
   const entries = useContext(I18nContext);
   const messages = new Messages(entries);
@@ -128,6 +131,9 @@ export function Form({
       }
     });
     setErrors(newErrors);
+    if (Object.keys(newErrors).length > 0) {
+      setFocusFirstError(true);
+    }
     return newErrors;
   }
 
@@ -140,11 +146,16 @@ export function Form({
     }
   };
 
+  // todo: only do this when fully validating, not by setErrors()
+
   useEffect(() => {
-    const firstInvalidElement = document.body.querySelector<HTMLInputElement>(
-      "[aria-invalid=true]"
-    );
-    firstInvalidElement && firstInvalidElement.focus();
+    if (focusFirstError) {
+      const firstInvalidElement = document.body.querySelector<HTMLInputElement>(
+        "[aria-invalid=true]"
+      );
+      firstInvalidElement && firstInvalidElement.focus();
+      setFocusFirstError(false);
+    }
   }, [errors]);
 
   return (

@@ -29,6 +29,7 @@ const state: MyState = {
   name: "John Doe",
   age: 23,
   subscribed: true,
+  gender: "other",
 };
 
 function onSubmit() {

@@ -51,12 +51,8 @@ export function BoundComponent({
       : type === "radio"
       ? formContext.getValue(name) == defaultValue
       : undefined;
-  console.log(`Refreshing input name=${name}`);
 
   function onChange(e: ChangeEvent<HTMLInputElement>) {
-    console.log(
-      `onChange value=${e.target.value}, checked=${e.target.checked}`
-    );
     const element = e.target;
     const objectValue =
       type === "checkbox"
