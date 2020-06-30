@@ -53,7 +53,12 @@ export function BoundComponent({
     }
   }
 
-  id = id || type === "radio" ? `${name}_${props.defaultValue}` : name;
+  if (!id) {
+    id = name.replace(/\./g, "-");
+    if (type === "radio") {
+      id = `${name}_${props.defaultValue}`;
+    }
+  }
   converter = converter || Converters[type] || Converters.text;
   const formContext = useContext<FormContextContent>(FormContext);
   const defaultValue =

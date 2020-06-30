@@ -14,6 +14,7 @@ import { I18nContext } from "./I18nContext";
 import { Messages } from "../core/Messages";
 import { Validators, Validator } from "../core/Validators";
 import { BoundComponentProps } from "./InputElements";
+import { setNestedProperty, getNestedProperty } from "../core/utils";
 
 interface FormProps extends FormHTMLAttributes<HTMLFormElement> {
   /** the object being edited  */
@@ -108,7 +109,7 @@ export function Form({
     },
 
     setValue: function (propertyName, value) {
-      values[propertyName] = value;
+      setNestedProperty(values, propertyName, value);
       if (errors[propertyName]) {
         delete errors[propertyName];
         setErrors({ ...errors });
@@ -116,7 +117,7 @@ export function Form({
     },
 
     getValue(propertyName) {
-      return values[propertyName];
+      return getNestedProperty(values, propertyName);
     },
   };
 

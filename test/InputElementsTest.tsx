@@ -1,6 +1,6 @@
 import React, { ReactElement } from "react";
 import renderer, { ReactTestRenderer, act } from "react-test-renderer";
-import { Input } from "../src/components/InputElements";
+import { Input, Select } from "../src/components/InputElements";
 import { Form, ValidationErrors, FieldSet } from "../src/components/Form";
 import { Converters } from "../src/core/Converters";
 import { ValidationResult } from "../src/core/ValidationActions";
@@ -30,7 +30,7 @@ describe("Input", function () {
     checked?: boolean;
   }) {
     act(() => {
-      const inputElement = form.root.find((el) => el.type == "input");
+      const inputElement = form.root.findAll((el) => el.type == "input")[0];
       expect(inputElement.type).toBe("input");
       inputElement.props.onChange({
         target: {
@@ -140,6 +140,29 @@ describe("Input", function () {
       color: "red",
     });
     expect(callback).toHaveBeenCalledTimes(1);
+  });
+
+  it("should update nested properties", async () => {
+    const values: {
+      // empty initially
+      from?: { address: string };
+
+      // not empty initially
+      to?: { address: string };
+    } = { to: { address: "barbaz" } };
+    mount(
+      <>
+        <Input type="text" name="from.address" required />,
+        <Input type="text" name="to.address" />,
+      </>,
+      values
+    );
+    triggerChange({ value: "foobar" });
+    expect(values).toMatchObject({
+      from: { address: "foobar" },
+      to: { address: "barbaz" },
+    });
+    expect(form.toJSON()).toMatchSnapshot();
   });
 
   it("required and optional checkboxes (also: set id attribute)", async function () {

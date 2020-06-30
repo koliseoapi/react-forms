@@ -45,10 +45,10 @@ exports[`Input required and optional checkboxes (also: set id attribute) 1`] = `
   onSubmit={[Function]}
 >
   <input
-    aria-describedby="subscribed_undefined_error"
+    aria-describedby="foobarbaz_error"
     aria-invalid={true}
     defaultChecked={false}
-    id="subscribed_undefined"
+    id="foobarbaz"
     name="subscribed"
     onChange={[Function]}
     required={true}
@@ -56,7 +56,7 @@ exports[`Input required and optional checkboxes (also: set id attribute) 1`] = `
   />
   <div
     className="input-error"
-    id="subscribed_undefined_error"
+    id="foobarbaz_error"
     role="alert"
   >
     Please fill out this field
@@ -193,6 +193,31 @@ exports[`Input should render type=radio: radio: male selected, female unselected
     onChange={[Function]}
     type="radio"
   />
+</form>
+`;
+
+exports[`Input should update nested properties 1`] = `
+<form
+  noValidate={true}
+  onSubmit={[Function]}
+>
+  <input
+    defaultValue=""
+    id="from-address"
+    name="from.address"
+    onChange={[Function]}
+    required={true}
+    type="text"
+  />
+  ,
+  <input
+    defaultValue="barbaz"
+    id="to-address"
+    name="to.address"
+    onChange={[Function]}
+    type="text"
+  />
+  ,
 </form>
 `;
 
