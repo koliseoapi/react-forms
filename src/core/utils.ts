@@ -9,6 +9,10 @@ export function isFalse(value: boolean): boolean {
   return value === false;
 }
 
+export function hasProperty(obj: object, property: string): boolean {
+  return property in obj;
+}
+
 /**
  * Sets a nested property such as "foo.bar.baz", initializing intermediate nodes if needed
  */
