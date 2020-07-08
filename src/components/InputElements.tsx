@@ -9,7 +9,7 @@ import { FormContext, FormContextContent } from "./Form";
 import { ValidationResult } from "../core/ValidationActions";
 
 export interface BoundComponentProps
-  extends InputHTMLAttributes<HTMLInputElement> {
+  extends Omit<InputHTMLAttributes<HTMLInputElement>, "type"> {
   /** propertyName. Will also be used as id if none is specified */
   name: string;
 
