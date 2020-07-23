@@ -1,4 +1,4 @@
-import { isNullOrUndefined, isBlank, isFalse } from "./utils";
+import { isNullOrUndefined, isBlank, isFalse, hasProperty } from "./utils";
 import { BoundComponentProps } from "../components/InputElements";
 
 let re_weburl: RegExp;
@@ -39,7 +39,7 @@ export const ValidationActions = {
     value: any,
     props: BoundComponentProps
   ): Promise<ValidationResult> {
-    if (isBlank(value) && !isFalse(props.required)) {
+    if (isBlank(value) && hasProperty(props, 'required') && !isFalse(props.required)) {
       return "required";
     }
   },
@@ -48,7 +48,7 @@ export const ValidationActions = {
     value: number,
     props: BoundComponentProps
   ): Promise<ValidationResult> {
-    if (isNullOrUndefined(value) && !isFalse(props.required)) {
+    if (isNullOrUndefined(value) && hasProperty(props, 'required') && !isFalse(props.required)) {
       return "required";
     }
   },
