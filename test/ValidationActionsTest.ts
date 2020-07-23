@@ -16,13 +16,13 @@ describe("ValidationActions", function () {
     await failRequired(false);
     await failRequired("");
     await failRequired(" \t");
-    async function worksNotSpecifyingRequiredProp(value: any) {
-      expect(await ValidationActions.required(value, { })).toBeUndefined();
+    async function passRequired(value: any) {
+      expect(await ValidationActions.required(value, {})).toBeUndefined();
     }
-    await worksNotSpecifyingRequiredProp(null);
-    await worksNotSpecifyingRequiredProp(undefined);
-    await worksNotSpecifyingRequiredProp(false);
-    await worksNotSpecifyingRequiredProp("foo");
+    await passRequired(null);
+    await passRequired(undefined);
+    await passRequired(false);
+    await passRequired("foo");
   });
 
   it("number.required should reject null and undefined, but acept 0", async function () {
@@ -38,13 +38,15 @@ describe("ValidationActions", function () {
     ).toBeUndefined();
     await failRequired(null);
     await failRequired(undefined);
-    async function worksNotSpecifyingRequiredProp(value: any) {
-      expect(await ValidationActions.number_required(value, { })).toBeUndefined();
+    async function passRequired(value: any) {
+      expect(
+        await ValidationActions.number_required(value, {})
+      ).toBeUndefined();
     }
-    await worksNotSpecifyingRequiredProp(null);
-    await worksNotSpecifyingRequiredProp(undefined);
-    await worksNotSpecifyingRequiredProp(false);
-    await worksNotSpecifyingRequiredProp(0);
+    await passRequired(null);
+    await passRequired(undefined);
+    await passRequired(false);
+    await passRequired(0);
   });
 
   it("Number min value", async function () {
