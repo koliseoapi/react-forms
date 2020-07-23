@@ -21,7 +21,15 @@ export interface BoundComponentProps
 }
 
 interface InputProps extends BoundComponentProps {
-  type: "text" | "url" | "number" | "checkbox" | "date" | "time" | "radio";
+  type:
+    | "text"
+    | "url"
+    | "number"
+    | "checkbox"
+    | "date"
+    | "time"
+    | "radio"
+    | "datetime-local";
 }
 
 export interface BoundComponentPropsWithElement extends BoundComponentProps {
