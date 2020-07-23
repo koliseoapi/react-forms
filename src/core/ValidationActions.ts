@@ -34,6 +34,8 @@ export const ValidationActions = {
   date_max: timestampMaxValidator,
   time_min: timestampMinValidator,
   time_max: timestampMaxValidator,
+  "datetime-local_min": timestampMinValidator,
+  "datetime-local_max": timestampMaxValidator,
 
   async required(
     value: any,

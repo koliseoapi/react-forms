@@ -29,7 +29,7 @@ When submitting, the `Form` container validates all fields before triggering the
 The following components are supported:
 
 - `Form`
-- `Input (text, number, checkbox, radio, url, email, date, time)`
+- `Input (text, number, checkbox, radio, url, email, date, time, datetime-local)`
 - `TextArea`
 - `Select`
 
@@ -64,6 +64,12 @@ The native HTML element is used for data input, and the data is validated again 
 ```JavaScript
 <Input type="date" name="birthdate" min="1900-01-01" max="2020-01-01" pattern="\d{4}-\d{2}-\d{2}"/>
 <Input type="time" pattern="[0-9]{2}:[0-9]{2}">
+```
+
+`datetime-local` does the same with format `yyyy-MM-ddTHH:mm`. A `pattern` attribute may be specified for browsers that do not support this input type.
+
+```JavaScript
+<Input type="datetime-local" name="birthTimestamp" pattern="\d{4}-\d{2}-\d{2}T[0-9]{2}:[0-9]{2}"/>
 ```
 
 Keep in mind that these will render the corresponding native HTML elements, which are supported on all major browsers except Safari on MacOS, where `input[type=text]` will be used instead. For this reason we recommend to set a `pattern` attribute like the example above. Even though the date picker doesn't use it, the text input fallback will.
