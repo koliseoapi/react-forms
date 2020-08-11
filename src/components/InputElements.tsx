@@ -20,7 +20,7 @@ export interface BoundComponentProps
   validate?(value: any): Promise<ValidationResult>;
 }
 
-interface InputProps extends BoundComponentProps {
+export interface InputProps extends BoundComponentProps {
   type:
     | "text"
     | "url"
