@@ -3,6 +3,7 @@ import React, {
   ChangeEvent,
   useEffect,
   InputHTMLAttributes,
+  RefObject,
 } from "react";
 import { Converters, Converter } from "../core/Converters";
 import { FormContext, FormContextContent } from "./Form";
@@ -18,6 +19,9 @@ export interface BoundComponentProps
 
   /** Optional: the validator to use. If set, all default validators (required, number, etc) will be replaced by this. Received the value after being converted */
   validate?(value: any): Promise<ValidationResult>;
+
+  /** Optional: if specified, the ref to have forwarded to the underlying component */
+  ref?: RefObject<HTMLInputElement>;
 }
 
 export interface InputProps extends BoundComponentProps {
