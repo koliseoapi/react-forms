@@ -22,9 +22,9 @@ function MyComponent(props) {
 });
 ```
 
-Anything introduced by the user is converted into the right type (`number`, `date`, `boolean`) and assigned to the corresponding attribute inside the object passed to `initialValues`. `name` can also be a nested attribute like `"location.address"`, in which case any missing intermediate nodes will be generated automatically.
+The object passed to `Form.initialValues` is shallow copied and stored internally as state. Anything introduced by the user is converted to a JavaScript type (`number`, `date`, `boolean`) and assigned to the attribute indicated by `name`. `name` can also be a nested attribute like `"location.address"`, in which case any missing intermediate nodes will be generated automatically.
 
-When submitting, the `Form` container validates all fields before triggering the `onSubmit` callback.
+When submitting, the `Form` container validates all fields and triggers `onSubmit`, passing the state object as only argument.
 
 The following components are supported:
 

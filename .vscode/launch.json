@@ -9,9 +9,11 @@
       "request": "launch",
       "name": "Launch Jest tests",
       "program": "${workspaceRoot}/node_modules/jest/bin/jest",
-      "args": ["--runInBand", "--testMatch", "**/Utils*"],
-      "internalConsoleOptions": "neverOpen",
+      "args": ["--runInBand", "--testMatch", "**/InputElementsTest*"],
+      "internalConsoleOptions": "openOnFirstSessionStart",
       "disableOptimisticBPs": true,
+      "skipFiles": ["${workspaceRoot}/node_modules/**/*.js"],
+      "sourceMaps": true,
       "cwd": "${workspaceRoot}"
     }
   ]

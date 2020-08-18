@@ -48,6 +48,8 @@ describe("Input", function () {
         await formElement.props.onSubmit({ preventDefault() {} });
         expect(expectedErrors).toBeUndefined();
       } catch (errors) {
+        console.log(errors);
+        expect(expectedErrors).toBeDefined();
         expect(errors).toMatchObject(expectedErrors!);
       }
     });
@@ -135,7 +137,8 @@ describe("Input", function () {
       values
     );
     await triggerChange({ value: "32.2" });
-    expect(values).toMatchObject({
+    await triggerSubmit();
+    expect(onSubmit).toHaveBeenCalledWith({
       age: 32,
       color: "red",
     });
@@ -158,7 +161,9 @@ describe("Input", function () {
       values
     );
     triggerChange({ value: "foobar" });
-    expect(values).toMatchObject({
+    debugger;
+    await triggerSubmit();
+    expect(onSubmit).toHaveBeenCalledWith({
       from: { address: "foobar" },
       to: { address: "barbaz" },
     });

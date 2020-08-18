@@ -7,10 +7,7 @@ import React, {
   useEffect,
   FieldsetHTMLAttributes,
 } from "react";
-import {
-  filterActionsForProps,
-  ValidationResult,
-} from "../core/ValidationActions";
+import { ValidationResult } from "../core/ValidationActions";
 import { I18nContext } from "./I18nContext";
 import { Messages } from "../core/Messages";
 import { Validators, Validator } from "../core/Validators";
@@ -86,7 +83,8 @@ export function Form({
   const [errors, setErrors] = useState<ValidationErrors>({});
 
   // object with the data introduced in this form
-  const [values, setValues] = useState(initialValues);
+  const [values, setValues] = useState({ ...initialValues });
+  if (values.to && !values.from) debugger;
 
   // the list of validators to use for this object
   const [validators, setValidators] = useState<Validators>({});
@@ -111,10 +109,12 @@ export function Form({
 
     setValue: function (propertyName, value) {
       setNestedProperty(values, propertyName, value);
+      if (propertyName.indexOf(".") !== -1) debugger;
       if (errors[propertyName]) {
         delete errors[propertyName];
         setErrors({ ...errors });
       }
+      setValues(values);
     },
 
     getValue(propertyName) {
@@ -146,7 +146,11 @@ export function Form({
     const errors = await validate();
     if (!Object.keys(errors).length) {
       setSubmitting(true);
-      return onSubmit(values).finally(() => setSubmitting(false));
+      try {
+        await onSubmit(values);
+      } finally {
+        setSubmitting(false);
+      }
     } else {
       return Promise.reject(errors);
     }
