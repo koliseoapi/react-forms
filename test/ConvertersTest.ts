@@ -28,7 +28,6 @@ describe("Converters", () => {
     [Converters.url, Converters.date, Converters.time].forEach((type) => {
       expect(type.fromValue({ value: "" })).toBeUndefined();
       expect(type.fromValue({ value: undefined })).toBeUndefined();
-      expect(type.fromValue({ value: null })).toBeUndefined();
       expect(type.toValue(undefined)).toBe("");
       expect(type.toValue(null)).toBe("");
       expect(type.toValue("")).toBe("");

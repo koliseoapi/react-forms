@@ -51,7 +51,7 @@ export function BoundComponent({
   children,
   ...props
 }: BoundComponentPropsWithElement) {
-  const type = props.type;
+  const type: string = (props as any).type;
   if (process.env.NODE_ENV !== "production") {
     if (type === "radio" && !props.defaultValue) {
       throw new Error(`Radio button ${name} requires a defaultValue`);
@@ -87,7 +87,7 @@ export function BoundComponent({
     const objectValue =
       type === "checkbox"
         ? element.checked
-        : converter.fromValue({ value: element.value, ...props });
+        : converter!.fromValue({ value: element.value, ...props });
     formContext.setValue(name, objectValue);
     originalOnChange && originalOnChange(e);
   }

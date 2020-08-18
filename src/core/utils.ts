@@ -1,16 +1,12 @@
-export function isNullOrUndefined(value?: any): boolean {
+export function isNullOrUndefined(value: any): boolean {
   return typeof value === "undefined" || value === null;
 }
-export function isBlank(str: string): boolean {
+export function isBlank(str: string | null | undefined): boolean {
   return !str || /^\s*$/.test(str);
 }
 
-export function isFalse(value: boolean): boolean {
+export function isFalse(value: boolean | null | undefined): boolean {
   return value === false;
-}
-
-export function hasProperty(obj: object, property: string): boolean {
-  return property in obj;
 }
 
 /**

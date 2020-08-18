@@ -5,6 +5,7 @@ import React, {
   useState,
   useContext,
   useEffect,
+  FieldsetHTMLAttributes,
 } from "react";
 import {
   filterActionsForProps,
@@ -175,7 +176,10 @@ export function Form({
 /**
  * A fieldset that will disable all input controls while submitting
  */
-export function FieldSet({ children, ...props }) {
+export function FieldSet({
+  children,
+  ...props
+}: FieldsetHTMLAttributes<HTMLFieldSetElement>) {
   const formContext = useContext(FormContext);
   return (
     <fieldset disabled={formContext.submitting} {...props}>

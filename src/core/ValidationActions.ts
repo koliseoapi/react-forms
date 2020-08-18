@@ -1,5 +1,6 @@
-import { isNullOrUndefined, isBlank, isFalse, hasProperty } from "./utils";
-import { BoundComponentProps } from "../components/InputElements";
+import { isNullOrUndefined, isBlank, isFalse } from "./utils";
+import { BoundComponentProps, InputProps } from "../components/InputElements";
+import { Validator } from "./Validators";
 
 let re_weburl: RegExp;
 
@@ -15,7 +16,7 @@ async function timestampMinValidator(
   props: BoundComponentProps
 ): Promise<ValidationResult> {
   // under ISO8601, dates and times can be compared as strings
-  if (!isNullOrUndefined(value) && value < props.min) {
+  if (!isNullOrUndefined(value) && value < props.min!) {
     return "min";
   }
 }
@@ -24,12 +25,16 @@ async function timestampMaxValidator(
   value: string,
   props: BoundComponentProps
 ): Promise<ValidationResult> {
-  if (!isNullOrUndefined(value) && value > props.max) {
+  if (!isNullOrUndefined(value) && value > props.max!) {
     return "max";
   }
 }
 
-export const ValidationActions = {
+interface IValidationActions {
+  [key: string]: ValidationAction<any>;
+}
+
+export const ValidationActions: IValidationActions = {
   date_min: timestampMinValidator,
   date_max: timestampMaxValidator,
   time_min: timestampMinValidator,
@@ -41,7 +46,7 @@ export const ValidationActions = {
     value: any,
     props: BoundComponentProps
   ): Promise<ValidationResult> {
-    if (isBlank(value) && hasProperty(props, 'required') && !isFalse(props.required)) {
+    if (isBlank(value) && !isFalse(props.required)) {
       return "required";
     }
   },
@@ -50,7 +55,7 @@ export const ValidationActions = {
     value: number,
     props: BoundComponentProps
   ): Promise<ValidationResult> {
-    if (isNullOrUndefined(value) && hasProperty(props, 'required') && !isFalse(props.required)) {
+    if (isNullOrUndefined(value) && !isFalse(props.required)) {
       return "required";
     }
   },
@@ -59,7 +64,7 @@ export const ValidationActions = {
     value: number,
     props: BoundComponentProps
   ): Promise<ValidationResult> {
-    if (!isNullOrUndefined(value) && value < +props.min) {
+    if (!isNullOrUndefined(value) && value < +props.min!) {
       return "min";
     }
   },
@@ -68,7 +73,7 @@ export const ValidationActions = {
     value: number,
     props: BoundComponentProps
   ): Promise<ValidationResult> {
-    if (!isNullOrUndefined(value) && value > +props.max) {
+    if (!isNullOrUndefined(value) && value > +props.max!) {
       return "max";
     }
   },
@@ -158,8 +163,7 @@ export const ValidationActions = {
     value: string,
     props: BoundComponentProps
   ): Promise<ValidationResult> {
-    const { maxLength } = props;
-    if (!isNullOrUndefined(value) && value.length > maxLength) {
+    if (!isNullOrUndefined(value) && value.length > props.maxLength!) {
       return "maxLength";
     }
   },
@@ -172,12 +176,14 @@ export const ValidationActions = {
 export function filterActionsForProps({
   type,
   ...props
-}: BoundComponentProps): ValidationAction<any>[] {
+}: any): ValidationAction<any>[] {
   const result: ValidationAction<any>[] = [];
   result.push(ValidationActions[type]);
   for (const prop of ["required", "min", "max", "pattern", "maxLength"]) {
-    result.push(ValidationActions[`${type}_${prop}`]);
-    result.push(ValidationActions[prop]);
+    if (prop in props) {
+      result.push(ValidationActions[`${type}_${prop}`]);
+      result.push(ValidationActions[prop]);
+    }
   }
   return result.filter((action) => !!action);
 }

@@ -1,28 +1,28 @@
 import { isNullOrUndefined, isBlank } from "./utils";
 import { InputHTMLAttributes } from "react";
 
-function emptyToUndef({ value }): string | undefined {
+function emptyToUndef({
+  value,
+}: {
+  value: string | undefined;
+}): string | undefined {
   return isBlank(value) ? undefined : value;
 }
 
 function nullOrUndefToEmpty(value: string | null | undefined): string {
-  return isNullOrUndefined(value) ? "" : value;
+  return isNullOrUndefined(value) ? "" : value!;
 }
 
 export interface Converter<V> {
   /** Convert from the HTML attributes into a JavaScript value */
-  fromValue(props: InputHTMLAttributes<HTMLInputElement>): V;
+  fromValue(props: InputHTMLAttributes<HTMLInputElement>): V | undefined;
 
   /** Convert from JavaScript value into the `value` HTML attribute */
-  toValue(input: V): string;
+  toValue(input: V | undefined | null): string;
 }
 
 interface ConvertersType {
-  text: Converter<string>;
-  url: Converter<string>;
-  number: Converter<number>;
-  date: Converter<string>;
-  time: Converter<string>;
+  [key: string]: Converter<any>;
 }
 
 export const Converters: ConvertersType = {
