@@ -8,6 +8,14 @@
     "type": "git",
     "url": "git@github.com:koliseoapi/react-forms.git"
   },
+  "files": [
+    "src",
+    "lib"
+  ],
+  "directories": {
+    "src": "./src",
+    "lib": "./lib"
+  },
   "keywords": [
     "react",
     "form",
