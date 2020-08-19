@@ -84,7 +84,6 @@ export function Form({
 
   // object with the data introduced in this form
   const [values, setValues] = useState({ ...initialValues });
-  if (values.to && !values.from) debugger;
 
   // the list of validators to use for this object
   const [validators, setValidators] = useState<Validators>({});
@@ -109,7 +108,6 @@ export function Form({
 
     setValue: function (propertyName, value) {
       setNestedProperty(values, propertyName, value);
-      if (propertyName.indexOf(".") !== -1) debugger;
       if (errors[propertyName]) {
         delete errors[propertyName];
         setErrors({ ...errors });
@@ -127,7 +125,7 @@ export function Form({
     await Promise.all(
       Object.entries(validators).map(async ([propertyName, validator]) => {
         const error: ValidationResult = await validator.validate(
-          values[propertyName]
+          getNestedProperty(values, propertyName)
         );
         if (!!error) {
           newErrors[propertyName] = messages.get(error, validator.props);

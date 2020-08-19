@@ -202,7 +202,7 @@ exports[`Input should update nested properties 1`] = `
   onSubmit={[Function]}
 >
   <input
-    defaultValue=""
+    defaultValue="foobar"
     id="from-address"
     name="from.address"
     onChange={[Function]}

@@ -161,7 +161,6 @@ describe("Input", function () {
       values
     );
     triggerChange({ value: "foobar" });
-    debugger;
     await triggerSubmit();
     expect(onSubmit).toHaveBeenCalledWith({
       from: { address: "foobar" },
