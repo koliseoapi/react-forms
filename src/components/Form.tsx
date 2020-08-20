@@ -147,14 +147,13 @@ export function Form({
       try {
         await onSubmit(values);
       } finally {
-        setSubmitting(false);
+        // could be that the form is already dismounted
+        submitting && setSubmitting(false);
       }
     } else {
       return Promise.reject(errors);
     }
   };
-
-  // todo: only do this when fully validating, not by setErrors()
 
   useEffect(() => {
     if (focusFirstError) {
@@ -165,6 +164,13 @@ export function Form({
       setFocusFirstError(false);
     }
   }, [errors]);
+
+  useEffect(() => {
+    // clean submission status when the component is dismounted
+    return () => {
+      submitting && setSubmitting(false);
+    };
+  }, []);
 
   return (
     <form {...props} onSubmit={onSubmitHandler} noValidate>
