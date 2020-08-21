@@ -48,7 +48,6 @@ describe("Input", function () {
         await formElement.props.onSubmit({ preventDefault() {} });
         expect(expectedErrors).toBeUndefined();
       } catch (errors) {
-        console.log(errors);
         expect(expectedErrors).toBeDefined();
         expect(errors).toMatchObject(expectedErrors!);
       }

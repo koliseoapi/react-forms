@@ -8,6 +8,7 @@ exports[`Input should render a validation error 1`] = `
   <input
     aria-describedby="name_error"
     aria-invalid={true}
+    autoComplete="off"
     defaultValue=""
     id="name"
     name="name"

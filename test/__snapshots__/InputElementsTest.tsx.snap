@@ -8,6 +8,7 @@ exports[`Input custom async validation fails (also: onSubmit not called) 1`] = `
   <input
     aria-describedby="foo_error"
     aria-invalid={true}
+    autoComplete="off"
     defaultValue="xyz"
     id="foo"
     name="foo"
@@ -30,6 +31,7 @@ exports[`Input custom async validation passes (also: onSubmit called) 1`] = `
   onSubmit={[Function]}
 >
   <input
+    autoComplete="off"
     defaultValue="abc"
     id="foo"
     name="foo"
@@ -47,6 +49,7 @@ exports[`Input required and optional checkboxes (also: set id attribute) 1`] = `
   <input
     aria-describedby="foobarbaz_error"
     aria-invalid={true}
+    autoComplete="off"
     defaultChecked={false}
     id="foobarbaz"
     name="subscribed"
@@ -70,6 +73,7 @@ exports[`Input should not propagate specific properties, like converter, to the 
   onSubmit={[Function]}
 >
   <input
+    autoComplete="off"
     className="foo"
     defaultValue=""
     id="name"
@@ -88,6 +92,7 @@ exports[`Input should render a validation error 1`] = `
   <input
     aria-describedby="name_error"
     aria-invalid={true}
+    autoComplete="off"
     defaultValue=""
     id="name"
     name="name"
@@ -111,6 +116,7 @@ exports[`Input should render correctly with type=text 1`] = `
   onSubmit={[Function]}
 >
   <input
+    autoComplete="off"
     className="foo"
     defaultValue="foobar"
     id="name"
@@ -128,6 +134,7 @@ exports[`Input should render type=radio 1`] = `
   onSubmit={[Function]}
 >
   <input
+    autoComplete="off"
     defaultChecked={true}
     defaultValue="a"
     id="abtesting_a"
@@ -136,6 +143,7 @@ exports[`Input should render type=radio 1`] = `
     type="radio"
   />
   <input
+    autoComplete="off"
     defaultChecked={false}
     defaultValue="b"
     id="abtesting_b"
@@ -152,6 +160,7 @@ exports[`Input should render type=radio: radio: female selected, male unselected
   onSubmit={[Function]}
 >
   <input
+    autoComplete="off"
     defaultChecked={true}
     defaultValue="male"
     id="gender_male"
@@ -161,6 +170,7 @@ exports[`Input should render type=radio: radio: female selected, male unselected
   />
   ,
   <input
+    autoComplete="off"
     defaultChecked={false}
     defaultValue="female"
     id="gender_female"
@@ -177,6 +187,7 @@ exports[`Input should render type=radio: radio: male selected, female unselected
   onSubmit={[Function]}
 >
   <input
+    autoComplete="off"
     defaultChecked={true}
     defaultValue="male"
     id="gender_male"
@@ -186,6 +197,7 @@ exports[`Input should render type=radio: radio: male selected, female unselected
   />
   ,
   <input
+    autoComplete="off"
     defaultChecked={false}
     defaultValue="female"
     id="gender_female"
@@ -202,6 +214,7 @@ exports[`Input should update nested properties 1`] = `
   onSubmit={[Function]}
 >
   <input
+    autoComplete="off"
     defaultValue="foobar"
     id="from-address"
     name="from.address"
@@ -211,6 +224,7 @@ exports[`Input should update nested properties 1`] = `
   />
   ,
   <input
+    autoComplete="off"
     defaultValue="barbaz"
     id="to-address"
     name="to.address"
@@ -227,6 +241,7 @@ exports[`Input should use checked instead of value with type=checkbox 1`] = `
   onSubmit={[Function]}
 >
   <input
+    autoComplete="off"
     defaultChecked={true}
     id="subscribed"
     name="subscribed"
