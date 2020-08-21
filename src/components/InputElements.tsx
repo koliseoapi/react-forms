@@ -133,8 +133,14 @@ export function BoundComponent({
   );
 }
 
-export function Input(props: InputProps) {
-  return <BoundComponent elementName="input" {...props} />;
+export function Input({ autoComplete = "off", ...props }: InputProps) {
+  return (
+    <BoundComponent
+      elementName="input"
+      autoComplete={autoComplete}
+      {...props}
+    />
+  );
 }
 
 export function Select(props: BoundComponentProps) {
