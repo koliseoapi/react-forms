@@ -1,6 +1,6 @@
 import renderer, { act, ReactTestRenderer } from "react-test-renderer";
 import React from "react";
-import { Form, Input } from "../src";
+import { Form, Input, FieldSet, Button } from "../src";
 
 describe("Form", function () {
   let form: ReactTestRenderer;
@@ -41,5 +41,30 @@ describe("Form", function () {
     expect(onSubmit).toHaveBeenCalledWith({
       foo: "baz",
     });
+  });
+
+  it("Adds and removes in-progress while submitting", async () => {
+    const initialValues = { foo: "bar" };
+    const onSubmit = () => {
+      expect(form.toJSON()).toMatchSnapshot();
+      throw new Error("foobar");
+    };
+    act(() => {
+      form = renderer.create(
+        <Form onSubmit={onSubmit} initialValues={initialValues}>
+          <FieldSet>
+            <Input name="foo" type="text" />
+            <Button>Save</Button>
+          </FieldSet>
+        </Form>
+      );
+    });
+    try {
+      await triggerSubmit();
+      fail("Should not suceed");
+    } catch (e) {
+      expect(e.message).toBe("foobar");
+      expect(form.toJSON()).toMatchSnapshot();
+    }
   });
 });

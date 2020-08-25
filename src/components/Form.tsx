@@ -94,6 +94,9 @@ export function Form({
   // should focus on the first component with error
   const [focusFirstError, setFocusFirstError] = useState(false);
 
+  // control if we are being unmounted
+  const [mounted, setMounted] = useState(true);
+
   // validation rules to apply
   const entries = useContext(I18nContext);
   const messages = new Messages(entries);
@@ -148,7 +151,7 @@ export function Form({
         await onSubmit(values);
       } finally {
         // could be that the form is already dismounted
-        submitting && setSubmitting(false);
+        mounted && setSubmitting(false);
       }
     } else {
       return Promise.reject(errors);
@@ -166,9 +169,8 @@ export function Form({
   }, [errors]);
 
   useEffect(() => {
-    // clean submission status when the component is dismounted
     return () => {
-      submitting && setSubmitting(false);
+      setMounted(false);
     };
   }, []);
 

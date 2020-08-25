@@ -1,0 +1,51 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Form Adds and removes in-progress while submitting 1`] = `
+<form
+  noValidate={true}
+  onSubmit={[Function]}
+>
+  <fieldset
+    disabled={true}
+  >
+    <input
+      autoComplete="off"
+      defaultValue="bar"
+      id="foo"
+      name="foo"
+      onChange={[Function]}
+      type="text"
+    />
+    <button
+      className="in-progress "
+    >
+      Save
+    </button>
+  </fieldset>
+</form>
+`;
+
+exports[`Form Adds and removes in-progress while submitting 2`] = `
+<form
+  noValidate={true}
+  onSubmit={[Function]}
+>
+  <fieldset
+    disabled={false}
+  >
+    <input
+      autoComplete="off"
+      defaultValue="bar"
+      id="foo"
+      name="foo"
+      onChange={[Function]}
+      type="text"
+    />
+    <button
+      className=""
+    >
+      Save
+    </button>
+  </fieldset>
+</form>
+`;
