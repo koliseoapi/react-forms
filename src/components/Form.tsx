@@ -154,7 +154,7 @@ export function Form({
         mounted && setSubmitting(false);
       }
     } else {
-      return Promise.reject(errors);
+      return errors;
     }
   };
 

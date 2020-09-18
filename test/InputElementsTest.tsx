@@ -44,10 +44,10 @@ describe("Input", function () {
   async function triggerSubmit(expectedErrors?: ValidationErrors) {
     return act(async () => {
       const formElement = form.root.find((el) => el.type == "form");
-      try {
-        await formElement.props.onSubmit({ preventDefault() {} });
+      const errors = await formElement.props.onSubmit({ preventDefault() {} });
+      if (!errors) {
         expect(expectedErrors).toBeUndefined();
-      } catch (errors) {
+      } else {
         expect(expectedErrors).toBeDefined();
         expect(errors).toMatchObject(expectedErrors!);
       }
