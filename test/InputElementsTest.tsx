@@ -128,6 +128,17 @@ describe("Input", function () {
     expect(form.toJSON()).toMatchSnapshot();
   });
 
+  it("should add validation error to preexisting aria-describedby attribute", async function () {
+    mount(
+      <Input type="text" required name="name" aria-describedby="foo" />,
+      {}
+    );
+    await triggerSubmit({ name: "Please fill out this field" });
+    // error message was rendered
+    // error message is accessible: role=alert, aria-invalid, aria-describedby
+    expect(form.toJSON()).toMatchSnapshot();
+  });
+
   it("should update number (also: onChange listener)", async () => {
     const values = { age: 20, color: "red" };
     const callback = jest.fn();

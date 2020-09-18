@@ -119,8 +119,8 @@ export function BoundComponent({
           onChange,
           defaultChecked,
           defaultValue,
-          ...ariaProps,
           ...props,
+          ...ariaProps,
         },
         children
       )}
