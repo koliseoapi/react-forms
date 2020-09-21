@@ -1,6 +1,6 @@
 {
   "name": "@koliseoapi/react-forms",
-  "version": "1.1.6",
+  "version": "1.1.7",
   "description": "HTML5 input components with automatic property type conversion",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
