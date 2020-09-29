@@ -33,6 +33,9 @@ describe("ValidationActions", function () {
       ValidationActions.url,
       ValidationActions.required,
     ]);
+    expect(filterActionsForProps({ type: "number", required: true })).toEqual([
+      ValidationActions.number_required,
+    ]);
     expect(filterActionsForProps({ type: "number", min: 5 })).toEqual([
       ValidationActions.number_min,
     ]);

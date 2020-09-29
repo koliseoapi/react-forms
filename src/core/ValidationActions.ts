@@ -181,8 +181,9 @@ export function filterActionsForProps({
   result.push(ValidationActions[type]);
   for (const prop of ["required", "min", "max", "pattern", "maxLength"]) {
     if (prop in props) {
-      result.push(ValidationActions[`${type}_${prop}`]);
-      result.push(ValidationActions[prop]);
+      result.push(
+        ValidationActions[`${type}_${prop}`] || ValidationActions[prop]
+      );
     }
   }
   return result.filter((action) => !!action);
