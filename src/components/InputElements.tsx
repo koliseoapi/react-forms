@@ -53,7 +53,7 @@ export function BoundComponent({
 }: BoundComponentPropsWithElement) {
   const type: string = (props as any).type;
   if (process.env.NODE_ENV !== "production") {
-    if (type === "radio" && !props.defaultValue) {
+    if (type === "radio" && typeof props.defaultValue === "undefined") {
       throw new Error(`Radio button ${name} requires a defaultValue`);
     }
     if (typeof props.value !== "undefined") {
