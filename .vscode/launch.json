@@ -9,7 +9,7 @@
       "request": "launch",
       "name": "Launch Jest tests",
       "program": "${workspaceRoot}/node_modules/jest/bin/jest",
-      "args": ["--runInBand", "--testMatch", "**/InputElementsTest*"],
+      "args": ["--runInBand", "--testMatch", "**/*Test*"],
       "internalConsoleOptions": "openOnFirstSessionStart",
       "disableOptimisticBPs": true,
       "skipFiles": ["${workspaceRoot}/node_modules/**/*.js"],
