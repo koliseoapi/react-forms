@@ -146,7 +146,7 @@ describe("Input", function () {
       <Input type="number" name="age" step="1" onChange={callback} />,
       values
     );
-    await triggerChange({ value: "32.2" });
+    triggerChange({ value: "32.2" });
     await triggerSubmit();
     expect(onSubmit).toHaveBeenCalledWith({
       age: 32,
