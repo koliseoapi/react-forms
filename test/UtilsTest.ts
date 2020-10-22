@@ -14,8 +14,17 @@ describe("Utils", () => {
     expect(setNestedProperty({}, "foo[0].bar[0].baz", "1")).toMatchObject({
       foo: [{ bar: [{ baz: "1" }] }],
     });
-    expect(setNestedProperty({foo: ['bar']}, "foo[1]", "1")).toMatchObject({
-      foo: [ 'bar', "1" ]
+    expect(
+      setNestedProperty(
+        { foo: [{ bar: [{ lorem: "ipsum" }] }] },
+        "foo[0].bar[0].baz",
+        "1"
+      )
+    ).toMatchObject({
+      foo: [{ bar: [{ baz: "1", lorem: "ipsum" }] }],
+    });
+    expect(setNestedProperty({ foo: ["bar"] }, "foo[1]", "1")).toMatchObject({
+      foo: ["bar", "1"],
     });
   });
 
@@ -28,8 +37,6 @@ describe("Utils", () => {
     expect(
       getNestedProperty({ foo: [{ bar: ["", "baz"] }] }, "foo[0].bar[1]")
     ).toBe("baz");
-    expect(
-      getNestedProperty({ foo: [] }, "foo[0].bar[1]")
-    ).toBeUndefined();
+    expect(getNestedProperty({ foo: [] }, "foo[0].bar[1]")).toBeUndefined();
   });
 });

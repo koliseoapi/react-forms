@@ -17,7 +17,8 @@ export function setNestedProperty(root: any, path: string, value: any): any {
   const pathParts = path.split(".");
   const length = pathParts.length;
   for (let i = 0; i < length; i++) {
-    const [, attr, , arrayIndexStr ] = /([^[]+)(\[(\d+)\])?/.exec(pathParts[i]) || [];
+    const [, attr, , arrayIndexStr] =
+      /([^[]+)(\[(\d+)\])?/.exec(pathParts[i]) || [];
     if (!arrayIndexStr) {
       if (i == length - 1) {
         node[attr] = value;
@@ -32,9 +33,9 @@ export function setNestedProperty(root: any, path: string, value: any): any {
       const array = node[attr];
       const arrayIndex = +arrayIndexStr;
       if (i == length - 1) {
-        array[arrayIndex] = value
-      } else if (!node[attr[arrayIndex]]){ 
-        array[arrayIndex] = {}
+        array[arrayIndex] = value;
+      } else if (!array[arrayIndex]) {
+        array[arrayIndex] = {};
       }
       node = array[arrayIndex];
     }
