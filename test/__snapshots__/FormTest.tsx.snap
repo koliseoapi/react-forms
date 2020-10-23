@@ -18,6 +18,8 @@ exports[`Form Adds and removes in-progress while submitting 1`] = `
     />
     <button
       className="in-progress "
+      disabled={true}
+      type="button"
     >
       Save
     </button>
@@ -43,6 +45,8 @@ exports[`Form Adds and removes in-progress while submitting 2`] = `
     />
     <button
       className=""
+      disabled={false}
+      type="button"
     >
       Save
     </button>
