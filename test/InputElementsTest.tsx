@@ -2,7 +2,7 @@ import React, { ReactElement } from "react";
 import renderer, { ReactTestRenderer, act } from "react-test-renderer";
 import { Input, Select } from "../src/components/InputElements";
 import { Form, ValidationErrors, FieldSet } from "../src/components/Form";
-import { Converters } from "../src/core/Converters";
+import { Converters, Converter } from "../src/core/Converters";
 import { ValidationResult } from "../src/core/ValidationActions";
 
 describe("Input", function () {
@@ -68,6 +68,30 @@ describe("Input", function () {
     // input[checked] is set
     // input[value] is not set
     expect(form.toJSON()).toMatchSnapshot();
+  });
+
+  it("should use defaultValue with type=checkbox", async () => {
+    const values = { subscribeto: "foo" };
+    mount(
+      <Input type="checkbox" name="subscribeto" defaultValue="foo" />,
+      values
+    );
+    // trigger change
+    const input = form.root.findAll((el) => el.type == "input")[0];
+    input.props.onChange({
+      target: { checked: false },
+    });
+    await triggerSubmit();
+    expect(onSubmit).toHaveBeenCalledWith({
+      subscribeto: undefined,
+    });
+    input.props.onChange({
+      target: { checked: true },
+    });
+    await triggerSubmit();
+    expect(onSubmit).toHaveBeenCalledWith({
+      subscribeto: "foo",
+    });
   });
 
   it("should render type=radio", () => {

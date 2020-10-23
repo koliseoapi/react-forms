@@ -16,6 +16,16 @@ describe("Converters", () => {
     expect(number.fromValue({ value: "5.1", step: 0.1 })).toBe(5.1);
   });
 
+  it("Checkbox should convert to boolean or value if it is defined", () => {
+    const checkbox = Converters.checkbox;
+    expect(checkbox.fromValue({ checked: false })).toBeFalsy();
+    expect(checkbox.fromValue({ checked: true })).toBeTruthy();
+    expect(
+      checkbox.fromValue({ checked: false, value: "foo" })
+    ).toBeUndefined();
+    expect(checkbox.fromValue({ checked: true, value: "foo" })).toBe("foo");
+  });
+
   it("[url, date, time] should convert blank strings to undefined and back", () => {
     expect(Converters.url.fromValue({ value: "https://foo.com" })).toMatch(
       "https://foo.com"

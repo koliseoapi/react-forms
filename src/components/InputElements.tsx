@@ -71,24 +71,25 @@ export function BoundComponent({
   converter = converter || Converters[type] || Converters.text;
   const formContext = useContext<FormContextContent>(FormContext);
   const defaultValue =
-    type === "checkbox"
-      ? undefined
-      : type === "radio"
+    type === "checkbox" || type === "radio"
       ? (props.defaultValue as string)
       : converter.toValue(formContext.getValue(name));
   const defaultChecked =
     type === "checkbox"
-      ? formContext.getValue(name)
+      ? defaultValue
+        ? formContext.getValue(name) == defaultValue
+        : formContext.getValue(name)
       : type === "radio"
       ? formContext.getValue(name) == defaultValue
       : undefined;
 
   function onChange(e: ChangeEvent<HTMLInputElement>) {
     const element = e.target;
-    const objectValue =
-      type === "checkbox"
-        ? element.checked
-        : converter!.fromValue({ value: element.value, ...props });
+    const objectValue = converter!.fromValue({
+      value: type == "checkbox" ? defaultValue : element.value,
+      checked: element.checked,
+      ...props,
+    });
     formContext.setValue(name, objectValue);
     originalOnChange && originalOnChange(e);
   }

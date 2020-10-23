@@ -38,6 +38,13 @@ export const Converters: ConvertersType = {
     toValue: nullOrUndefToEmpty,
   },
 
+  checkbox: {
+    fromValue({ value, checked }) {
+      return value ? (checked ? value : undefined) : checked;
+    },
+    toValue: nullOrUndefToEmpty,
+  },
+
   number: {
     fromValue({ value, step }) {
       const input = value as string;
