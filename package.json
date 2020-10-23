@@ -64,5 +64,6 @@
     "watch": "webpack-dev-server --inline --hot --progress --colors --open",
     "coverage": "NODE_ENV=test jest --coverage && cat ./coverage/lcov.info | coveralls"
   },
-  "dependencies": {}
+  "dependencies": {},
+  "publishConfig": { "access": "public" }
 }

@@ -3,3 +3,9 @@ language: node_js
 script: npm run coverage
 node_js:
   - "stable"
+deploy:
+  provider: npm
+  email: "icoloma@gmail.com"
+  api_key: $NPM_TOKEN
+  on:
+    tags: true
