@@ -135,8 +135,13 @@ export const ValidationActions: IValidationActions = {
     props: BoundComponentProps
   ): Promise<ValidationResult> {
     // Simple email validation
-    // http://stackoverflow.com/questions/742451/what-is-the-simplest-regular-expression-to-validate-emails-to-not-accept-them-bl
-    if (!isNullOrUndefined(value) && !/^(\S+@\S+)?$/.test(value)) {
+    // https://emailregex.com/
+    if (
+      !isNullOrUndefined(value) &&
+      !/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(
+        value
+      )
+    ) {
       return "email";
     }
   },
