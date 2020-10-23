@@ -24,6 +24,7 @@ export interface InputProps extends BoundComponentProps {
   type:
     | "text"
     | "url"
+    | "email"
     | "number"
     | "checkbox"
     | "date"
