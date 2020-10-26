@@ -1,3 +1,5 @@
+import { Converters } from "../src/core/Converters";
+import { isNullOrUndefined } from "../src/core/utils";
 import {
   ValidationActions,
   filterActionsForProps,
@@ -61,7 +63,7 @@ describe("ValidationActions", function () {
 
   it("[type=number][min]", async function () {
     const min = ValidationActions.number_min;
-    const props = { name: "foo", min: 0 };
+    const props = { name: "foo", min: 0, converter: Converters.number };
     expect(await min(-1, props)).toMatch("min");
     expect(await min(0, props)).toBeUndefined();
     expect(await min(1, props)).toBeUndefined();
@@ -69,10 +71,26 @@ describe("ValidationActions", function () {
 
   it("[type=number][max]", async function () {
     const max = ValidationActions.number_max;
-    const props = { name: "foo", max: 100 };
+    const props = { name: "foo", max: 100, converter: Converters.number };
     expect(await max(99, props)).toBeUndefined();
     expect(await max(100, props)).toBeUndefined();
     expect(await max(101, props)).toMatch("max");
+  });
+
+  it("[type=number][min][converter]", async function () {
+    const min = ValidationActions.number_min;
+    const props = { name: "foo", min: "5", converter:  {
+      fromValue({ value }) {
+        const input = value as string;
+        return parseInt(input) * 100;
+      },
+  
+      toValue(input) {
+        return isNullOrUndefined(input) ? "" : "" + (input / 100);
+      },
+    } };
+    expect(await min(100, props)).toMatch("min");
+    expect(await min(500, props)).toBeUndefined();
   });
 
   it("[type=date][min]", async function () {

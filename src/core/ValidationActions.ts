@@ -1,6 +1,5 @@
 import { isNullOrUndefined, isBlank, isFalse } from "./utils";
-import { BoundComponentProps, InputProps } from "../components/InputElements";
-import { Validator } from "./Validators";
+import { BoundComponentProps } from "../components/InputElements";
 
 let re_weburl: RegExp;
 
@@ -64,7 +63,7 @@ export const ValidationActions: IValidationActions = {
     value: number,
     props: BoundComponentProps
   ): Promise<ValidationResult> {
-    if (!isNullOrUndefined(value) && value < +props.min!) {
+    if (!isNullOrUndefined(value) && value < props.converter!.fromValue({value: '' + props.min})) {
       return "min";
     }
   },
@@ -73,7 +72,7 @@ export const ValidationActions: IValidationActions = {
     value: number,
     props: BoundComponentProps
   ): Promise<ValidationResult> {
-    if (!isNullOrUndefined(value) && value > +props.max!) {
+    if (!isNullOrUndefined(value) && value > props.converter!.fromValue({ value: '' + props.max!})) {
       return "max";
     }
   },
