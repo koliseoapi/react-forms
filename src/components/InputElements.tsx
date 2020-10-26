@@ -94,7 +94,7 @@ export function BoundComponent({
   }
 
   useEffect(() => {
-    formContext.addValidator({ name, validate, ...props });
+    formContext.addValidator({ name, validate, converter, ...props });
     // TODO: should we do something to unmount?
   }, []);
 

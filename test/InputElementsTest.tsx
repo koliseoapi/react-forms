@@ -143,7 +143,7 @@ describe("Input", function () {
     const values = { age: 20, color: "red" };
     const callback = jest.fn();
     mount(
-      <Input type="number" name="age" step="1" onChange={callback} />,
+      <Input type="number" name="age" step="1" min="1" onChange={callback} />,
       values
     );
     triggerChange({ value: "32.2" });
