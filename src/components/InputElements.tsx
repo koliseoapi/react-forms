@@ -95,7 +95,7 @@ export function BoundComponent({
 
   useEffect(() => {
     formContext.addValidator({ name, validate, converter, ...props });
-    // TODO: should we do something to unmount?
+    return () => formContext.removeValidator(name);
   }, []);
 
   const error = formContext.errors[name];

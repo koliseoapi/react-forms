@@ -50,6 +50,11 @@ export interface FormContextContent {
   addValidator(props: BoundComponentProps): void;
 
   /**
+   * Remove a validator
+   */
+  removeValidator(name: string): void;
+
+  /**
    * Triggered by a change in the form field
    */
   setValue(propertyName: string, value: any): void;
@@ -64,6 +69,7 @@ function undefinedFormContext(): never {
 }
 export const FormContext = createContext<FormContextContent>({
   addValidator: undefinedFormContext,
+  removeValidator: undefinedFormContext,
   setValue: undefinedFormContext,
   getValue: undefinedFormContext,
   errors: {},
@@ -104,6 +110,11 @@ export function Form({
   const formContextValue: FormContextContent = {
     errors,
     submitting,
+    removeValidator: function (name) {
+      delete validators[name];
+      setValidators(validators);
+    },
+
     addValidator: function (props) {
       validators[props.name] = new Validator(props);
       setValidators(validators);
