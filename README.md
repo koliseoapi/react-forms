@@ -137,6 +137,44 @@ const fetchValidate = async (value, props) => {
 
 The function should return `undefined` if the validation passes, or an error message otherwise. The error code returned must correspond to an i18n entry.
 
+## Interaction between components
+
+The following is an example where a checkbox makes an input appear or disappear based on state:
+
+```JavaScript
+const values = {
+  /** true to ask to be reimbursed for expenses */
+  reimburseExpenses: false,
+
+  /** if `reimburseExpenses` is true, location they travel from */
+  travelFrom: undefined
+}
+const [reimburseExpenses, setReimburseExpenses] = useState(values.reimburseExpenses);
+
+<Form state={values}>
+  <Input
+    type="checkbox"
+    name="reimburseExpenses"
+    onChange={(e, formContext) => {
+      const value = e.target.checked;
+      setReimburseExpenses(value);
+      // if reimburseExpenses is unchecked, travelFrom should be empty
+      !reimburseExpenses &&
+        formContext.setValue('travelFrom', undefined);
+    }}
+  />
+  {
+    // if reimburseExpenses is checked, travelFrom is required
+    reimburseExpenses &&
+    <Input
+      type="text"
+      name="travelFrom"
+      required
+    />
+  }
+</Form>
+```
+
 ## Internationalization
 
 To override the locale for validation messages, use `I18nContext`:

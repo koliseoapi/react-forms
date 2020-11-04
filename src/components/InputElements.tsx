@@ -3,6 +3,7 @@ import React, {
   ChangeEvent,
   useEffect,
   InputHTMLAttributes,
+  SyntheticEvent,
 } from "react";
 import { Converters, Converter } from "../core/Converters";
 import { FormContext, FormContextContent } from "./Form";
@@ -33,9 +34,13 @@ export interface InputProps extends BoundComponentProps {
     | "datetime-local";
 }
 
-export interface BoundComponentPropsWithElement extends BoundComponentProps {
+export interface BoundComponentPropsWithElement
+  extends Omit<BoundComponentProps, "onChange"> {
   /** type of input component to use */
   elementName: "input" | "select" | "textarea";
+
+  /** onChange event handler has been extended to also receive the formContext */
+  onChange?(event: SyntheticEvent, formContext: FormContextContent): void;
 }
 
 /**
@@ -90,7 +95,7 @@ export function BoundComponent({
         ? element.checked
         : converter!.fromValue({ value: element.value, ...props });
     formContext.setValue(name, objectValue);
-    originalOnChange && originalOnChange(e);
+    originalOnChange && originalOnChange(e, formContext);
   }
 
   useEffect(() => {
