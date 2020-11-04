@@ -225,4 +225,19 @@ describe("Input", function () {
     expect(form.toJSON()).toMatchSnapshot();
     expect(onSubmit).toHaveBeenCalledTimes(1);
   });
+
+  it("has access to formContext from onChange", async function () {
+    mount(
+      <Input
+        type="checkbox"
+        name="foo"
+        onChange={(e, formContext) => {
+          const value = e.target.checked;
+          expect(value).toBe(formContext.getValue("foo"));
+        }}
+      />,
+      { foo: true }
+    );
+    triggerChange({ value: "xxx", checked: true });
+  });
 });

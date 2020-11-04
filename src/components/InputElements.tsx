@@ -3,7 +3,6 @@ import React, {
   ChangeEvent,
   useEffect,
   InputHTMLAttributes,
-  SyntheticEvent,
 } from "react";
 import { Converters, Converter } from "../core/Converters";
 import { FormContext, FormContextContent } from "./Form";
@@ -21,7 +20,10 @@ export interface BoundComponentProps
   validate?(value: any): Promise<ValidationResult>;
 
   /** onChange event handler has been extended to also receive the formContext */
-  onChange?(event: SyntheticEvent, formContext: FormContextContent): void;
+  onChange?(
+    event: ChangeEvent<HTMLInputElement>,
+    formContext: FormContextContent
+  ): void;
 }
 
 export interface InputProps extends BoundComponentProps {
