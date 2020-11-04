@@ -3,4 +3,3 @@ npm-debug.log
 coverage
 .gh-pages
 .nyc_output
-lib
