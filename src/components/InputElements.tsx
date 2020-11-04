@@ -10,7 +10,7 @@ import { FormContext, FormContextContent } from "./Form";
 import { ValidationResult } from "../core/ValidationActions";
 
 export interface BoundComponentProps
-  extends Omit<InputHTMLAttributes<HTMLInputElement>, "type"> {
+  extends Omit<InputHTMLAttributes<HTMLInputElement>, "type" | "onChange"> {
   /** propertyName. Will also be used as id if none is specified */
   name: string;
 
@@ -19,6 +19,9 @@ export interface BoundComponentProps
 
   /** Optional: the validator to use. If set, all default validators (required, number, etc) will be replaced by this. Received the value after being converted */
   validate?(value: any): Promise<ValidationResult>;
+
+  /** onChange event handler has been extended to also receive the formContext */
+  onChange?(event: SyntheticEvent, formContext: FormContextContent): void;
 }
 
 export interface InputProps extends BoundComponentProps {
@@ -34,13 +37,9 @@ export interface InputProps extends BoundComponentProps {
     | "datetime-local";
 }
 
-export interface BoundComponentPropsWithElement
-  extends Omit<BoundComponentProps, "onChange"> {
+export interface BoundComponentPropsWithElement extends BoundComponentProps {
   /** type of input component to use */
   elementName: "input" | "select" | "textarea";
-
-  /** onChange event handler has been extended to also receive the formContext */
-  onChange?(event: SyntheticEvent, formContext: FormContextContent): void;
 }
 
 /**
