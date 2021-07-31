@@ -67,4 +67,23 @@ describe("Form", function () {
       expect(form.toJSON()).toMatchSnapshot();
     }
   });
+
+  it("Does not try to update when unmounted", async () => {
+    function TestComponent() {
+      const [submitted, setSubmitted] = React.useState(false);
+      return submitted ? null : (
+        <Form
+          onSubmit={async () => setSubmitted(true)}
+          initialValues={{}}
+        ></Form>
+      );
+    }
+    act(() => {
+      form = renderer.create(<TestComponent />);
+    });
+
+    console.error = jest.fn();
+    await triggerSubmit();
+    expect(console.error).not.toHaveBeenCalled();
+  });
 });

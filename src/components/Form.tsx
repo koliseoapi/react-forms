@@ -6,6 +6,8 @@ import React, {
   useContext,
   useEffect,
   FieldsetHTMLAttributes,
+  useCallback,
+  useRef,
 } from "react";
 import { ValidationResult } from "../core/ValidationActions";
 import { I18nContext } from "./I18nContext";
@@ -100,8 +102,8 @@ export function Form({
   // should focus on the first component with error
   const [focusFirstError, setFocusFirstError] = useState(false);
 
-  // control if we are being unmounted
-  const [mounted, setMounted] = useState(true);
+  // control if this form is still mounted
+  const mounted = useRef(true);
 
   // validation rules to apply
   const entries = useContext(I18nContext);
@@ -162,7 +164,7 @@ export function Form({
         await onSubmit(values);
       } finally {
         // could be that the form is already dismounted
-        mounted && setSubmitting(false);
+        mounted.current && setSubmitting(false);
       }
     } else {
       return errors;
@@ -181,7 +183,7 @@ export function Form({
 
   useEffect(() => {
     return () => {
-      setMounted(false);
+      mounted.current = false;
     };
   }, []);
 
