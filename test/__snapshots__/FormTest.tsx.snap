@@ -14,6 +14,7 @@ exports[`Form Adds and removes in-progress while submitting 1`] = `
       id="foo"
       name="foo"
       onChange={[Function]}
+      onKeyDown={[Function]}
       type="text"
     />
     <button
@@ -41,6 +42,7 @@ exports[`Form Adds and removes in-progress while submitting 2`] = `
       id="foo"
       name="foo"
       onChange={[Function]}
+      onKeyDown={[Function]}
       type="text"
     />
     <button

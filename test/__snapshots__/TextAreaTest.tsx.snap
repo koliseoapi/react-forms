@@ -11,6 +11,7 @@ exports[`TextArea should render 1`] = `
     id="text"
     name="text"
     onChange={[Function]}
+    onKeyDown={[Function]}
   />
 </form>
 `;

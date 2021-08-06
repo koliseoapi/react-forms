@@ -4,13 +4,11 @@ import React, {
   useEffect,
   InputHTMLAttributes,
   useRef,
-  Ref,
-  CSSProperties,
-  RefObject,
 } from "react";
 import { Converters, Converter } from "../core/Converters";
 import { FormContext, FormContextContent } from "./Form";
 import { ValidationResult } from "../core/ValidationActions";
+import { errorStyles } from "../core/utils";
 
 export interface BoundComponentProps
   extends Omit<InputHTMLAttributes<HTMLInputElement>, "type" | "onChange"> {
@@ -46,18 +44,6 @@ export interface InputProps extends BoundComponentProps {
 export interface BoundComponentPropsWithElement extends BoundComponentProps {
   /** type of input component to use */
   elementName: "input" | "select" | "textarea";
-}
-
-function errorStyles(
-  ref: RefObject<HTMLInputElement>
-): CSSProperties | undefined {
-  if (!ref.current) {
-    return undefined;
-  }
-  const clientRect = ref.current.getBoundingClientRect();
-  return {
-    top: clientRect.top + clientRect.height + 8 + "px",
-  };
 }
 
 /**
@@ -133,7 +119,7 @@ export function BoundComponent({
       };
   const ref = useRef(null);
 
-  // submit on ctrl+enter
+  // submit on Ctrl + Enter
   function onKeyDown(e: KeyboardEvent) {
     if (e.key === "Enter" && e.ctrlKey) {
       formContext.submit();

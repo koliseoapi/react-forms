@@ -13,6 +13,7 @@ exports[`Input should render a validation error 1`] = `
     id="name"
     name="name"
     onChange={[Function]}
+    onKeyDown={[Function]}
     required={true}
     type="text"
   />

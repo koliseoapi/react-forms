@@ -1,4 +1,4 @@
-import { setNestedProperty, getNestedProperty } from "../src/core/utils";
+import { setNestedProperty, getNestedProperty, errorStyles } from "../src/core/utils";
 
 describe("Utils", () => {
   it("setNestedProperty", () => {
@@ -38,5 +38,39 @@ describe("Utils", () => {
       getNestedProperty({ foo: [{ bar: ["", "baz"] }] }, "foo[0].bar[1]")
     ).toBe("baz");
     expect(getNestedProperty({ foo: [] }, "foo[0].bar[1]")).toBeUndefined();
+  });
+
+  it("errorStyles", () => {
+    expect(errorStyles({
+      current: null
+    })).toBeUndefined();
+    
+    expect(errorStyles({
+      current: {
+        getBoundingClientRect: () => ({
+          top: 100,
+          height: 10
+        } as DOMRect)
+      } as HTMLInputElement
+    } )).toMatchObject({
+      top: "118px"
+    });
+    
+    expect(errorStyles({
+      current: {
+        offsetParent: {
+          getBoundingClientRect: () => ({
+            top: 50
+          } as DOMRect)
+        },
+        getBoundingClientRect: () => ({
+          top: 100,
+          height: 10
+        } as DOMRect)
+      } as HTMLInputElement
+    } )).toMatchObject({
+      top: "68px"
+    });
+    
   });
 });

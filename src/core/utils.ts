@@ -1,3 +1,5 @@
+import { RefObject, CSSProperties } from "react";
+
 export function isNullOrUndefined(value: any): boolean {
   return typeof value === "undefined" || value === null;
 }
@@ -53,4 +55,20 @@ export function getNestedProperty(root: any, path: string): any {
     }
   }
   return node;
+}
+
+/**
+ * Calculate the style sto apply to an error component, to be placed just below the input element
+ */
+export function errorStyles(
+  ref: RefObject<HTMLInputElement>
+): CSSProperties | undefined {
+  if (!ref.current) {
+    return undefined;
+  }
+  const clientRect = ref.current.getBoundingClientRect();
+  const parentTop = ref.current.offsetParent?.getBoundingClientRect().top || 0;
+  return {
+    top: clientRect.top + clientRect.height - parentTop + 8 + "px",
+  };
 }

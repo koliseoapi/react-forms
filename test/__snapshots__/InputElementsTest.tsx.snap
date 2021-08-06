@@ -13,6 +13,7 @@ exports[`Input custom async validation fails (also: onSubmit not called) 1`] = `
     id="foo"
     name="foo"
     onChange={[Function]}
+    onKeyDown={[Function]}
     type="text"
   />
   <div
@@ -36,6 +37,7 @@ exports[`Input custom async validation passes (also: onSubmit called) 1`] = `
     id="foo"
     name="foo"
     onChange={[Function]}
+    onKeyDown={[Function]}
     type="text"
   />
 </form>
@@ -54,6 +56,7 @@ exports[`Input required and optional checkboxes (also: set id attribute) 1`] = `
     id="foobarbaz"
     name="subscribed"
     onChange={[Function]}
+    onKeyDown={[Function]}
     required={true}
     type="checkbox"
   />
@@ -80,6 +83,7 @@ exports[`Input should add validation error to preexisting aria-describedby attri
     id="name"
     name="name"
     onChange={[Function]}
+    onKeyDown={[Function]}
     required={true}
     type="text"
   />
@@ -105,6 +109,7 @@ exports[`Input should not propagate specific properties, like converter, to the 
     id="name"
     name="name"
     onChange={[Function]}
+    onKeyDown={[Function]}
     type="text"
   />
 </form>
@@ -123,6 +128,7 @@ exports[`Input should render a validation error 1`] = `
     id="name"
     name="name"
     onChange={[Function]}
+    onKeyDown={[Function]}
     required={true}
     type="text"
   />
@@ -148,6 +154,7 @@ exports[`Input should render correctly with type=text 1`] = `
     id="name"
     name="name"
     onChange={[Function]}
+    onKeyDown={[Function]}
     required={true}
     type="text"
   />
@@ -166,6 +173,7 @@ exports[`Input should render type=radio 1`] = `
     id="abtesting_a"
     name="abtesting"
     onChange={[Function]}
+    onKeyDown={[Function]}
     type="radio"
   />
   <input
@@ -175,6 +183,7 @@ exports[`Input should render type=radio 1`] = `
     id="abtesting_b"
     name="abtesting"
     onChange={[Function]}
+    onKeyDown={[Function]}
     type="radio"
   />
 </form>
@@ -192,6 +201,7 @@ exports[`Input should render type=radio: radio: female selected, male unselected
     id="gender_male"
     name="gender"
     onChange={[Function]}
+    onKeyDown={[Function]}
     type="radio"
   />
   ,
@@ -202,6 +212,7 @@ exports[`Input should render type=radio: radio: female selected, male unselected
     id="gender_female"
     name="gender"
     onChange={[Function]}
+    onKeyDown={[Function]}
     type="radio"
   />
 </form>
@@ -219,6 +230,7 @@ exports[`Input should render type=radio: radio: male selected, female unselected
     id="gender_male"
     name="gender"
     onChange={[Function]}
+    onKeyDown={[Function]}
     type="radio"
   />
   ,
@@ -229,6 +241,7 @@ exports[`Input should render type=radio: radio: male selected, female unselected
     id="gender_female"
     name="gender"
     onChange={[Function]}
+    onKeyDown={[Function]}
     type="radio"
   />
 </form>
@@ -245,6 +258,7 @@ exports[`Input should update nested properties 1`] = `
     id="from-address"
     name="from.address"
     onChange={[Function]}
+    onKeyDown={[Function]}
     required={true}
     type="text"
   />
@@ -255,6 +269,7 @@ exports[`Input should update nested properties 1`] = `
     id="to-address"
     name="to.address"
     onChange={[Function]}
+    onKeyDown={[Function]}
     type="text"
   />
   ,
@@ -272,6 +287,7 @@ exports[`Input should use checked instead of value with type=checkbox 1`] = `
     id="subscribed"
     name="subscribed"
     onChange={[Function]}
+    onKeyDown={[Function]}
     type="checkbox"
   />
 </form>
