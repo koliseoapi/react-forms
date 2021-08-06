@@ -179,7 +179,7 @@ export function Form({
       firstInvalidElement && firstInvalidElement.focus();
       setFocusFirstError(false);
     }
-  }, [errors]);
+  }, [focusFirstError]);
 
   useEffect(() => {
     return () => {

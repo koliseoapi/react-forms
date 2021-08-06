@@ -9,12 +9,15 @@
         max-width: 800px;
         margin: 0 auto;
         padding: 20px;
+        font-size: 16px;
       }
-      input {
-        padding: 8px;
+      input,
+      textarea {
+        padding: 0.5rem;
         border: 1px solid #ccc;
-        margin-bottom: 10px;
+        margin-bottom: 0.6rem;
         display: block;
+        font-size: 1rem;
       }
       input[type="submit"] {
         cursor: pointer;
@@ -28,21 +31,25 @@
         text-transform: uppercase;
         color: #666;
         display: block;
-        margin-bottom: 5px;
+        margin-bottom: 0.3rem;
+        margin-top: 1rem;
+      }
+      label.radio {
+        margin-top: 0;
       }
       .output.error {
         color: red;
       }
       .input-error {
-        font-size: 14px;
+        font-size: 1rem;
         text-transform: none !important;
       }
       pre {
-        font: 12px Consolas, "Liberation Mono", Menlo, Courier, monospace;
+        font: 1rem Consolas, "Liberation Mono", Menlo, Courier, monospace;
         background-color: #f7f7f7;
         border: 1px solid #ccc;
-        padding: 10px;
-        margin-bottom: 10px;
+        padding: 0.5rem;
+        margin-bottom: 0.5rem;
         white-space: normal;
         transition: all 0.3s 1s ease-out;
       }
@@ -64,7 +71,7 @@
         background: #ff2f00;
         color: white;
         border: 1px solid red;
-        padding: 8px 15px;
+        padding: 0.5rem 1rem;
         position: absolute;
         z-index: 1;
       }
@@ -84,6 +91,10 @@
         color: gray;
         font-size: 14px;
         margin-top: -5px;
+      }
+      .flex-column {
+        display: flex;
+        flex-direction: column;
       }
     </style>
   </head>

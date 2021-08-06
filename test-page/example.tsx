@@ -3,13 +3,13 @@
   Example code to use in browser
 
 */
-import { Form, Input, Button } from "../src/index";
+import { Form, Input, Button, TextArea } from "../src/index";
 import ReactDOM from "react-dom";
-import React, { useState, useContext } from "react";
-import { FormContext } from "../src/components/Form";
+import React, { useState } from "react";
 
 interface MyState {
   name: string;
+  description: string;
   age: number;
   subscribed: boolean;
   gender?: "male" | "female" | "other";
@@ -28,6 +28,7 @@ window.addEventListener("error", function (err) {
 
 const initialState: MyState = {
   name: "John Doe",
+  description: "",
   age: 23,
   subscribed: true,
   gender: "other",
@@ -60,18 +61,22 @@ function MyApp() {
           aria-describedby="name-desc"
         />
         <p id="name-desc">Introduce the first and last name of the user</p>
+        <div className="flex-column">
+          <label htmlFor="description">Description</label>
+          <TextArea name="description" required />
+        </div>
         <label htmlFor="age">Age</label>
         <Input name="age" type="number" min="0" max="120" required />
         <label>
           <Input name="subscribed" type="checkbox" /> Subscribe to newsletter
         </label>
-        <label>
+        <label className="radio">
           <Input name="gender" type="radio" defaultValue="male" /> Male
         </label>
-        <label>
+        <label className="radio">
           <Input name="gender" type="radio" defaultValue="female" /> Female
         </label>
-        <label>
+        <label className="radio">
           <Input name="gender" type="radio" defaultValue="other" /> Other
         </label>
         <label htmlFor="expires">Expires</label>
@@ -84,9 +89,8 @@ function MyApp() {
         />
         <label htmlFor="time">Time</label>
         <Input name="time" id="time" type="time" pattern="[0-9]{2}:[0-9]{2}" />
-        <Button>Submit form and see resulting state</Button>
+        <Button type="submit">Submit form and see resulting state</Button>
       </Form>
-      <p>Form state:</p>
       <pre className={`output ${outputClass}`}>
         {JSON.stringify(output, undefined, "  ")}
       </pre>
