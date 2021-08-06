@@ -131,8 +131,14 @@ export function BoundComponent({
         "aria-invalid": true,
         "aria-describedby": adb ? `${errorMessageId} ${adb}` : errorMessageId,
       };
-
   const ref = useRef(null);
+
+  // submit on ctrl+enter
+  function onKeyDown(e: KeyboardEvent) {
+    if (e.key === "Enter" && e.ctrlKey) {
+      formContext.submit();
+    }
+  }
 
   return (
     <>
@@ -145,6 +151,7 @@ export function BoundComponent({
           defaultChecked,
           defaultValue,
           ref,
+          onKeyDown,
           ...props,
           ...ariaProps,
         },

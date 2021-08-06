@@ -8,6 +8,7 @@ import React, {
   FieldsetHTMLAttributes,
   useCallback,
   useRef,
+  FormEvent,
 } from "react";
 import { ValidationResult } from "../core/ValidationActions";
 import { I18nContext } from "./I18nContext";
@@ -65,7 +66,10 @@ export interface FormContextContent {
    * Get value associated to a BoundComponent
    */
   getValue(propertyName: string): any;
+
+  submit(): void;
 }
+
 function undefinedFormContext(): never {
   throw new Error("A <Form> context is required");
 }
@@ -76,6 +80,7 @@ export const FormContext = createContext<FormContextContent>({
   getValue: undefinedFormContext,
   errors: {},
   submitting: false,
+  submit() {},
 });
 
 /**
@@ -109,6 +114,22 @@ export function Form({
   const entries = useContext(I18nContext);
   const messages = new Messages(entries);
 
+  const onSubmitHandler: ReactEventHandler = async function (e): Promise<any> {
+    e.preventDefault();
+    const errors = await validate();
+    if (!Object.keys(errors).length) {
+      setSubmitting(true);
+      try {
+        await onSubmit(values);
+      } finally {
+        // could be that the form is already dismounted
+        mounted.current && setSubmitting(false);
+      }
+    } else {
+      return errors;
+    }
+  };
+
   const formContextValue: FormContextContent = {
     errors,
     submitting,
@@ -134,6 +155,10 @@ export function Form({
     getValue(propertyName) {
       return getNestedProperty(values, propertyName);
     },
+
+    submit() {
+      onSubmitHandler({ preventDefault: () => {} } as FormEvent);
+    },
   };
 
   async function validate(): Promise<ValidationErrors> {
@@ -154,22 +179,6 @@ export function Form({
     }
     return newErrors;
   }
-
-  const onSubmitHandler: ReactEventHandler = async function (e): Promise<any> {
-    e.preventDefault();
-    const errors = await validate();
-    if (!Object.keys(errors).length) {
-      setSubmitting(true);
-      try {
-        await onSubmit(values);
-      } finally {
-        // could be that the form is already dismounted
-        mounted.current && setSubmitting(false);
-      }
-    } else {
-      return errors;
-    }
-  };
 
   useEffect(() => {
     if (focusFirstError) {
