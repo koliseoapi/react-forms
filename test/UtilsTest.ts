@@ -53,7 +53,7 @@ describe("Utils", () => {
         } as DOMRect)
       } as HTMLInputElement
     } )).toMatchObject({
-      top: "118px"
+      top: "110px"
     });
     
     expect(errorStyles({
@@ -69,7 +69,7 @@ describe("Utils", () => {
         } as DOMRect)
       } as HTMLInputElement
     } )).toMatchObject({
-      top: "68px"
+      top: "60px"
     });
     
   });

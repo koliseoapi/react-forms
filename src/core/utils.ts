@@ -69,6 +69,6 @@ export function errorStyles(
   const clientRect = ref.current.getBoundingClientRect();
   const parentTop = ref.current.offsetParent?.getBoundingClientRect().top || 0;
   return {
-    top: clientRect.top + clientRect.height - parentTop + 8 + "px",
+    top: (clientRect.top + clientRect.height - parentTop) + "px",
   };
 }
