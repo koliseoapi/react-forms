@@ -3,6 +3,10 @@ import React, {
   ChangeEvent,
   useEffect,
   InputHTMLAttributes,
+  useRef,
+  Ref,
+  CSSProperties,
+  RefObject,
 } from "react";
 import { Converters, Converter } from "../core/Converters";
 import { FormContext, FormContextContent } from "./Form";
@@ -42,6 +46,18 @@ export interface InputProps extends BoundComponentProps {
 export interface BoundComponentPropsWithElement extends BoundComponentProps {
   /** type of input component to use */
   elementName: "input" | "select" | "textarea";
+}
+
+function errorStyles(
+  ref: RefObject<HTMLInputElement>
+): CSSProperties | undefined {
+  if (!ref.current) {
+    return undefined;
+  }
+  const clientRect = ref.current.getBoundingClientRect();
+  return {
+    top: clientRect.top + clientRect.height + 8 + "px",
+  };
 }
 
 /**
@@ -116,6 +132,8 @@ export function BoundComponent({
         "aria-describedby": adb ? `${errorMessageId} ${adb}` : errorMessageId,
       };
 
+  const ref = useRef(null);
+
   return (
     <>
       {React.createElement(
@@ -126,13 +144,19 @@ export function BoundComponent({
           onChange,
           defaultChecked,
           defaultValue,
+          ref,
           ...props,
           ...ariaProps,
         },
         children
       )}
       {error ? (
-        <div className="input-error" id={errorMessageId} role="alert">
+        <div
+          className="input-error"
+          id={errorMessageId}
+          role="alert"
+          style={errorStyles(ref)}
+        >
           {error}
         </div>
       ) : undefined}
