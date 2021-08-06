@@ -62,7 +62,7 @@
     "prepublish": "tsc",
     "postversion": "git push && git push --tags",
     "test": "jest",
-    "watch": "webpack-dev-server --inline --hot --progress --colors --open",
+    "watch": "webpack serve --inline --hot --progress --open --mode development",
     "coverage": "NODE_ENV=test jest --coverage && cat ./coverage/lcov.info | coveralls"
   },
   "dependencies": {},
