@@ -2,7 +2,7 @@
 # Updates the example page at koliseoapi.github.io
 set -e
 
-NODE_ENV=prod npx webpack --progress --colors --config webpack.config.js --display-error-details --display-modules 
+npx webpack --progress --config webpack.config.js --mode production
 FOLDER=.gh-pages
 
 if [ ! -d ${FOLDER} ]; then
