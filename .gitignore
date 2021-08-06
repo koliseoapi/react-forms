@@ -4,3 +4,4 @@ coverage
 .gh-pages
 .nyc_output
 lib
+build
