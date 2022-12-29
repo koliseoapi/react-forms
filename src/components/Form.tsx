@@ -191,6 +191,9 @@ export function Form({
   }, [focusFirstError]);
 
   useEffect(() => {
+    // React 18 in dev mode with strict mode seems to run useEffect twice
+    // https://github.com/facebook/react/issues/24670#issuecomment-1280222217
+    mounted.current = true;
     return () => {
       mounted.current = false;
     };
