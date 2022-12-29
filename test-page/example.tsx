@@ -4,6 +4,7 @@
 
 */
 import { Form, Input, Button, TextArea } from "../src/index";
+import { createRoot } from "react-dom/client";
 import ReactDOM from "react-dom";
 import React, { useState } from "react";
 
@@ -98,4 +99,5 @@ function MyApp() {
   );
 }
 
-ReactDOM.render(<MyApp />, document.getElementsByClassName("container")[0]);
+const root = createRoot(document.getElementsByClassName("container")[0]);
+root.render(<MyApp />);
