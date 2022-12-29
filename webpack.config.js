@@ -30,4 +30,10 @@ module.exports = {
     ],
   },
   plugins: [new webpack.NoEmitOnErrorsPlugin()],
+  devServer: {
+    static: {
+      directory: __dirname + "/test-page",
+      publicPath: "/",
+    },
+  },
 };
