@@ -62,7 +62,10 @@ describe("Input", function () {
     await act(async () => {
       const formElement = form.root.find((el) => el.type == "form");
       try {
-        await formElement.props.onSubmit({ preventDefault() {} });
+        await formElement.props.onSubmit({
+          preventDefault() {},
+          stopPropagation() {},
+        });
       } catch (errors) {
         expect(errors).toMatchObject({
           name: "Por favor, introduzca un valor",

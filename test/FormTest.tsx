@@ -19,7 +19,10 @@ describe("Form", function () {
   async function triggerSubmit() {
     return act(async () => {
       const formElement = form.root.find((el) => el.type == "form");
-      await formElement.props.onSubmit({ preventDefault() {} });
+      await formElement.props.onSubmit({
+        preventDefault() {},
+        stopPropagation() {},
+      });
     });
   }
 

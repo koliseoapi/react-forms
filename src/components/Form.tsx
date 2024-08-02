@@ -116,6 +116,7 @@ export function Form({
 
   const onSubmitHandler: ReactEventHandler = async function (e): Promise<any> {
     e.preventDefault();
+    e.stopPropagation();
     const errors = await validate();
     if (!Object.keys(errors).length) {
       setSubmitting(true);
