@@ -60,6 +60,7 @@
   },
   "scripts": {
     "prepublish": "tsc",
+    "preversion": "tsc",
     "postversion": "git push && git push --tags",
     "test": "jest",
     "watch": "webpack serve --hot --progress --open --mode development",
