@@ -1,21 +1,20 @@
 import React, {
+  FieldsetHTMLAttributes,
+  FormEvent,
   FormHTMLAttributes,
   ReactEventHandler,
   createContext,
-  useState,
   useContext,
   useEffect,
-  FieldsetHTMLAttributes,
-  useCallback,
   useRef,
-  FormEvent,
+  useState,
 } from "react";
-import { ValidationResult } from "../core/ValidationActions";
-import { I18nContext } from "./I18nContext";
 import { Messages } from "../core/Messages";
-import { Validators, Validator } from "../core/Validators";
+import { getNestedProperty, setNestedProperty } from "../core/utils";
+import { ValidationResult } from "../core/ValidationActions";
+import { Validator, Validators } from "../core/Validators";
+import { I18nContext } from "./I18nContext";
 import { BoundComponentProps } from "./InputElements";
-import { setNestedProperty, getNestedProperty } from "../core/utils";
 
 interface FormProps extends FormHTMLAttributes<HTMLFormElement> {
   /** the object being edited  */
@@ -158,7 +157,10 @@ export function Form({
     },
 
     submit() {
-      onSubmitHandler({ preventDefault: () => {} } as FormEvent);
+      onSubmitHandler({
+        preventDefault() {},
+        stopPropagation() {},
+      } as FormEvent);
     },
   };
 
