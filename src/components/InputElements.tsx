@@ -1,34 +1,43 @@
 import React, {
-  useContext,
   ChangeEvent,
-  useEffect,
   InputHTMLAttributes,
+  useContext,
+  useEffect,
   useRef,
 } from "react";
-import { Converters, Converter } from "../core/Converters";
-import { FormContext, FormContextContent } from "./Form";
+import { Converter, Converters } from "../core/Converters";
 import { ValidationResult } from "../core/ValidationActions";
 import { errorStyles } from "../core/utils";
+import { FormContext, FormContextContent } from "./Form";
 
-export interface BoundComponentProps
-  extends Omit<InputHTMLAttributes<HTMLInputElement>, "type" | "onChange"> {
+export interface BoundComponentProps<Type>
+  extends Omit<
+    InputHTMLAttributes<HTMLInputElement>,
+    "type" | "onChange" | "value"
+  > {
   /** propertyName. Will also be used as id if none is specified */
   name: string;
 
   /** Optional: the converter to use. If not set, the default for the input type will be used */
-  converter?: Converter<any>;
+  converter?: Converter<Type>;
 
   /** Optional: the validator to use. If set, all default validators (required, number, etc) will be replaced by this. Received the value after being converted */
-  validate?(value: any): Promise<ValidationResult>;
+  validate?(value: Type): Promise<ValidationResult>;
 
   /** onChange event handler has been extended to also receive the formContext */
   onChange?(
     event: ChangeEvent<HTMLInputElement>,
     formContext: FormContextContent
   ): void;
+
+  /** to be used together with value, receives the transformed object when the value changes */
+  onPropertyChange?(value: Type): void;
+
+  /** Optional value, must be on type Type. It gets converted before calling onPropertyChange */
+  value?: Type;
 }
 
-export interface InputProps extends BoundComponentProps {
+export interface InputProps<Type> extends BoundComponentProps<Type> {
   type:
     | "text"
     | "url"
@@ -41,7 +50,8 @@ export interface InputProps extends BoundComponentProps {
     | "datetime-local";
 }
 
-export interface BoundComponentPropsWithElement extends BoundComponentProps {
+export interface BoundComponentPropsWithElement<Type>
+  extends BoundComponentProps<Type> {
   /** type of input component to use */
   elementName: "input" | "select" | "textarea";
 }
@@ -50,7 +60,7 @@ export interface BoundComponentPropsWithElement extends BoundComponentProps {
  * An input/select/textarea component that will bind automatically
  * with the corresponding object propety in the containing `Form`
  */
-export function BoundComponent({
+export function BoundComponent<Type>({
   elementName,
   converter,
   validate,
@@ -59,7 +69,7 @@ export function BoundComponent({
   onChange: originalOnChange,
   children,
   ...props
-}: BoundComponentPropsWithElement) {
+}: BoundComponentPropsWithElement<Type>) {
   const type: string = (props as any).type;
   if (process.env.NODE_ENV !== "production") {
     if (type === "radio" && typeof props.defaultValue === "undefined") {
@@ -96,7 +106,7 @@ export function BoundComponent({
     const objectValue =
       type === "checkbox"
         ? element.checked
-        : converter!.fromValue({ value: element.value, ...props });
+        : converter!.fromValue({ ...props, value: element.value });
     formContext.setValue(name, objectValue);
     originalOnChange && originalOnChange(e, formContext);
   }
@@ -157,7 +167,10 @@ export function BoundComponent({
   );
 }
 
-export function Input({ autoComplete = "off", ...props }: InputProps) {
+export function Input<Type>({
+  autoComplete = "off",
+  ...props
+}: InputProps<Type>) {
   return (
     <BoundComponent
       elementName="input"
@@ -167,10 +180,10 @@ export function Input({ autoComplete = "off", ...props }: InputProps) {
   );
 }
 
-export function Select(props: BoundComponentProps) {
+export function Select<Type>(props: BoundComponentProps<Type>) {
   return <BoundComponent elementName="select" {...props} />;
 }
 
-export function TextArea(props: BoundComponentProps) {
+export function TextArea<Type>(props: BoundComponentProps<Type>) {
   return <BoundComponent elementName="textarea" {...props} />;
 }

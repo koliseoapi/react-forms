@@ -1,18 +1,18 @@
-import { isNullOrUndefined, isBlank, isFalse } from "./utils";
 import { BoundComponentProps } from "../components/InputElements";
+import { isBlank, isFalse, isNullOrUndefined } from "./utils";
 
 let re_weburl: RegExp;
 
 export type ValidationResult = string | undefined;
 
-export type ValidationAction<T> = (
-  value: T,
-  props: BoundComponentProps
+export type ValidationAction<Type> = (
+  value: Type,
+  props: BoundComponentProps<Type>
 ) => Promise<ValidationResult>;
 
 async function timestampMinValidator(
   value: string,
-  props: BoundComponentProps
+  props: BoundComponentProps<string>
 ): Promise<ValidationResult> {
   // under ISO8601, dates and times can be compared as strings
   if (!isNullOrUndefined(value) && value < props.min!) {
@@ -22,7 +22,7 @@ async function timestampMinValidator(
 
 async function timestampMaxValidator(
   value: string,
-  props: BoundComponentProps
+  props: BoundComponentProps<string>
 ): Promise<ValidationResult> {
   if (!isNullOrUndefined(value) && value > props.max!) {
     return "max";
@@ -43,7 +43,7 @@ export const ValidationActions: IValidationActions = {
 
   async required(
     value: any,
-    props: BoundComponentProps
+    props: BoundComponentProps<any>
   ): Promise<ValidationResult> {
     if (isBlank(value) && !isFalse(props.required)) {
       return "required";
@@ -52,7 +52,7 @@ export const ValidationActions: IValidationActions = {
 
   async number_required(
     value: number,
-    props: BoundComponentProps
+    props: BoundComponentProps<number>
   ): Promise<ValidationResult> {
     if (isNullOrUndefined(value) && !isFalse(props.required)) {
       return "required";
@@ -61,25 +61,25 @@ export const ValidationActions: IValidationActions = {
 
   async number_min(
     value: number,
-    props: BoundComponentProps
+    props: BoundComponentProps<number>
   ): Promise<ValidationResult> {
-    if (!isNullOrUndefined(value) && value < props.converter!.fromValue({value: '' + props.min})) {
+    if (!isNullOrUndefined(value) && value < props.converter!.fromValue({value: '' + props.min})!) {
       return "min";
     }
   },
 
   async number_max(
     value: number,
-    props: BoundComponentProps
+    props: BoundComponentProps<number>
   ): Promise<ValidationResult> {
-    if (!isNullOrUndefined(value) && value > props.converter!.fromValue({ value: '' + props.max!})) {
+    if (!isNullOrUndefined(value) && value > props.converter!.fromValue({ value: '' + props.max!})!) {
       return "max";
     }
   },
 
   async url(
     value: string,
-    props: BoundComponentProps
+    props: BoundComponentProps<string>
   ): Promise<ValidationResult> {
     // Lazy init a reasonable (< 5k chars) implementation of URL regex
     // https://mathiasbynens.be/demo/url-regex
@@ -131,7 +131,7 @@ export const ValidationActions: IValidationActions = {
 
   async email(
     value: string,
-    props: BoundComponentProps
+    props: BoundComponentProps<string>
   ): Promise<ValidationResult> {
     // Simple email validation
     // https://emailregex.com/
@@ -147,7 +147,7 @@ export const ValidationActions: IValidationActions = {
 
   async pattern(
     value: string,
-    props: BoundComponentProps
+    props: BoundComponentProps<string>
   ): Promise<ValidationResult> {
     let { pattern } = props;
     if (!isNullOrUndefined(value) && pattern) {
@@ -165,7 +165,7 @@ export const ValidationActions: IValidationActions = {
 
   async maxLength(
     value: string,
-    props: BoundComponentProps
+    props: BoundComponentProps<string>
   ): Promise<ValidationResult> {
     if (!isNullOrUndefined(value) && value.length > props.maxLength!) {
       return "maxLength";

@@ -49,7 +49,7 @@ export interface FormContextContent {
   /**
    * Add a Validator to the list of fields validated by this form
    */
-  addValidator(props: BoundComponentProps): void;
+  addValidator(props: BoundComponentProps<any>): void;
 
   /**
    * Remove a validator
