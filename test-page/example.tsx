@@ -53,6 +53,10 @@ function MyApp() {
     return Promise.resolve();
   }
 
+  // Example controlled form
+  // <Form onSubmit={onSubmit} values={output} setValues={setOutput}>
+  // Example uncontrolled form
+  // <Form onSubmit={onSubmit} initialValues={initialState}>
   return (
     <>
       <Form onSubmit={onSubmit} initialValues={initialState}>

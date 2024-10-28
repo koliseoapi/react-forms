@@ -1,8 +1,10 @@
 import React, {
+  Dispatch,
   FieldsetHTMLAttributes,
   FormEvent,
   FormHTMLAttributes,
   ReactEventHandler,
+  SetStateAction,
   createContext,
   useContext,
   useEffect,
@@ -16,10 +18,16 @@ import { Validator, Validators } from "../core/Validators";
 import { I18nContext } from "./I18nContext";
 import { BoundComponentProps } from "./InputElements";
 
-interface FormProps<ObjectType>
+interface FormProps<ObjectType extends NonNullable<any>>
   extends Omit<FormHTMLAttributes<HTMLFormElement>, "onSubmit"> {
-  /** the object being edited  */
-  initialValues: ObjectType;
+  /** the object being edited, for an uncontrolled form */
+  initialValues?: ObjectType;
+
+  /** the object being edited, for a controlled form */
+  values?: ObjectType;
+
+  /** method to invoke when any value is changed. Required if values is set */
+  setValues?: Dispatch<SetStateAction<ObjectType>>;
 
   /** the method to invoke when submitting, after passing all validations */
   onSubmit: (values: ObjectType) => Promise<any>;
@@ -86,17 +94,41 @@ export const FormContext = createContext<FormContextContent>({
 /**
  * Form is the required container  of BoundComponent instances.
  */
-export function Form<ObjectType>({
-  initialValues,
-  onSubmit,
-  children,
-  ...props
-}: FormProps<ObjectType>) {
+export function Form<ObjectType>(originalProps: FormProps<ObjectType>) {
+  let {
+    initialValues,
+    values: ov,
+    setValues: osv,
+    onSubmit,
+    children,
+    ...props
+  } = originalProps;
+
+  const controlled = "values" in originalProps || "setValues" in originalProps;
+
+  let values: ObjectType;
+  let setValues: Dispatch<SetStateAction<ObjectType>>;
+  if (controlled) {
+    // controlled form
+    if (!ov || !osv) {
+      throw new Error("values and setValues are required for controlled forms");
+    }
+  } else {
+    // uncontrolled form
+    if (!initialValues) {
+      throw new Error("initialValues is required for uncontrolled forms");
+    }
+
+    // object with the data introduced in this form
+    [ov, osv as any] = useState({ ...initialValues });
+  }
+
+  // weird tsc error if we don't do things this way
+  values = ov!;
+  setValues = osv!;
+
   // errors to display, sorted by component key
   const [errors, setErrors] = useState<ValidationErrors>({});
-
-  // object with the data introduced in this form
-  const [values, setValues] = useState({ ...initialValues });
 
   // the list of validators to use for this object
   const [validators, setValidators] = useState<Validators>({});
