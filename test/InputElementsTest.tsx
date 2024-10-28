@@ -1,7 +1,7 @@
 import React, { ReactElement } from "react";
 import renderer, { ReactTestRenderer, act } from "react-test-renderer";
-import { Input, Select } from "../src/components/InputElements";
-import { Form, ValidationErrors, FieldSet } from "../src/components/Form";
+import { Form, ValidationErrors } from "../src/components/Form";
+import { Input } from "../src/components/InputElements";
 import { Converters } from "../src/core/Converters";
 import { ValidationResult } from "../src/core/ValidationActions";
 
@@ -156,6 +156,19 @@ describe("Input", function () {
       color: "red",
     });
     expect(callback).toHaveBeenCalledTimes(1);
+  });
+
+  it("should work when controlled", () => {
+    const values = { age: 20 };
+    const callback = jest.fn();
+    mount(
+      <Input type="number" name="age" value={30} setValue={callback} />,
+      values
+    );
+    expect(form.toJSON()).toMatchSnapshot();
+    triggerChange({ value: "32" });
+    expect(callback).toHaveBeenCalledWith(32);
+    expect(form.toJSON()).toMatchSnapshot();
   });
 
   it("should update nested properties", async () => {

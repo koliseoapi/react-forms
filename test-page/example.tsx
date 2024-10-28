@@ -3,10 +3,11 @@
   Example code to use in browser
 
 */
-import { Form, Input, Button, TextArea } from "../src/index";
-import { createRoot } from "react-dom/client";
-import ReactDOM from "react-dom";
 import React, { useState } from "react";
+import { createRoot } from "react-dom/client";
+import { Button, Form, Input, Select, TextArea } from "../src/index";
+
+type Pet = "cat" | "dog" | "other";
 
 interface MyState {
   name: string;
@@ -16,6 +17,7 @@ interface MyState {
   gender?: "male" | "female" | "other";
   expires?: string;
   time?: string;
+  pet: Pet;
 }
 
 // just a class that can be spied for changes
@@ -33,11 +35,13 @@ const initialState: MyState = {
   age: 23,
   subscribed: true,
   gender: "other",
+  pet: "dog",
 };
 
 function MyApp() {
   const [output, setOutput] = useState(initialState);
   const [outputClass, setOutputClass] = useState("");
+  const [pet, setPet] = useState<Pet>(initialState.pet);
 
   function onSubmit(newState: MyState) {
     console.log(
@@ -90,6 +94,12 @@ function MyApp() {
         />
         <label htmlFor="time">Time</label>
         <Input name="time" id="time" type="time" pattern="[0-9]{2}:[0-9]{2}" />
+        <Select name="pet" required value={pet} setValue={setPet}>
+          <option value="cat">Cat</option>
+          <option value="dog">Dog</option>
+          <option value="other">Other</option>
+        </Select>
+        <p>Selected pet: {pet}</p>
         <Button type="submit">Submit form and see resulting state</Button>
       </Form>
       <pre className={`output ${outputClass}`}>

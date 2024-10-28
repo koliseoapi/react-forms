@@ -292,3 +292,37 @@ exports[`Input should use checked instead of value with type=checkbox 1`] = `
   />
 </form>
 `;
+
+exports[`Input should work when controlled 1`] = `
+<form
+  noValidate={true}
+  onSubmit={[Function]}
+>
+  <input
+    autoComplete="off"
+    id="age"
+    name="age"
+    onChange={[Function]}
+    onKeyDown={[Function]}
+    type="number"
+    value="30"
+  />
+</form>
+`;
+
+exports[`Input should work when controlled 2`] = `
+<form
+  noValidate={true}
+  onSubmit={[Function]}
+>
+  <input
+    autoComplete="off"
+    id="age"
+    name="age"
+    onChange={[Function]}
+    onKeyDown={[Function]}
+    type="number"
+    value="30"
+  />
+</form>
+`;

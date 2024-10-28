@@ -30,10 +30,10 @@ export interface BoundComponentProps<Type>
     formContext: FormContextContent
   ): void;
 
-  /** to be used together with value, receives the transformed object when the value changes */
-  onPropertyChange?(value: Type): void;
+  /** to be used together with value, sends the converted value when the value changes */
+  setValue?(value: Type | undefined): void;
 
-  /** Optional value, must be on type Type. It gets converted before calling onPropertyChange */
+  /** Optional value, for controlled components. It gets converted before calling onPropertyChange */
   value?: Type;
 }
 
@@ -60,23 +60,33 @@ export interface BoundComponentPropsWithElement<Type>
  * An input/select/textarea component that will bind automatically
  * with the corresponding object propety in the containing `Form`
  */
-export function BoundComponent<Type>({
-  elementName,
-  converter,
-  validate,
-  name,
-  id,
-  onChange: originalOnChange,
-  children,
-  ...props
-}: BoundComponentPropsWithElement<Type>) {
+export function BoundComponent<Type>(
+  originalProps: BoundComponentPropsWithElement<Type>
+) {
+  let {
+    elementName,
+    converter,
+    validate,
+    name,
+    id,
+    onChange: originalOnChange,
+    children,
+    setValue,
+    value,
+    ...props
+  } = originalProps;
   const type: string = (props as any).type;
   if (process.env.NODE_ENV !== "production") {
     if (type === "radio" && typeof props.defaultValue === "undefined") {
       throw new Error(`Radio button ${name} requires a defaultValue`);
     }
-    if (typeof props.value !== "undefined") {
-      throw new Error(`${name} should use defaultValue instead of value`);
+  }
+  const controlled = "value" in originalProps || "setValue" in originalProps;
+  if (controlled) {
+    if (!value || !setValue) {
+      throw new Error(
+        `Both value and setValue are required for controlled components`
+      );
     }
   }
 
@@ -88,18 +98,25 @@ export function BoundComponent<Type>({
   }
   converter = converter || Converters[type] || Converters.text;
   const formContext = useContext<FormContextContent>(FormContext);
-  const defaultValue =
-    type === "checkbox"
-      ? undefined
-      : type === "radio"
-      ? (props.defaultValue as string)
-      : converter.toValue(formContext.getValue(name));
-  const defaultChecked =
-    type === "checkbox"
-      ? formContext.getValue(name)
-      : type === "radio"
-      ? formContext.getValue(name) == defaultValue
-      : undefined;
+  const optionalProps: Partial<InputHTMLAttributes<HTMLInputElement>> = {};
+  if (type == "checkbox") {
+    optionalProps.defaultChecked = formContext.getValue(name);
+  } else if (type == "radio") {
+    optionalProps.defaultValue = props.defaultValue;
+    optionalProps.defaultChecked =
+      formContext.getValue(name) == props.defaultValue;
+  } else {
+    if (controlled) {
+      optionalProps.value =
+        "value" in originalProps
+          ? converter.toValue(value)
+          : converter.toValue(formContext.getValue(name));
+    } else {
+      optionalProps.defaultValue = converter.toValue(
+        formContext.getValue(name)
+      );
+    }
+  }
 
   function onChange(e: ChangeEvent<HTMLInputElement>) {
     const element = e.target;
@@ -108,6 +125,7 @@ export function BoundComponent<Type>({
         ? element.checked
         : converter!.fromValue({ ...props, value: element.value });
     formContext.setValue(name, objectValue);
+    setValue && setValue(objectValue as Type);
     originalOnChange && originalOnChange(e, formContext);
   }
 
@@ -144,10 +162,9 @@ export function BoundComponent<Type>({
           name,
           id: id,
           onChange,
-          defaultChecked,
-          defaultValue,
           ref,
           onKeyDown,
+          ...optionalProps,
           ...props,
           ...ariaProps,
         },

@@ -33,6 +33,42 @@ The following components are supported:
 - `TextArea`
 - `Select`
 
+## Controlled vs Uncontrolled forms
+
+You can use `Form` in two ways:
+
+1. **Controlled**: You manage the state outside the form and pass it as `values`. This is useful when you want to manage the state in a parent component.
+
+```JavaScript
+const [state, setState] = useState({ username: 'Foo', age: 20 });
+<Form values={state} setValues={setState}>
+  <Input type="text" name="username" required />
+  <Input type="number" name="age" />
+  <Button>Save</Button>
+</Form>
+```
+
+1. **Uncontrolled**: You let the form manage the state internally. This is useful when you want to keep the state in the form itself.
+
+```JavaScript
+<Form initialValues={{ username: 'Foo', age: 20 }}>
+  <Input type="text" name="username" required />
+  <Input type="number" name="age" />
+  <Button>Save</Button>
+</Form>
+```
+
+You can also pass controlled values to a specific input element:
+
+```JavaScript
+const [username, setUsername] = useState('Foo');
+const [age, setAge] = useState(20);
+<Input type="text" name="username" value={username} setValue={setUsername} />
+<Input type="number" name="age" value={age} setValue={setAge} />
+```
+
+In this case the new value (age and username in this example) will both be stored in the local variable and as the root object in the associated `Form` element.
+
 ## Conversions
 
 Each input field converts values automatically from `string` to the expected type:

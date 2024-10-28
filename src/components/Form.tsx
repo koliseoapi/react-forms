@@ -16,12 +16,13 @@ import { Validator, Validators } from "../core/Validators";
 import { I18nContext } from "./I18nContext";
 import { BoundComponentProps } from "./InputElements";
 
-interface FormProps extends FormHTMLAttributes<HTMLFormElement> {
+interface FormProps<ObjectType>
+  extends Omit<FormHTMLAttributes<HTMLFormElement>, "onSubmit"> {
   /** the object being edited  */
-  initialValues: any;
+  initialValues: ObjectType;
 
   /** the method to invoke when submitting, after passing all validations */
-  onSubmit: (values: any) => Promise<any>;
+  onSubmit: (values: ObjectType) => Promise<any>;
 }
 
 /**
@@ -85,12 +86,12 @@ export const FormContext = createContext<FormContextContent>({
 /**
  * Form is the required container  of BoundComponent instances.
  */
-export function Form({
+export function Form<ObjectType>({
   initialValues,
   onSubmit,
   children,
   ...props
-}: FormProps) {
+}: FormProps<ObjectType>) {
   // errors to display, sorted by component key
   const [errors, setErrors] = useState<ValidationErrors>({});
 
