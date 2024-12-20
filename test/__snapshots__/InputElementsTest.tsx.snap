@@ -326,3 +326,20 @@ exports[`Input should work when controlled 2`] = `
   />
 </form>
 `;
+
+exports[`Input should work when controlled 3`] = `
+<form
+  noValidate={true}
+  onSubmit={[Function]}
+>
+  <input
+    autoComplete="off"
+    id="name"
+    name="name"
+    onChange={[Function]}
+    onKeyDown={[Function]}
+    type="text"
+    value=""
+  />
+</form>
+`;

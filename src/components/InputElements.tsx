@@ -7,7 +7,7 @@ import React, {
 } from "react";
 import { Converter, Converters } from "../core/Converters";
 import { ValidationResult } from "../core/ValidationActions";
-import { errorStyles } from "../core/utils";
+import { errorStyles, isNullOrUndefined } from "../core/utils";
 import { FormContext, FormContextContent } from "./Form";
 
 export interface BoundComponentProps<Type>
@@ -83,7 +83,7 @@ export function BoundComponent<Type>(
   }
   const controlled = "value" in originalProps || "setValue" in originalProps;
   if (controlled) {
-    if (!value || !setValue) {
+    if (isNullOrUndefined(value) || !setValue) {
       throw new Error(
         `Both value and setValue are required for controlled components`
       );
