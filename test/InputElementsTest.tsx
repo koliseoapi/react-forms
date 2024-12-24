@@ -169,6 +169,20 @@ describe("Input", function () {
     triggerChange({ value: "32" });
     expect(callback).toHaveBeenCalledWith(32);
     expect(form.toJSON()).toMatchSnapshot();
+    mount(<Input type="text" name="name" value={""} setValue={callback} />, {
+      name: "foobar",
+    });
+    expect(form.toJSON()).toMatchSnapshot();
+    try {
+      mount(<Input type="text" name="name" value={undefined} />, {
+        name: "foobar",
+      });
+      fail("Value is required on controlled components");
+    } catch (e) {
+      expect(e.message).toBe(
+        "Both value and setValue are required for controlled components"
+      );
+    }
   });
 
   it("should update nested properties", async () => {
